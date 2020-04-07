@@ -10,7 +10,7 @@ var con = mysql.createConnection({
   port: '3306',
   user: 'manager',
   password: 'Password',
-  database: 'freight'
+  database: 'db'
 });
 
 //set up some configs for express.

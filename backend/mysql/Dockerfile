@@ -10,7 +10,7 @@
 FROM mysql:8
 
 # Establish MySQL DB as environment variable
-ENV MYSQL_DATABASE=freight
+ENV MYSQL_DATABASE=db
 ENV MYSQL_RANDOM_ROOT_PASSWORD=1
 
 # Copy in first run SQL scripts
