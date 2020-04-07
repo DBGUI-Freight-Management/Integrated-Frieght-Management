@@ -5,12 +5,12 @@ const mysql = require('mysql');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 
 //mysql connection
-var connection = mysql.createConnection({
+var con = mysql.createConnection({
   host: 'backend-db',
   port: '3306',
   user: 'manager',
   password: 'Password',
-  database: 'db'
+  database: 'freight'
 });
 
 //set up some configs for express.
@@ -19,6 +19,18 @@ const config = {
   port: 8000,
   host: '0.0.0.0',
 };
+
+//Attempting to connect to the database.
+con.connect(function (err) {
+	if (err){
+		console.log(err);
+		logger.error("Cannot connect to DB!");
+	}
+	else {
+		logger.info("Connected to the DB!");
+	}
+  });
+
 
 //create the express.js object
 const app = express();
@@ -204,5 +216,5 @@ router.delete('/users/:id/delete', async (req, res) => {
 app.use('/api', router);
 
 //PORT ENVIRONMENT VARIABLE
-const port = process.env.PORT || 8080;
+const port = config.port;
 app.listen(port, () => console.log(`Listening on port ${port}..`));

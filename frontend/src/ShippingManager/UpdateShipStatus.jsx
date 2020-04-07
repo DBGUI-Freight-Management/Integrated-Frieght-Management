@@ -9,9 +9,7 @@ export class UpdateShipStatus extends React.Component {
 
     submit() {
         this.props.updateShipStatus({ name: this.state.name, company: this.state.owningCompany, state: this.state.status });
-        this.state.name = "";
-        this.state.owningCompany = "";
-        this.state.status = "";
+        this.setState({name:"",owningCompany:"",status:""});
     }
 
     render() {

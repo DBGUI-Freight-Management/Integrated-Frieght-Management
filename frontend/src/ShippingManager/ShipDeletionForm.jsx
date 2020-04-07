@@ -8,8 +8,7 @@ export class ShipDeletionForm extends React.Component {
 
     submit() {
         this.props.removeShip({name:this.state.name, company:this.state.owningCompany})
-        this.state.name = "";
-        this.state.owningCompany = "";
+        this.setState({name:"",owningCompany:""});
     }
 
     render() {
