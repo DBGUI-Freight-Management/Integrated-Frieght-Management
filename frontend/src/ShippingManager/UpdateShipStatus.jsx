@@ -32,7 +32,7 @@ export class UpdateShipStatus extends React.Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="shippingCompany">
-                            ShippingCompany
+                            Shipping Company:
                             </label>
                         <select className="form-control"
                             id="shippingCompany"
@@ -52,14 +52,13 @@ export class UpdateShipStatus extends React.Component {
                             name="shipStatus"
                             className="form-control"
                             value={this.state.status}
-                            onChange={e => this.setState({ state: e.target.value })} />
+                            onChange={e => this.setState({ status: e.target.value })} />
                     </div>
                     <div className="form-group">
                         <button type="button" className="btn btn-primary mb-2" onClick={e => this.submit()}>Update Status</button>
                     </div>
                 </form>
-
             </>
-            )
-        }
+        )
     }
+}

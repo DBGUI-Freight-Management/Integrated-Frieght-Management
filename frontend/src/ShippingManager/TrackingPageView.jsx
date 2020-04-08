@@ -31,6 +31,26 @@ export class TrackingPage extends React.Component{
                     {/*this button will show past status reports when those are eventually a thing*/}
                 </div>
             </form>
+            <div className="container">
+                    <div className="row rowHead">
+                        <div className="col-4">Ship Name</div>
+                        <div className="col-4">Ship Location</div>
+                        <div className="col-4">Past Locations</div>
+                    </div>
+                    {this.props.ships.map(ship => (
+                            <div className="row">
+                                <div className="col-4">{ ship.name }</div>
+                                <div className="col-4">
+                                    <p>{ ship.location }</p>
+                                </div>
+                                <div className="col-4">
+                                    {ship.pastLocations.map(location =>(
+                                        <p>{location}</p>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                </div>
             </>
         )
     }

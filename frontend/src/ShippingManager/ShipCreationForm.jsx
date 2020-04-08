@@ -1,16 +1,21 @@
 import React from 'react';
 import { Ship } from './models';
+import { ShippingApi } from '../API';
 
 export class ShipCreationForm extends React.Component{
+    shippingApi = new ShippingApi();
+
     state = {
         name:"",
         owningCompany:"",
-        shipStatus:""
+        shipStatus:"",
+        location: "",
+        companies:[]
     }
 
     submit(){
-            let newShip = new Ship(this.state.name,this.state.owningCompany,this.state.shipStatus);
-            this.setState({name:"", owningCompany:"", shipStatus:""});
+            let newShip = new Ship(this.state.name,this.state.owningCompany,this.state.shipStatus, this.state.location);
+            this.setState({name:"", owningCompany:"", shipStatus:"", location:""});
             this.props.addship(newShip);
     }
 
@@ -42,7 +47,7 @@ export class ShipCreationForm extends React.Component{
                                 value={this.state.owningCompany}
                                 onChange={e=>this.setState({owningCompany:e.target.value})}>
                                     <option></option>
-                                {this.props.companyList.map(company=>(<option>{company.name}</option>))}
+                                {this.state.companies.map(company=>(<option>{company.name}</option>))}
                         </select>
                     </div>
                     <div className="form-group">
@@ -57,12 +62,27 @@ export class ShipCreationForm extends React.Component{
                                 onChange={e=>this.setState({shipStatus:e.target.value})}/>
                     </div>
                     <div className="form-group">
+                        <label htmlFor="status">
+                            Ship Location
+                        </label>
+                        <input type="text"
+                                id="status"
+                                name="status"
+                                className="form-control"
+                                value={this.state.location}
+                                onChange={e=>this.setState({location:e.target.value})}/>
+                    </div>
+                    <div className="form-group">
                         <button type="button" className="btn btn-primary mb-2" onClick={e=>this.submit()}>Create</button>
                     </div>
                 </form>
             
             </>
         )
+    }
+
+    componentDidMount(){
+        this.shippingApi.getCompanies().then(companies=>this.setState({companies}));
     }
 
 }

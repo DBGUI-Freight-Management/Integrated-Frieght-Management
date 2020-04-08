@@ -17,7 +17,7 @@ export class ShipList extends React.Component{
                                 <div className="col-4">{ ship.name }</div>
                                 <div className="col-8">
                                     <p>{ ship.owningCompany }</p>
-                                    <p>{ ship.status } </p>
+                                    <p>{ ship.status} </p>
                                 </div>
                             </div>
                         ))}
