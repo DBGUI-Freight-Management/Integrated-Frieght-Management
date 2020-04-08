@@ -41,6 +41,9 @@ create table ships(
 	FOREIGN KEY(companyID) REFERENCES companies(id)
 );
 
+insert into ships(name, companyID) values('SS Perugia', 1);
+insert into ships(name, companyID) values('SS Appleton', 2);
+
 create table accountTypes(
 	id integer NOT NULL AUTO_INCREMENT,
     type VARCHAR(50),
@@ -70,6 +73,20 @@ insert into users(username, email, password, accountType, companyID) values ('sp
 insert into users(username, email, password, accountType, companyID) values ('CptMorgan', 'hmorgan@gmail.com','likelikecpt', 1, 2);
 insert into users(username, email, password, accountType, companyID) values ('smithy11', 'jsmith@viento.com','boringPa55word', 2, 1);
 insert into users(username, email, password, accountType, companyID) values ('rarmstrong', 'rarmstrong@retrograde.co.uk','saturnV', 3, 6);
+
+create table crew(
+	id integer NOT NULL auto_increment,
+    name VARCHAR(50),
+    shipID integer,
+    position VARCHAR(50),
+    dateBoarded DATE,
+    PRIMARY KEY(id),
+    FOREIGN KEY(shipID) REFERENCES ships(id)
+);
+
+insert into crew(name, shipID, position, dateBoarded) values ('Joe Baker', 2, 'First Mate', '2020-01-12');
+insert into crew(name, shipID, position, dateBoarded) values ('Angelo Voiello', 1, 'First Mate', '2016-10-16');
+insert into crew(name, shipID, position, dateBoarded) values ('James Harrison', 1, 'Mechanic', '2019-10-16');
 select * from users;
 
 
