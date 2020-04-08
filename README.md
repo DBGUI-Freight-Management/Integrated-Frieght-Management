@@ -55,7 +55,7 @@ Format: http://localhost:8080/api/ship/SOME_ID/delete
 Example: http://localhost:8080/api/shipCompanies/5/delete
 
 
-###Account Types
+### Account Types
 Current Account Types: Captain, Freight Manager, Client
 
 You shouldn't have to post or delete account types, but the functionality exists.
@@ -71,7 +71,7 @@ Format: http://localhost:8080/api/accountType/SOME_ID/delete
 Example: http://localhost:8080/api/accountType/SOME_ID/delete
 
 
-###Users
+### Users
 #### Get Users
 Format: http://localhost:8080/api/users/get
 #### Add a user
@@ -84,7 +84,7 @@ Format: http://localhost:8080/api/users/SOME_ID/delete
 Example: http://localhost:8080/api/users/SOME_ID/delete
 
 
-###Crew
+### Crew
 #### Get All Crew
 Format: http://localhost:8080/api/crew/get
 #### Get the crew of a specific ship (by id)
