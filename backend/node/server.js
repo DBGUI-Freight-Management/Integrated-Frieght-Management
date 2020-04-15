@@ -64,26 +64,10 @@ router.get('/companies/get', function (req, res) {
 	});
 });
 
-//Get shipping companies
-router.get('/companies/get/shipping', function (req, res) {
-	con.query("SELECT * FROM companies WHERE companyType = 1", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-//Get client companies
-router.get('/companies/get/client', function (req, res) {
-	con.query("SELECT * FROM companies WHERE companyType = 2", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
 
 //Post a new company
 router.post('/companies/post', async (req, res) => {
-  let sql = `INSERT INTO companies(name, companyType) VALUES (\'${req.query.name}\', ${req.query.companyType})`;
+  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.query.name}\', ${req.query.freightManagerID})`;
   res.send(req.params);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
@@ -93,7 +77,7 @@ router.post('/companies/post', async (req, res) => {
 
 //Delete a company
 router.delete('/companies/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM companies WHERE id = ${req.params.id}`;
+  let sql = `DELETE FROM companies WHERE companyID = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -114,7 +98,7 @@ router.get('/ships/get', function (req, res) {
 
 //Post a new ship
 router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ships(name, companyID) VALUES (\'${req.query.name}\', ${req.query.companyid})`;
+  let sql = `INSERT INTO ships(shipName, companyID) VALUES (\'${req.query.name}\', ${req.query.companyid})`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -125,7 +109,7 @@ router.post('/ships/post', async (req, res) => {
 
 //Delete a ship
 router.delete('/ships/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM ships WHERE id = ${req.params.id}`;
+  let sql = `DELETE FROM ships WHERE shipID = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -146,7 +130,7 @@ router.get('/accountTypes/get', function (req, res) {
 
 //Post a new account type (You probably shouldn't do this)
 router.post('/accountTypes/post', async (req, res) => {
-  let sql = `INSERT INTO accountTypes(type, description) VALUES (\'${req.query.type}\', \'${req.query.description}\')`;
+  let sql = `INSERT INTO accountTypes(name, description) VALUES (\'${req.query.name}\', \'${req.query.description}\')`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -157,7 +141,7 @@ router.post('/accountTypes/post', async (req, res) => {
 
 //Delete a account type (You probably shouldn't do this)
 router.delete('/accountTypes/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM accountTypes WHERE id = ${req.params.id}`;
+  let sql = `DELETE FROM accountTypes WHERE typeID  = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -178,7 +162,7 @@ router.get('/users/get', function (req, res) {
 
 //Post a user
 router.post('/users/post', async (req, res) => {
-  let sql = `INSERT INTO users(username, email, password, accountType, companyID) VALUES (\'${req.query.username}\', \'${req.query.email}\', \'${req.query.password}\', ${req.query.type}, ${req.query.companyid})`;
+  let sql = `INSERT INTO users(password, username, email, firstName, lastName phone, accountType) VALUES (\'${req.query.password}\', \'${req.query.username}\', \'${req.query.email}\', \'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.phone}, ${req.query.type})`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -187,9 +171,9 @@ router.post('/users/post', async (req, res) => {
 	});
 });
 
-//Delete a account type (You probably shouldn't do this)
+//Delete a user
 router.delete('/users/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM users WHERE id = ${req.params.id}`;
+  let sql = `DELETE FROM users WHERE userID = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -221,7 +205,7 @@ router.delete('/crew/get/:id', async (req, res) => {
 
 //Get crew for a specific ship by ship name
 router.delete('/crew/get/:name', async (req, res) => {
-  let sql = `SELECT c.id, c.name, c.position, c.dateBoarded FROM crew c INNER JOIN ships s ON s.id = c.shipID WHERE s.name = \'${req.params.name}\'`;
+  let sql = `SELECT c.id, c.firstName, c.lastName, c.position, c.dateBoarded FROM crew c INNER JOIN ships s ON s.shipID = c.shipID WHERE s.shipName = \'${req.params.name}\'`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -230,9 +214,9 @@ router.delete('/crew/get/:name', async (req, res) => {
 	  });
 });
 
-//Post a user
+//Post a crew member
 router.post('/crew/post', async (req, res) => {
-  let sql = `INSERT INTO crew(name, shipID, position, dateBoarded) VALUES (\'${req.query.name}\', ${req.query.shipID}, \'${req.query.position}\', \'${req.query.dateBoarded}\')`;
+  let sql = `INSERT INTO crew(firstName, lastName, shipID, position, dateBoarded) VALUES (\'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.shipID}, \'${req.query.position}\', \'${req.query.dateBoarded}\')`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -243,7 +227,7 @@ router.post('/crew/post', async (req, res) => {
 
 //Delete a crew member
 router.delete('/crew/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM crew WHERE id = ${req.params.id}`;
+  let sql = `DELETE FROM crew WHERE crewID = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
