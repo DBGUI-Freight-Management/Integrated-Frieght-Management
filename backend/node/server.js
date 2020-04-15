@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
-
+const session = require('express-session');
 //mysql connection
 var con = mysql.createConnection({
   host: 'backend-db',
@@ -34,6 +34,14 @@ con.connect(function (err) {
 
 //create the express.js object
 const app = express();
+
+
+app.use(session({
+	secret: 'freight',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: true }
+  }))
 
 //create a logger object.  Using logger is preferable to simply writing to the console.
 const logger = log({ console: true, file: false, label: config.name });
