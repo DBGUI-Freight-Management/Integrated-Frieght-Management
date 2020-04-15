@@ -1,4 +1,5 @@
 import React from "react"
+import { LogMessage } from "./LogMessage";
 
 export class LogCreation extends React.Component{
     state={
@@ -8,15 +9,19 @@ export class LogCreation extends React.Component{
     }
 
     submit(){
-        
-        this.props.submit(this.state);
+        let log = {
+            header:this.state.logHeader,
+            message:this.state.logMessage,
+            date:this.state.date
+        }
+        this.props.submit(log);
         this.setState({logHeader:"", logMessage:""})
     }
     render(){
         return (
             <>
                 <div className="container">
-                    <h3>{this.props.captain.name}'s Log</h3>
+                    <h3>{this.props.captain}'s Log</h3>
                     <h4>{this.state.date.getMonth()+"/" + this.state.date.getDay()+"/"+this.state.date.getFullYear()}</h4>
                     <label htmlFor="logHeader">
                         Header

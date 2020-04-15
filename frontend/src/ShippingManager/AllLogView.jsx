@@ -6,20 +6,28 @@ export class AllLogView extends React.Component{
         return(
             <>  
                 <div className="container">
-                    <h3>{this.props.captain.name}'s Logs</h3>
+                    <h3>{this.props.captain}'s Logs</h3>
                     <div className="container">
-                        {this.props.logs.map(message=>(
-                                    <div className="row rounded hover" onClick={()=>this.props.selectMessage(message)}>
-                                        <div className="col-8 rounded">
-                                                {message.header}
-                                        </div>    
-                                        <div className="col-4 rounded">
-                                                {message.date.getMonth()+"/" +message.date.getDay()+"/"+message.date.getFullYear()}
-                                        </div>
-                                    </div>
-                            )
-                            )
-                        }
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Log Header</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            {this.props.logs.reverse().map(message=>(
+                                        <tr className="hover" onClick={()=>this.props.selectMessage(message)}>
+                                            <td>
+                                                    {message.header}
+                                            </td>    
+                                            <td>
+                                                    {message.date.getMonth()+"/" +message.date.getDay()+"/"+message.date.getFullYear()}
+                                            </td>
+                                        </tr>
+                                )
+                                )
+                            }
+                        </table>
                     </div>
                 </div>
             </>

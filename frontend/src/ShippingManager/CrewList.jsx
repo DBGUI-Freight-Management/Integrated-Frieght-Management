@@ -9,8 +9,10 @@ export class CrewList extends React.Component{
     }
 
     addCrew(){
-        this.props.addCrewMember({name:this.state.newName,role:this.state.newRole})
-        this.setState({newName:"", newRole:""});
+        if(this.state.newName!==""){
+            this.props.addCrewMember({name:this.state.newName,role:this.state.newRole, date:new Date()})
+            this.setState({newName:"", newRole:""});
+        }
     }
 
     cancel(){
@@ -62,13 +64,15 @@ export class CrewList extends React.Component{
                             <tr>
                                 <th>Name</th>
                                 <th>Role</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.ship.crew.map(crewMate=>(
+                            {this.props.crew.map(crewMate=>(
                                 <tr>
                                     <td>{crewMate.name}</td>
                                     <td>{crewMate.role}</td>
+                                    <td>{crewMate.date!==undefined && crewMate.date.getMonth()+"/" +crewMate.date.getDay()+"/"+crewMate.date.getFullYear()}</td>
                                 </tr>
                             ))}
                         </tbody>
