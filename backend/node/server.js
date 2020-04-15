@@ -4,8 +4,9 @@ const cors = require('cors');
 const mysql = require('mysql');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 //mysql connection
-var con = mysql.createConnection({
+var con = mysql.createPool({
   host: 'backend-db',
   port: '3306',
   user: 'manager',
@@ -21,7 +22,8 @@ const config = {
 };
 
 //Attempting to connect to the database.
-con.connect(function (err) {
+con.query(`SELECT 'something sweet';`,function(err,rows,fields) {
+
 	if (err){
 		console.log(err);
 		logger.error("Cannot connect to DB!");
@@ -37,11 +39,15 @@ const app = express();
 
 
 app.use(session({
-	secret: 'freight',
-	resave: false,
+	secret:"Oooga Booga",
+	resave: true,
 	saveUninitialized: true,
-	cookie: { secure: true }
+	cookie:{
+		maxAge:600000
+	}
   }))
+
+app.use(cookieParser());
 
 //create a logger object.  Using logger is preferable to simply writing to the console.
 const logger = log({ console: true, file: false, label: config.name });
@@ -72,6 +78,40 @@ router.get('/companies/get', function (req, res) {
 	});
 });
 
+
+router.get('/login/:user/:pass',function(req,res){
+	console.log(req.params);
+	con.query(`SELECT userID,firstName,lastName,accountType from users WHERE username='${req.params.user}' AND password='${req.params.pass}';`,function(err,rows,fields){
+		if(!err){
+			if(rows.size!=0){
+				console.log(rows);
+				req.session.userID=rows[0].userID;
+				req.session.firstName=rows[0].firstName;
+				req.session.lastName=rows[0].lastName;
+				req.session.accountType=rows[0].accountType;
+				req.session.isLoggedIn=true;
+				req.session.save()
+				res.send(true);
+			}else {
+				req.session.isLoggedIn=false;
+				req.session.save();
+				res.send(false);
+			}
+		}else {
+			res.send(false);
+		}
+	})
+	
+})
+
+router.get('/isLoggedIn',function(req,res){
+	console.log(req.session);
+	if(req.session.isLoggedIn===true){
+		res.send("true");
+	} else {
+		res.send("false");
+	}
+})
 
 //Post a new company
 router.post('/companies/post', async (req, res) => {
@@ -255,6 +295,17 @@ router.delete('/crew/:id/delete', async (req, res) => {
 // 		res.end(JSON.stringify(result)); 
 // 	});
 // });
+
+router.get('/session/logs/:userID', function(req,res){
+	let sql=`SELECT header, message, route, writer, date, location FROM log JOIN route ON log.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.params.userID}';`;
+	console.log(sql);
+	console.log(req.session);
+	con.query(sql,function(err,rows,fields){
+		if(!err){
+			res.send(rows);
+		}
+	})
+})
 
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------

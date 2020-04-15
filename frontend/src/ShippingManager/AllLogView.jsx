@@ -2,6 +2,11 @@ import React from "react"
 
 export class AllLogView extends React.Component{
 
+
+    parseDate(mysqlDate){
+        var dateParts = mysqlDate.split("-");
+        return new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+    }
     render(){
         return(
             <>  
@@ -21,7 +26,7 @@ export class AllLogView extends React.Component{
                                                     {message.header}
                                             </td>    
                                             <td>
-                                                    {message.date.getMonth()+"/" +message.date.getDay()+"/"+message.date.getFullYear()}
+                                                    {this.parseDate(message.date).getMonth() + "/" + this.parseDate(message.date).getDay() + "/" + this.parseDate(message.date).getFullYear()}
                                             </td>
                                         </tr>
                                 )

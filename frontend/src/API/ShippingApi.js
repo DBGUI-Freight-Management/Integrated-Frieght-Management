@@ -22,4 +22,34 @@ export class ShippingApi{
         });
     }
 
+    isLoggedIn(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/isLoggedIn`,this.config)
+            .then(x=>resolve(x.data))
+            .catch(x=>{
+                alert(x);
+                reject(x);
+            })
+        });
+    }
+
+    attemptLogin(user,pass){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/login/${user}/${pass}`)
+                .then(x=>resolve(x.data))
+                .catch(x=>{
+                    alert(x);
+                    reject(x);
+                })
+        })
+    }
+
+    getLogs(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/session/logs/1`)
+                .then(x=>resolve(x.data))
+                .catch(x=>alert(x));
+        })
+    }
+
 }

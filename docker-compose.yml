@@ -51,7 +51,7 @@ services:
     working_dir: /usr/src/app
     # startup command if it takes a long time uncomment line 51 and comment line 50, if you do this 
     #   you must run `yarn` at the package.json level locally prior to starting
-    command: bash -c "yarn && yarn start"
+    command: bash -c "yarn start"
     # command: bash -c "yarn start"
     # map code volumes from local to inside working directory, changes made locally will update into the container
     volumes:
