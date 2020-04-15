@@ -1,16 +1,14 @@
 import React from 'react';
 import './App.css';
-import { ShipCreationForm, CrewList } from './ShippingManager';
-import { ShippingManager } from './ShippingManager/models';
+import { CaptainDash } from './Captain';
+import { ShipCreationForm, ShippingManagerPage } from './ShippingManager';
 
 
 function App() {
 
-  let mgr = new ShippingManager();
-
   return (
     <main>
-      <CrewList ship={mgr.ships[0]} addCrewMember={crew=>mgr.ships[0].crew.push(crew)}/>
+      <ShippingManagerPage/>
     </main>
   );
 }

@@ -11,6 +11,7 @@ import { LogMessage } from "./LogMessage"
 import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
+import { CrewList } from "./CrewList"
 
 export class ShippingManagerPage extends React.Component{
     state={
@@ -84,6 +85,11 @@ export class ShippingManagerPage extends React.Component{
         return this.activeships;
     }
 
+
+    addShiptoCrew(){
+
+    }
+
     render(){
         return (
             <>
@@ -112,6 +118,7 @@ export class ShippingManagerPage extends React.Component{
                 <ActiveShipsView activeships={this.getActiveShips()} />
                 <UpdateShipStatus companyList={this.state.manager.companies} updateShipStatus={input => this.updateShipStatus(input.name, input.company, input.status)} />
                 <TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships}/>
+                <CrewList ship={this.getActiveShips()[0]}/>
             </>
         )
     }
