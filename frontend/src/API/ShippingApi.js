@@ -1,23 +1,17 @@
 import axios from "axios";
-
+axios.defaults.withCredentials = true;
 
 export class ShippingApi{
     url = `http://localhost:8000/api`;
 
-    ShippingApi(){
-        this.loggedIn=false;
-        this.userID=-1;
-    }
+    
 
     config={
-        headers:{
-            authorization:  'react-app'
-        }
+        withCredentials: true
     }
 
     getCompanies(){
         return new Promise((resolve,reject)=>{
-            console.log(`${this.url}/companies/get`);
             axios.get(`${this.url}/companies/get`,this.config)
                     .then(x=>resolve(x.data))
                     .catch(x=>{
@@ -28,7 +22,12 @@ export class ShippingApi{
     }
 
     isLoggedIn(){
-        return this.loggedIn;
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/isLoggedIn`,this.config)
+                .then(x=>resolve(x.data))
+                .catch(x=>{
+                })
+        })
     }
 
     attemptLogin(user,pass){
@@ -49,7 +48,7 @@ export class ShippingApi{
     getLogs(){
         console.log(this.userID);
         return new Promise((resolve,reject)=>{
-            axios.get(`${this.url}/session/logs/${this.userID}`,this.config)
+            axios.get(`${this.url}/session/logs`,this.config)
                 .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })

@@ -38,15 +38,7 @@ con.query(`SELECT 'something sweet';`,function(err,rows,fields) {
 const app = express();
 
 
-app.use(session({
-	secret:"Oooga Booga",
-	resave:false,
-	saveUninitialized:true,
-	
-	cookie:{
-		maxAge:600000
-	}
-  }))
+
 
 app.use(cookieParser());
 
@@ -55,12 +47,20 @@ const logger = log({ console: true, file: false, label: config.name });
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: '*'
+  origin: 'http://localhost:3000',
+  credentials:true
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 // create router
 var router = express.Router();
+
+app.use(session({
+	secret:"Oooga Booga",
+	resave:false,
+	saveUninitialized:true,
+	httponly:false
+  }))
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
@@ -91,11 +91,9 @@ router.get('/login/:user/:pass',function(req,res){
 				req.session.lastName=rows[0].lastName;
 				req.session.accountType=rows[0].accountType;
 				req.session.isLoggedIn=true;
-				req.session.save();
 				res.send(rows[0]);
 			}else {
 				req.session.isLoggedIn=false;
-				req.session.save();
 				res.send(false);
 			}
 		}else {
@@ -147,8 +145,7 @@ router.get('/ships/get', function (req, res) {
 
 //Get ships based on what company the user works for (.../ships/get?companyID=SOME_ID)
 router.get('/ships/get', function (req, res) {
-	con.query("SELECT * FROM ships WHERE companyID = " +
-		${req.query.companyID} + ";", function (err, result, fields) {
+	con.query(`SELECT * FROM ships WHERE companyID ='${req.query.companyID}';`, function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -157,9 +154,7 @@ router.get('/ships/get', function (req, res) {
 //Get ships with destinations (.../ships/getWithDestinations?companyID=SOME_ID)
 router.get('/ships/getWithDestinations', function (req, res) {
 	//statusLog = 'active'
-	con.query("SELECT * FROM ships s INNER JOIN trips t " +
-		"ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " +
-		${req.query.companyID} + ";", function (err, result, fields) {
+	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " + req.query.companyID + ";", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -167,8 +162,7 @@ router.get('/ships/getWithDestinations', function (req, res) {
 
 //Get all ship logs for a particular ship (.../ships/getLogs?shipID=SOME_ID)
 router.get('/ships/getLogs', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " +
-		${req.query.shipID} + ";", function (err, result, fields) {
+	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + ";", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -176,8 +170,7 @@ router.get('/ships/getLogs', function (req, res) {
 
 //Get the log for a certain ship at a given location (.../ships/getLog?shipID=SOME_ID&location=SOME_LOCATION)
 router.get('/ships/getLog', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " +
-		${req.query.shipID} + " AND l.location = " + ${req.query.location} + ";", function (err, result, fields) {
+	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = '" +req.query.shipID + "' AND l.location = " + req.query.location + ";", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -335,9 +328,9 @@ router.delete('/crew/:id/delete', async (req, res) => {
 // 	});
 // });
 
-router.get('/session/logs/:userID', function(req,res){
-	console.log(req.params);
-	let sql=`SELECT header, message, route, writer, date, location FROM log JOIN route ON log.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.params.userID}';`;
+router.get('/session/logs', function(req,res){
+	console.log(req.session);
+	let sql=`SELECT header, message, route, writer, date, location FROM log JOIN route ON log.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.session.userID}';`;
 	console.log(sql);
 	con.query(sql,function(err,rows,fields){
 		if(!err){

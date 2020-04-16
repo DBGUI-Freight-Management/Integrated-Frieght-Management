@@ -10,11 +10,10 @@ import { ShippingManager } from './ShippingManager/models';
 
 export class App extends React.Component {
   
-  
+  api = new ShippingApi();
   
   state={
-    isLoggedIn:true,
-    shippingApi:new ShippingApi()
+    isLoggedIn: false
   }
 
   
@@ -38,7 +37,8 @@ export class App extends React.Component {
   };
 
   componentDidMount(){
-    let isLoggedIn=this.state.shippingApi.isLoggedIn();
+    let isLoggedIn= false;
+    this.api.isLoggedIn().then(x=>isLoggedIn=x);
     this.setState({isLoggedIn});
   }
 }
