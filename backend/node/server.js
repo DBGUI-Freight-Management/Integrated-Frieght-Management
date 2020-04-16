@@ -137,9 +137,47 @@ router.delete('/companies/:id/delete', async (req, res) => {
 
 //ships
 
-//Get ships
+//Get ALL ships in the database
 router.get('/ships/get', function (req, res) {
 	con.query("SELECT * FROM ships", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get ships based on what company the user works for (.../ships/get?companyID=SOME_ID)
+router.get('/ships/get', function (req, res) {
+	con.query("SELECT * FROM ships WHERE companyID = " +
+		${req.query.companyID} + ";", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get ships with destinations (.../ships/getWithDestinations?companyID=SOME_ID)
+router.get('/ships/getWithDestinations', function (req, res) {
+	//statusLog = 'active'
+	con.query("SELECT * FROM ships s INNER JOIN trips t " +
+		"ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " +
+		${req.query.companyID} + ";", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get all ship logs for a particular ship (.../ships/getLogs?shipID=SOME_ID)
+router.get('/ships/getLogs', function (req, res) {
+	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " +
+		${req.query.shipID} + ";", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get the log for a certain ship at a given location (.../ships/getLog?shipID=SOME_ID&location=SOME_LOCATION)
+router.get('/ships/getLog', function (req, res) {
+	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " +
+		${req.query.shipID} + " AND l.location = " + ${req.query.location} + ";", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -188,7 +226,7 @@ router.post('/accountTypes/post', async (req, res) => {
 	});
 });
 
-//Delete a account type (You probably shouldn't do this)
+//Delete an account type (You probably shouldn't do this)
 router.delete('/accountTypes/:id/delete', async (req, res) => {
   let sql = `DELETE FROM accountTypes WHERE typeID  = ${req.params.id}`;
   console.log(sql);
