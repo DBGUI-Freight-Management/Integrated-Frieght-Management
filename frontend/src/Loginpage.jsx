@@ -12,11 +12,15 @@ export class LoginPage extends React.Component{
     }
 
     attemptLogin(){
-        this.state.ShippingApi.attemptLogin(this.state.username,this.state.password)
+        let api = this.state.ShippingApi;
+        api.attemptLogin(this.state.username,this.state.password)
             .then(bool=>{
-                this.setState({loginSuccessful:bool});
+                    if(bool.userID!==undefined){
+                        this.setState({loginSuccessful:true})
+                    }
                 }
             )
+        this.setState({ShippingApi:api});
     }
 
 

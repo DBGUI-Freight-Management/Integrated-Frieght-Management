@@ -4,6 +4,11 @@ import axios from "axios";
 export class ShippingApi{
     url = `http://localhost:8000/api`;
 
+    ShippingApi(){
+        this.loggedIn=false;
+        this.userID=-1;
+    }
+
     config={
         headers:{
             authorization:  'react-app'
@@ -23,20 +28,17 @@ export class ShippingApi{
     }
 
     isLoggedIn(){
-        return new Promise((resolve,reject)=>{
-            axios.get(`${this.url}/isLoggedIn`,this.config)
-            .then(x=>resolve(x.data))
-            .catch(x=>{
-                alert(x);
-                reject(x);
-            })
-        });
+        return this.loggedIn;
     }
 
     attemptLogin(user,pass){
         return new Promise((resolve,reject)=>{
-            axios.get(`${this.url}/login/${user}/${pass}`)
-                .then(x=>resolve(x.data))
+            axios.get(`${this.url}/login/${user}/${pass}`,this.config)
+                .then(x=>{
+                    this.userID=x.data.userID;
+                    this.loggedIn=true;
+                    console.log(this.userID);
+                    resolve(x.data)})
                 .catch(x=>{
                     alert(x);
                     reject(x);
@@ -45,8 +47,9 @@ export class ShippingApi{
     }
 
     getLogs(){
+        console.log(this.userID);
         return new Promise((resolve,reject)=>{
-            axios.get(`${this.url}/session/logs/1`)
+            axios.get(`${this.url}/session/logs/${this.userID}`,this.config)
                 .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })

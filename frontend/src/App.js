@@ -5,13 +5,16 @@ import { ShipCreationForm, ShippingManagerPage } from './ShippingManager';
 import { ShippingApi } from './API';
 import { Redirect, BrowserRouter, Route }  from 'react-router-dom';
 import { LoginPage } from './Loginpage';
+import { ShippingManager } from './ShippingManager/models';
 
 
 export class App extends React.Component {
   
+  
+  
   state={
     isLoggedIn:true,
-    ShippingApi: new ShippingApi()
+    shippingApi:new ShippingApi()
   }
 
   
@@ -35,12 +38,7 @@ export class App extends React.Component {
   };
 
   componentDidMount(){
-    let isLoggedIn=false;
-    this.state.ShippingApi.isLoggedIn().then(bool=>{
-      console.log(bool);
-      isLoggedIn=bool;
-    });
-
+    let isLoggedIn=this.state.shippingApi.isLoggedIn();
     this.setState({isLoggedIn});
   }
 }

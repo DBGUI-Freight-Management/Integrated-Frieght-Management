@@ -40,8 +40,9 @@ const app = express();
 
 app.use(session({
 	secret:"Oooga Booga",
-	resave: true,
-	saveUninitialized: true,
+	resave:false,
+	saveUninitialized:true,
+	
 	cookie:{
 		maxAge:600000
 	}
@@ -80,7 +81,7 @@ router.get('/companies/get', function (req, res) {
 
 
 router.get('/login/:user/:pass',function(req,res){
-	console.log(req.params);
+	
 	con.query(`SELECT userID,firstName,lastName,accountType from users WHERE username='${req.params.user}' AND password='${req.params.pass}';`,function(err,rows,fields){
 		if(!err){
 			if(rows.size!=0){
@@ -90,8 +91,8 @@ router.get('/login/:user/:pass',function(req,res){
 				req.session.lastName=rows[0].lastName;
 				req.session.accountType=rows[0].accountType;
 				req.session.isLoggedIn=true;
-				req.session.save()
-				res.send(true);
+				req.session.save();
+				res.send(rows[0]);
 			}else {
 				req.session.isLoggedIn=false;
 				req.session.save();
@@ -297,9 +298,9 @@ router.delete('/crew/:id/delete', async (req, res) => {
 // });
 
 router.get('/session/logs/:userID', function(req,res){
+	console.log(req.params);
 	let sql=`SELECT header, message, route, writer, date, location FROM log JOIN route ON log.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.params.userID}';`;
 	console.log(sql);
-	console.log(req.session);
 	con.query(sql,function(err,rows,fields){
 		if(!err){
 			res.send(rows);
