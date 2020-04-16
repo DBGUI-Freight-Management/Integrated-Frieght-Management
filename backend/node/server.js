@@ -339,6 +339,20 @@ router.get('/session/logs', function(req,res){
 	})
 })
 
+router.post('/session/logs/create',function(req,res){
+	let user = req.session.userID;
+	console.log(req.body);
+	con.query(`SELECT captainID FROM users JOIN captain ON userID = captainID WHERE userID='${user}'`,function(err,rows,fields){
+		if(rows.length!==0){
+			con.query(`SELECT id FROM route JOIN captain ON route.captain = captain.captainID WHERE route.captain='${user}' AND route.actualEndDate is null;`,function(err2,row2,fields2){
+				con.query(`INSERT INTO log (header, message, route, writer, date) VALUES ('${req.body.header}', '${req.body.message}', '${row2[0].id}', '${user}', '${new Date().toISOString().slice(0, 19).replace('T', ' ')}');`,function(err3,row3,fields3){
+					res.send();
+				})
+			})
+		}
+	})
+})
+
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
 app.use('/api', router);

@@ -46,7 +46,6 @@ export class ShippingApi{
     }
 
     getLogs(){
-        console.log(this.userID);
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/session/logs`,this.config)
                 .then(x=>resolve(x.data))
@@ -54,4 +53,11 @@ export class ShippingApi{
         })
     }
 
+    createLog(header,message){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${this.url}/session/logs/create`,{header,message},this.config)
+                .then(x=>resolve(x.data))
+                .catch(x=>alert(x));
+        })
+    }
 }

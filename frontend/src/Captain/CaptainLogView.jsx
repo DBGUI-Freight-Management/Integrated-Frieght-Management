@@ -16,8 +16,7 @@ export class CaptainLogView extends React.Component{
     }
 
     addMessage(log){
-        this.setState({AddingLog:false})
-        this.props.addLog(log);
+        this.state.ShippingApi.createLog(log.header,log.message).then(x=>this.setState({AddingLog:false}));
     }
 
     render() {
