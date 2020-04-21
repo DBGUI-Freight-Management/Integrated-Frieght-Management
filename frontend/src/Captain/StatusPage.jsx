@@ -1,25 +1,35 @@
 import React from 'react'
+import { ShippingApi } from '../API'
 
 export class StatusPage extends React.Component{
 
+    api = new ShippingApi();
     state={
         status:"",
-        addingStatus:false
+        addingStatus:false,
+        statuses:[]
     }
 
     addStatus(){
-        this.setState({status:""})
-        this.props.addStatus({message:this.state.status, date:new Date()})
+        this.api.createStatus(this.state.status).then(x=>
+            this.api.getSessionStatus().then(x=>this.setState({statuses:x})));
+        this.setState({status:"",addingStatus:false});
     }
 
     cancel(){
         this.setState({status:"", addingStatus:false})
     }
+
+    parseDate(mysqlDate){
+        var dateParts = mysqlDate.split("-");
+        return new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+    }
+
     render(){
         return(
             <>
                 <div className ="container">
-                    <h3>{this.props.ship.name}</h3>
+                    <h3>{"Ship"}</h3>
                     {this.state.addingStatus && (     
                         <>                  
                             <label htmlFor="status">
@@ -52,14 +62,18 @@ export class StatusPage extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.status.reverse().map(status=>(
-                            <tr>
-                                <td>{status.message}</td>
-                                <td>{status.date.getMonth()+"/" + status.date.getDay()+"/"+ status.date.getFullYear()}</td>
+                        {this.state.statuses.reverse().map((status,index)=>(
+                            <tr key={index}>
+                                <td>{status.status}</td>
+                                <td>{this.parseDate(status.date).getMonth()+"/" + this.parseDate(status.date).getDay()+"/"+ this.parseDate(status.date).getFullYear()}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
     </>)}
+
+    componentDidMount(){
+        this.api.getSessionStatus().then(x=>this.setState({statuses:x}));
+    }
 }

@@ -1,10 +1,10 @@
 import React from "react"
-import { LogMessage } from "./LogMessage";
 
 export class LogCreation extends React.Component{
     state={
         logHeader:"",
         logMessage:"",
+        logLocation:"",
         date: new Date()
     }
 
@@ -12,16 +12,17 @@ export class LogCreation extends React.Component{
         let log = {
             header:this.state.logHeader,
             message:this.state.logMessage,
+            location:this.state.logLocation,
             date:this.state.date
         }
         this.props.submit(log);
-        this.setState({logHeader:"", logMessage:""})
+        this.setState({logHeader:"", logMessage:"",logLocation:""});
     }
     render(){
         return (
             <>
                 <div className="container">
-                    <h3>{this.props.captain}'s Log</h3>
+                    <h3>Captain {this.props.captain}'s Log</h3>
                     <h4>{this.state.date.getMonth()+"/" + this.state.date.getDay()+"/"+this.state.date.getFullYear()}</h4>
                     <label htmlFor="logHeader">
                         Header
@@ -32,6 +33,15 @@ export class LogCreation extends React.Component{
                             className="form-control"
                             value={this.state.logHeader}
                             onChange={e=>this.setState({logHeader:e.target.value})}/>
+                    <label htmlFor="logLocation">
+                        Location
+                    </label>
+                    <input type="text"
+                            id="logLocation"
+                            name="logLocation"
+                            className="form-control"
+                            value={this.state.logLocation}
+                            onChange={e=>this.setState({logLocation:e.target.value})}/>
                     <label htmlFor="logMessage">
                         Log Message
                     </label>

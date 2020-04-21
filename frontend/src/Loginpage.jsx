@@ -4,23 +4,22 @@ import { Redirect } from 'react-router-dom';
 
 export class LoginPage extends React.Component{
 
+    api = new ShippingApi(); 
     state={
-        ShippingApi: new ShippingApi(),
         username:"",
         password:"",
         loginSuccessful:false
     }
 
     attemptLogin(){
-        let api = this.state.ShippingApi;
-        api.attemptLogin(this.state.username,this.state.password)
+        this.api.attemptLogin(this.state.username,this.state.password)
             .then(bool=>{
                     if(bool.userID!==undefined){
                         this.setState({loginSuccessful:true})
+                        this.props.success();
                     }
                 }
             )
-        this.setState({ShippingApi:api});
     }
 
 

@@ -1,17 +1,18 @@
 import React from 'react';
 import './App.css';
-import { CaptainDash } from './Captain';
-import { ShipCreationForm, ShippingManagerPage } from './ShippingManager';
+import { captainDashRoutes} from './Captain';
+
 import { ShippingApi } from './API';
-import { Redirect, BrowserRouter, Route }  from 'react-router-dom';
+import { Redirect, BrowserRouter, Route, Switch }  from 'react-router-dom';
 import { LoginPage } from './Loginpage';
-import { ShippingManager } from './ShippingManager/models';
+
+
 
 
 export class App extends React.Component {
   
   api = new ShippingApi();
-  
+
   state={
     isLoggedIn: false
   }
@@ -23,12 +24,15 @@ export class App extends React.Component {
       <>
         
         <main>
+          
           <BrowserRouter>
             {!this.state.isLoggedIn && (<Redirect to='/login'/>)}
-            {this.state.isLoggedIn && (<Redirect to='/dashboard'/>)}
-            <Route path='/login' component={LoginPage}/>
-            <Route path='/dashboard' component={CaptainDash}/>
-            
+            {this.state.isLoggedIn && (<Redirect to='/dashboard/captain/logs'/>)}
+            <Switch>
+              <Route path='/login' render={()=><LoginPage success={()=>this.setState({isLoggedIn:true})}/>}/>
+              {captainDashRoutes.map(route=>
+                <Route key={route.path} {...route}/>)}
+            </Switch>
           </BrowserRouter>
         </main>
       
@@ -43,4 +47,3 @@ export class App extends React.Component {
   }
 }
 
-export default App;
