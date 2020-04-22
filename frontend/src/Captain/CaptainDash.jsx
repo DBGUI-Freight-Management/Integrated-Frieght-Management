@@ -43,9 +43,7 @@ export class CaptainDash extends React.Component{
                     {this.props.mode === 'crew' && <CrewList/>}
                     {this.props.mode === 'cargo' && <CargoList/>}
                     {this.props.mode === 'route' && <CaptainRouteInfo/>}
-                </div>
-                
-                
+                </div>  
             </> 
         )
     }
