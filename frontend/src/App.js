@@ -5,6 +5,7 @@ import { captainDashRoutes} from './Captain';
 import { ShippingApi } from './API';
 import { Redirect, BrowserRouter, Route, Switch }  from 'react-router-dom';
 import { LoginPage } from './Loginpage';
+import { CreateAccount } from './Account/CreateAccount';
 
 
 
@@ -30,6 +31,7 @@ export class App extends React.Component {
             {this.state.isLoggedIn && (<Redirect to='/dashboard/captain/logs'/>)}
             <Switch>
               <Route path='/login' render={()=><LoginPage success={()=>this.setState({isLoggedIn:true})}/>}/>
+              <Route path='/createAccount' render={() => <CreateAccount/>} />
               {captainDashRoutes.map(route=>
                 <Route key={route.path} {...route}/>)}
             </Switch>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { ShippingApi } from './API'
-import { Redirect } from 'react-router-dom';
+import { Link , Redirect } from 'react-router-dom';
+import { CreateAccount } from './Account/CreateAccount';
 
 export class LoginPage extends React.Component{
 
@@ -45,9 +46,13 @@ export class LoginPage extends React.Component{
                         className="form-control"
                         value={this.state.password}
                         onChange={e=>this.setState({password:e.target.value})}/>
-                <button type="btn" className="btn btn-primary mt-2" onClick={()=>this.attemptLogin()}>Login</button>
+                <button type="btn" className="btn btn-primary mt-2 col-2" onClick={()=>this.attemptLogin()}>Login</button>
+                <Link className="position-relative float-right col-2 mt-2 btn btn-block btn-primary"
+                        to='/createAccount'>
+                    Create Account
+                </Link>
+                <div className="clearfix"></div>
             </div>
-        
         </>
     }
 
