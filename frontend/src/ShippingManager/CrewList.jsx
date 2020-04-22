@@ -39,6 +39,10 @@ export class CrewList extends React.Component{
         return new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
     }
 
+    deboard(crew){
+        this.api.deboardCrewMember(crew).then(this.api.getSessionCrew().then(x=>this.setState({crew:x})));
+    }
+
     render(){
          return(
             <>
@@ -97,16 +101,20 @@ export class CrewList extends React.Component{
                             <tr>
                                 <th>Name</th>
                                 <th>Role</th>
-                                <th>Date</th>
+                                <th>Date Boarded</th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.crew.map(crewMate=>(
-                                <tr key={crewMate.id}>
-                                    <td>{crewMate.fname + " " + crewMate.lname}</td>
-                                    <td>{crewMate.role}</td>
-                                    <td>{crewMate.date && this.parseDate(crewMate.date).getMonth()+"/" +this.parseDate(crewMate.date).getDay()+"/"+ this.parseDate(crewMate.date).getFullYear()}</td>
-                                </tr>
+                                <>
+                                    {crewMate.dateDeboarded===null &&
+                                    <tr key={crewMate.id}>
+                                        <td>{crewMate.fname + " " + crewMate.lname}</td>
+                                        <td>{crewMate.role}</td>
+                                        <td>{crewMate.date && this.parseDate(crewMate.date).getMonth()+"/" +this.parseDate(crewMate.date).getDay()+"/"+ this.parseDate(crewMate.date).getFullYear()}</td>
+                                        <td><button type="button" class="close" aria-label="Close" onClick={e=>this.deboard(crewMate.id)}><span aria-hidden="true">&times;</span></button></td>
+                                    </tr>}
+                                </>
                             ))}
                         </tbody>
                     </table>

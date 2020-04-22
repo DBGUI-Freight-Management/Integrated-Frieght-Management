@@ -5,7 +5,8 @@ export class CaptainRouteInfo extends React.Component{
 
     api = new ShippingApi();
     state={
-        route:undefined
+        route:undefined,
+        routeCompleted:false
     }
 
     componentDidMount(){
@@ -24,6 +25,10 @@ export class CaptainRouteInfo extends React.Component{
         return new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
     }
 
+    completeRoute(){
+        this.api.completeSessionRoute().then(this.setState({route:undefined,routeCompleted:true}));
+    }
+
     render(){
         return(
             <div className="container">
@@ -34,7 +39,11 @@ export class CaptainRouteInfo extends React.Component{
                         <h2>Current Location: {this.state.route.currentLocation}</h2>
                         <h2>Start Location: {this.state.route.start}</h2>
                         <h3>Start Date : {this.parseDate(this.state.route.startDate).getMonth()}/{this.parseDate(this.state.route.startDate).getDay()}/{this.parseDate(this.state.route.startDate).getFullYear()}</h3>
+                        <button type="btn" className="btn btn-primary" onClick={e=>this.completeRoute()}>Submit Route</button>
                     </>
+                )}
+                {!this.state.route &&(
+                    <h2>No Current Route</h2>
                 )}
             </div>
         )
