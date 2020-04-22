@@ -3,15 +3,11 @@ import { ShippingCompanyCreationForm } from "./ShippingCompanyCreationForm"
 import { ShipCreationForm } from "./ShipCreationForm"
 import { ShipList } from "./ShipList"
 import { ShippingManager, Ship} from "./models"
-import { ShipDeletionForm } from "./ShipDeletionForm"
 import { CaptainCompanySelection } from "./CaptainCompanySelection"
-import { LogCreation } from "./LogCreation"
-import { AllLogView } from "./AllLogView"
-import { LogMessage } from "./LogMessage"
 import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
-import { CrewList } from "./CrewList"
+import { NavButton } from "../Captain/NavButton"
 
 export class ShippingManagerPage extends React.Component{
     state={
@@ -90,35 +86,46 @@ export class ShippingManagerPage extends React.Component{
 
     }
 
-    render(){
+    render() {
         return (
             <>
-                <ShippingCompanyCreationForm addCompany={company=>this.addCompany(company)}/>
-                <ShipCreationForm companyList={this.state.manager.companies} addship={ship=>this.addShip(ship)}/>
-                <ShipList ships={this.state.manager.ships}/>
-                <ShipDeletionForm companyList={this.state.manager.companies} removeShip={input=>this.removeShip(input.name,input.company)}/>
                 <div className="container">
+                    <h2>Freight Manager View</h2>
+                    <ul className="list-group list-group-horizontal border-bottom mb-2">
+                        <NavButton mode={this.props.mode} link="Shipping Company Creation"/>
+                        <NavButton mode={this.props.mode} link="Tracking Page"/>
+                        <NavButton mode={this.props.mode} link="Ship List"/>
+                        <NavButton mode={this.props.mode} link="Change Captain"/>
+                        <NavButton mode={this.props.mode} link="Active Ships"/>
+                        <NavButton mode={this.props.mode} link="Update Ship Status"/>
+                    </ul>
+                {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm addCompany={company => this.addCompany(company)} />)}
+                {this.props.mode==="Tracking Page" && (<TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships} />) }
+                {this.props.mode==="Ship List" && (<>
+                    <ShipList ships={this.state.manager.ships} />
+                    <ShipCreationForm companyList={this.state.manager.companies} addship={ship => this.addShip(ship)} />
+                    </>)}
+                {this.props.mode==="Change Selected Captain" && ( <>
+                    <div className="container">
                     <div className="form-group">
-                            <label htmlFor="selectCaptain">
-                                Selected Captain
-                            </label>
-                            <select className="form-control"
-                                    id="selectCaptain"
-                                    name="selectCaptain"
-                                    value={this.state.selectedCaptain.name}
-                                    onChange={e=>this.changeSelectedCaptain(e.target.value)}>
-                                    {this.state.manager.captains.map(cap=>(<option>{cap.name}</option>))}
-                            </select>
-                        </div>
+                        <label htmlFor="selectCaptain">
+                            Selected Captain
+                                    </label>
+                        <select className="form-control"
+                            id="selectCaptain"
+                            name="selectCaptain"
+                            value={this.state.selectedCaptain.name}
+                            onChange={e => this.changeSelectedCaptain(e.target.value)}>
+                            {this.state.manager.captains.map(cap => (<option>{cap.name}</option>))}
+                        </select>
+                    </div>
                 </div>
-                <CaptainCompanySelection captain={this.state.manager.captains[this.state.selectedCaptain].name} currentCompany={this.state.manager.captains[this.state.selectedCaptain].company} companyList={this.state.manager.companies} changeCompany={(c=> this.changeCaptainCompany(c))}/>
-                <AllLogView captain={this.state.manager.captains[this.state.selectedCaptain]} logs={this.state.manager.messages} selectMessage={message=>this.selectMessage(message)}/>
-                {this.state.selectedMessage!==undefined && <LogMessage log={this.state.manager.messages[this.state.selectedMessage]}/>}
-                <LogCreation captain={this.state.manager.captains[this.state.selectedCaptain]} submit={input=>this.addLogMessage(input)}/>
-                <ActiveShipsView activeships={this.getActiveShips()} />
-                <UpdateShipStatus companyList={this.state.manager.companies} updateShipStatus={input => this.updateShipStatus(input.name, input.company, input.status)} />
-                <TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships}/>
-                <CrewList ship={this.getActiveShips()[0]}/>
+                <CaptainCompanySelection captain={this.state.manager.captains[this.state.selectedCaptain].name} currentCompany={this.state.manager.captains[this.state.selectedCaptain].company} companyList={this.state.manager.companies} changeCompany={(c => this.changeCaptainCompany(c))} />
+                </>
+                )}
+                {this.props.mode==="Active Ships" && (<ActiveShipsView activeships={this.getActiveShips()} />)}
+                {this.props.mode==="Update Ship Status" && (<UpdateShipStatus companyList={this.state.manager.companies} updateShipStatus={input => this.updateShipStatus(input.name, input.company, input.status)} />)}
+                </div> 
             </>
         )
     }
