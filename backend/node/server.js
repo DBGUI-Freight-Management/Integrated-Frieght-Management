@@ -435,6 +435,14 @@ router.post('/session/cargo',function(req,res){
 })
 
 
+router.get('/session/currentRoute',function(req,res){
+	console.log(`SELECT * FROM route WHERE captain ='${req.session.userID}' AND route.actualEndDate is null;`)
+	con.query(`SELECT * FROM route WHERE captain ='${req.session.userID}' AND route.actualEndDate is null;`,function(err,rows,fields){
+		console.log(rows);
+		res.send(rows);
+	})
+})
+
 router.delete('/session/cargo')
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------

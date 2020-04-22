@@ -23,16 +23,15 @@ export class CargoList extends React.Component{
             let companyId = this.state.companies.find(x=>x.companyName===this.state.owningCompany).companyID;
            
             this.api.addSessionCargo({name:this.state.name,owner:companyId,quantity:this.state.quantity})
-                .then(x=>this.api.getSessionCargo().then(y=>{console.log(y);this.setState({cargo:y})}));
+                .then(x=>this.api.getSessionCargo().then(y=>{this.setState({cargo:y})}));
             this.setState({newName:"", quantity:0});
         }
     }
 
     componentDidMount(){
         this.api.getSessionShip().then(x=>this.setState({ship:x[0].name}));
-        this.api.getSessionCargo().then(x=>{console.log(x);this.setState({cargo:x})});
+        this.api.getSessionCargo().then(x=>{this.setState({cargo:x})});
         this.api.getCompanies().then(x=>this.setState({companies:x}));
-        console.log(this.state.cargo);
     }
 
     cancel(){

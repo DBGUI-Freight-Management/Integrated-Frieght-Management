@@ -26,7 +26,6 @@ export class ShippingApi{
                 .then(x=>{
                     this.userID=x.data.userID;
                     this.loggedIn=true;
-                    console.log(this.userID);
                     resolve(x.data)})
                 .catch(x=>{
                     alert(x);
@@ -119,6 +118,14 @@ export class ShippingApi{
     getCompanies(){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/companies/get`)
+                .then(x=>resolve(x.data))
+                .catch(x=>alert(x));
+        })
+    }
+
+    getSessionRoute(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/session/currentRoute`)
                 .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
