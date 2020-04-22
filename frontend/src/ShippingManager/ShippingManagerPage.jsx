@@ -8,6 +8,7 @@ import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
 import { NavButton } from "../Captain/NavButton"
+import { ShipDeletionForm } from "./ShipDeletionForm"
 
 export class ShippingManagerPage extends React.Component{
     state={
@@ -104,8 +105,9 @@ export class ShippingManagerPage extends React.Component{
                 {this.props.mode==="Ship List" && (<>
                     <ShipList ships={this.state.manager.ships} />
                     <ShipCreationForm companyList={this.state.manager.companies} addship={ship => this.addShip(ship)} />
+                    <ShipDeletionForm companyList={this.state.manager.companies} removeShip={input => this.removeShip(input.name, input.company)} />
                     </>)}
-                {this.props.mode==="Change Selected Captain" && ( <>
+                {this.props.mode==="Change Captain" && ( <>
                     <div className="container">
                     <div className="form-group">
                         <label htmlFor="selectCaptain">
