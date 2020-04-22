@@ -29,7 +29,7 @@ con.query(`SELECT 'something sweet';`,function(err,rows,fields) {
 		logger.error("Cannot connect to DB!");
 	}
 	else {
-		console.log(process);
+		
 		logger.info("Connected to the DB!");
 	}
   });
@@ -85,7 +85,7 @@ router.get('/login/:user/:pass',function(req,res){
 	
 	con.query(`SELECT userID,firstName,lastName,accountType from users WHERE username='${req.params.user}' AND password='${req.params.pass}';`,function(err,rows,fields){
 		if(!err){
-			if(rows.size!=0){
+			if(rows.length!==0){
 				console.log(rows);
 				req.session.userID=rows[0].userID;
 				req.session.firstName=rows[0].firstName;
@@ -365,6 +365,12 @@ router.get('/session/statuses', function(req,res){
 		if(!err){
 			res.send(rows);
 		}
+	})
+})
+
+router.get('/session/userType',function(req,res){
+	con.query(`SELECT accountTypes.name FROM accountTypes JOIN users ON accountTypes.typeID = users.accountType WHERE users.userID='${req.session.userID}'`,function(err,rows,fields){
+		res.send(rows);
 	})
 })
 

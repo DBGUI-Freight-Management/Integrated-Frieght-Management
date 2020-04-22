@@ -145,4 +145,12 @@ export class ShippingApi{
                 .then(x=>resolve(x))
                 .catch(x=>alert(x)))
     }
+
+    getSessionUserType(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/session/userType`)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x));
+        })
+    }
 }

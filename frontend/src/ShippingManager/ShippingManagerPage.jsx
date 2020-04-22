@@ -92,12 +92,12 @@ export class ShippingManagerPage extends React.Component{
                 <div className="container">
                     <h2>Freight Manager View</h2>
                     <ul className="list-group list-group-horizontal border-bottom mb-2">
-                        <NavButton mode={this.props.mode} link="Shipping Company Creation"/>
-                        <NavButton mode={this.props.mode} link="Tracking Page"/>
-                        <NavButton mode={this.props.mode} link="Ship List"/>
-                        <NavButton mode={this.props.mode} link="Change Captain"/>
-                        <NavButton mode={this.props.mode} link="Active Ships"/>
-                        <NavButton mode={this.props.mode} link="Update Ship Status"/>
+                        <NavButton mode={this.props.mode} link="companycreation" text="Shipping Company Creation"/>
+                        <NavButton mode={this.props.mode} link="trackingpage" text="Tracking Page"/>
+                        <NavButton mode={this.props.mode} link="shiplist" text="Ship List"/>
+                        <NavButton mode={this.props.mode} link="changecaptain" text="Change Captain"/>
+                        <NavButton mode={this.props.mode} link="activeships" text="Active Ships"/>
+                        <NavButton mode={this.props.mode} link="updateshipstatus" text="Update Ship Status"/>
                     </ul>
                 {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm addCompany={company => this.addCompany(company)} />)}
                 {this.props.mode==="Tracking Page" && (<TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships} />) }
