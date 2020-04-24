@@ -101,6 +101,7 @@ export class CargoList extends React.Component{
                         <thead>
                             <tr>
                                 <th>Cargo</th>
+                                <th>Owner</th>
                                 <th>Quantity</th>
                             </tr>
                         </thead>
