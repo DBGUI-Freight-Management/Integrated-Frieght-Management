@@ -1,7 +1,16 @@
 import React from "react"
+import {ShippingApi} from "../API"
 
 export class ShipList extends React.Component{
+
+    api = new ShippingApi();
+    state={
+        ships:[]
+    }
     render(){
+        if(!this.state.ships.length){
+            return <div>Loading...</div>;
+        }
         return(
             <>
                 <div className="container">
@@ -12,7 +21,7 @@ export class ShipList extends React.Component{
                         <div className="col-4">Ship Name</div>
                         <div className="col-8">Ship Status</div>
                     </div>
-                    {this.props.ships.map(ship => (
+                    {this.state.ships.map(ship => (
                             <div className="row">
                                 <div className="col-4">{ ship.name }</div>
                                 <div className="col-8">
@@ -24,6 +33,10 @@ export class ShipList extends React.Component{
                 </div>
             </>
         )
+    }
+    componentDidMount(){
+        this.api.getShips()
+            .then(ships => this.setState({ships}));
     }
 };
 

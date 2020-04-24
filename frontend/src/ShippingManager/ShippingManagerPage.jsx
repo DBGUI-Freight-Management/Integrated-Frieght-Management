@@ -17,11 +17,11 @@ export class ShippingManagerPage extends React.Component{
         selectedMessage: undefined
     }
 
-    addCompany(company){
-        let mgr = this.state.manager;
-        mgr.addCompany(company);
-        this.setState(({manager:mgr}));
-    }
+    // addCompany(company){
+    //     let mgr = this.state.manager;
+    //     mgr.addCompany(company);
+    //     this.setState(({manager:mgr}));
+    // }
 
     addShip(ship){
         let mgr = this.state.manager;
@@ -100,10 +100,10 @@ export class ShippingManagerPage extends React.Component{
                         <NavButton mode={this.props.mode} link="activeships" text="Active Ships"/>
                         <NavButton mode={this.props.mode} link="updateshipstatus" text="Update Ship Status"/>
                     </ul>
-                {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm addCompany={company => this.addCompany(company)} />)}
+                {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm />)}
                 {this.props.mode==="Tracking Page" && (<TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships} />) }
                 {this.props.mode==="Ship List" && (<>
-                    <ShipList ships={this.state.manager.ships} />
+                    <ShipList />
                     <ShipCreationForm companyList={this.state.manager.companies} addship={ship => this.addShip(ship)} />
                     <ShipDeletionForm companyList={this.state.manager.companies} removeShip={input => this.removeShip(input.name, input.company)} />
                     </>)}

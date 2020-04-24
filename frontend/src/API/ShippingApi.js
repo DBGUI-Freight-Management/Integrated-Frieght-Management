@@ -153,4 +153,20 @@ export class ShippingApi{
                 .catch(x=>alert(x));
         })
     }
+
+    addCompany(company){
+        return new Promise((resolve, reject)=>{
+            axios.post(`${this.url}/companies/post?name=${company.name}&freightManagerID=${1}`, company, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getShips(){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/ships/get`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
 }
