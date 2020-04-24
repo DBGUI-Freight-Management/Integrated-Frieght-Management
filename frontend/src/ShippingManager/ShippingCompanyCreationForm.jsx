@@ -1,8 +1,10 @@
 import React from 'react';
 import {Company} from "./models"
+import {ShippingApi} from "../API"
 
 
 export class ShippingCompanyCreationForm extends React.Component{
+    api = new ShippingApi();
     state= {
         name:"",
         address:"",
@@ -11,7 +13,8 @@ export class ShippingCompanyCreationForm extends React.Component{
     }
 
     submitCompany(){
-        this.props.addCompany(new Company(this.state.name,this.state.address,this.state.email,this.state.description));
+        this.api.addCompany(new Company(this.state.name,this.state.address,this.state.email,this.state.description))
+            .then(()=>alert("Company added!"));
         this.setState({name:"", address:"", email:"", description:""}); 
     }
 
@@ -74,5 +77,4 @@ export class ShippingCompanyCreationForm extends React.Component{
             </>
         );
     }
-
 }
