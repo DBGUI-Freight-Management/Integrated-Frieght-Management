@@ -3,6 +3,10 @@ import { Ship } from './models';
 import { ShippingApi } from '../API';
 
 export class ShipCreationForm extends React.Component{
+
+    //TODO:
+    //model attributes to actual
+    
     shippingApi = new ShippingApi();
 
     state = {
@@ -16,10 +20,13 @@ export class ShipCreationForm extends React.Component{
     submit(){
             let newShip = new Ship(this.state.name,this.state.owningCompany,this.state.shipStatus, this.state.location);
             this.setState({name:"", owningCompany:"", shipStatus:"", location:""});
-            this.props.addship(newShip);
+            this.props.onSubmit(newShip);
     }
 
     render(){
+        if(!this.state.companies.length){
+            return <div>Loading...</div>;
+        }
         return (
             <>
                 <form className="container">
@@ -76,7 +83,6 @@ export class ShipCreationForm extends React.Component{
                         <button type="button" className="btn btn-primary mb-2" onClick={e=>this.submit()}>Create</button>
                     </div>
                 </form>
-            
             </>
         )
     }

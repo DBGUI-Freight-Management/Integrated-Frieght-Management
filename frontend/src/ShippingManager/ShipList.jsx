@@ -1,12 +1,36 @@
 import React from "react"
 import {ShippingApi} from "../API"
+import {ShipCreationForm} from "./ShipCreationForm"
 
 export class ShipList extends React.Component{
 
+    //TODO:
+    //change from model attributes to api attributes for ship
+    
     api = new ShippingApi();
     state={
         ships:[]
     }
+
+    deleteShip(ship){
+        this.api.deleteShip(ship)
+            .then(()=>{
+                this.setState({
+                    ships: this.state.ships.filter(x => x.id !== ship.id)
+                })
+                alert("Ship Deleted");
+            });
+    }
+
+    addShip(ship){
+        this.api.addShip(ship)
+            .then(ship=>{
+                this.state.ships.push(ship);
+                alert("Ship Added!");
+                this.setState({ship});
+            });
+    }
+
     render(){
         if(!this.state.ships.length){
             return <div>Loading...</div>;
@@ -27,10 +51,14 @@ export class ShipList extends React.Component{
                                 <div className="col-8">
                                     <p>{ ship.owningCompany }</p>
                                     <p>{ ship.status} </p>
+                                    <button type="button" className="btn btn-danger" onClick={()=>this.deleteShip(ship)}>
+                                        Delete Ship
+                                    </button>
                                 </div>
                             </div>
                         ))}
                 </div>
+                <ShipCreationForm onSubmit={ship=>this.addShip(ship)}/>
             </>
         )
     }
