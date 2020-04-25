@@ -104,8 +104,6 @@ export class ShippingManagerPage extends React.Component{
                 {this.props.mode==="Tracking Page" && (<TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships} />) }
                 {this.props.mode==="Ship List" && (<>
                     <ShipList />
-                    <ShipCreationForm companyList={this.state.manager.companies} addship={ship => this.addShip(ship)} />
-                    <ShipDeletionForm companyList={this.state.manager.companies} removeShip={input => this.removeShip(input.name, input.company)} />
                     </>)}
                 {this.props.mode==="Change Captain" && ( <>
                     <div className="container">
