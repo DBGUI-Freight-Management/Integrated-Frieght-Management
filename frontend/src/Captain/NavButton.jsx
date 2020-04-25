@@ -12,10 +12,10 @@ export class NavButton extends React.Component{
 
         return (<>
             
-            {this.props.mode === this.props.text && (
-                <li className="list-group-item">{this.props.text}</li>)
+            {this.props.mode === this.props.link && (
+                <li className="list-group-item bg-secondary text-white">{this.props.text}</li>)
             }
-            {this.props.mode !==this.props.text && 
+            {this.props.mode !==this.props.link && 
                 (
                     <>
                         {this.state.clicked && <Redirect to={this.props.link}/>}

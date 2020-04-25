@@ -62,7 +62,7 @@ export class StatusPage extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.statuses.reverse().map((status,index)=>(
+                        {this.state.statuses.map((status,index)=>(
                             <tr key={index}>
                                 <td>{status.status}</td>
                                 <td>{this.parseDate(status.date).getMonth()+"/" + this.parseDate(status.date).getDay()+"/"+ this.parseDate(status.date).getFullYear()}</td>

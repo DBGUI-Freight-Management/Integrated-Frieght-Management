@@ -3,7 +3,7 @@ axios.defaults.withCredentials = true;
 
 export class ShippingApi{
     url = `http://localhost:8000/api`;
-
+   
     
 
     config={
@@ -26,7 +26,6 @@ export class ShippingApi{
                 .then(x=>{
                     this.userID=x.data.userID;
                     this.loggedIn=true;
-                    console.log(this.userID);
                     resolve(x.data)})
                 .catch(x=>{
                     alert(x);
@@ -122,5 +121,28 @@ export class ShippingApi{
                 .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
+    }
+
+    getSessionRoute(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/session/currentRoute`)
+                .then(x=>resolve(x.data))
+                .catch(x=>alert(x));
+        })
+    }
+    
+    completeSessionRoute(){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${this.url}/session/currentRoute/complete`,this.config)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x));
+        })
+    }
+
+    deboardCrewMember(crewMember){
+        return new Promise((resolve,reject)=>
+            axios.post(`${this.url}/session/currentRoute/deboard`,{crewMember},this.config)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x)))
     }
 }

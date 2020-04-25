@@ -29,6 +29,7 @@ con.query(`SELECT 'something sweet';`,function(err,rows,fields) {
 		logger.error("Cannot connect to DB!");
 	}
 	else {
+		console.log(process);
 		logger.info("Connected to the DB!");
 	}
   });
@@ -391,7 +392,7 @@ router.get('/session/getUserInfo',function(req,res){
 
 
 router.get('/session/crew',function(req,res){
-	con.query(`SELECT crew.id,fname,lname,role, dateBoarded as date FROM db.crew JOIN db.route ON crew.ship=route.ship JOIN captain ON captain.captainID = route.captain WHERE route.actualEndDate is null AND captain.captainID='${req.session.userID}';`,function(err,rows,fields){
+	con.query(`SELECT crew.id,fname,lname,role, dateBoarded as date, dateDeboarded FROM db.crew JOIN db.route ON crew.ship=route.ship JOIN captain ON captain.captainID = route.captain WHERE route.actualEndDate is null AND captain.captainID='${req.session.userID}';`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
@@ -434,6 +435,29 @@ router.post('/session/cargo',function(req,res){
 	})
 })
 
+
+router.get('/session/currentRoute',function(req,res){
+	console.log(`SELECT * FROM route WHERE captain ='${req.session.userID}' AND route.actualEndDate is null;`)
+	con.query(`SELECT * FROM route WHERE captain ='${req.session.userID}' AND route.actualEndDate is null;`,function(err,rows,fields){
+		console.log(rows);
+		res.send(rows);
+	})
+})
+
+router.put('/session/currentRoute/complete',function(req,res){
+	con.query(`UPDATE route SET actualEndDate = '${new Date().toISOString().slice(0, 10).replace('T', ' ')}' WHERE (captain = '${req.session.userID}');`,function(err,rows,fields){
+		if(!err){
+			res.send(200);
+		}
+	})
+})
+
+router.post('/session/currentRoute/deboard',function(req,res){
+	
+	con.query(`UPDATE crew SET dateDeboarded='${new Date().toISOString().slice(0, 10).replace('T', ' ')}' WHERE (id='${req.body.crewMember}')`,function(err,rows,fields){
+		res.send(200);
+	})
+})
 
 router.delete('/session/cargo')
 //Code after endpoints
