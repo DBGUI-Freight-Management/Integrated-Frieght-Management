@@ -45,10 +45,18 @@ Format: http://localhost:8080/api/ships/get
 Format: http://localhost:8080/api/ships/get?companyID=SOME_COMPANY_ID
 
 Example: http://localhost:8080/api/ships/get?companyID=24893
-#### Get ships with destinations
-Format: http://localhost:8080/api/ships/getWithDestinations?companyID=SOME_COMPANY_ID
+#### Get active ships ("on route") for user's company
+Format: http://localhost:8080/api/ships/getActiveShips?companyID=SOME_COMPANY_ID
 
-Example: http://localhost:8080/api/ships/getWithDestinations?companyID=871652
+Example: http://localhost:8080/api/ships/getActiveShips?companyID=871652
+#### Get current location of a ship
+Format: http://localhost:8080/api/ships/getLocation?shipID=SOME_SHIP_ID
+
+Example: http://localhost:8080/api/ships/getLocation?shipID=24893
+#### Get current status of a ship
+Format: http://localhost:8080/api/ships/getStatus?shipID=SOME_SHIP_ID
+
+Example: http://localhost:8080/api/ships/getStatus?shipID=24893
 #### Add a ship
 Format: http://localhost:8080/api/ship/post?name=SOME_NAME&companyid=SOME_COMPANY_ID
 
