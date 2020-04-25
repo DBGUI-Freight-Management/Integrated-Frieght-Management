@@ -144,7 +144,7 @@ router.get('/ships/get', function (req, res) {
 	});
 });
 
-//Get ships based on what company the user works for (.../ships/get?companyID=SOME_ID)
+//Get ships based on what company the user works for
 router.get('/ships/get', function (req, res) {
 	con.query(`SELECT * FROM ships WHERE companyID ='${req.query.companyID}';`, function (err, result, fields) {
 		if (err) throw err;
@@ -152,7 +152,7 @@ router.get('/ships/get', function (req, res) {
 	});
 });
 
-//Get ships with destinations (.../ships/getWithDestinations?companyID=SOME_ID)
+//Get ships with destinations
 router.get('/ships/getWithDestinations', function (req, res) {
 	//statusLog = 'active'
 	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " + req.query.companyID + ";", function (err, result, fields) {
@@ -161,7 +161,7 @@ router.get('/ships/getWithDestinations', function (req, res) {
 	});
 });
 
-//Get all ship logs for a particular ship (.../ships/getLogs?shipID=SOME_ID)
+//Get all ship logs for a particular ship
 router.get('/ships/getLogs', function (req, res) {
 	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + ";", function (err, result, fields) {
 		if (err) throw err;
@@ -169,7 +169,7 @@ router.get('/ships/getLogs', function (req, res) {
 	});
 });
 
-//Get the log for a certain ship at a given location (.../ships/getLog?shipID=SOME_ID&location=SOME_LOCATION)
+//Get the log for a certain ship at a given location
 router.get('/ships/getLog', function (req, res) {
 	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = '" +req.query.shipID + "' AND l.location = " + req.query.location + ";", function (err, result, fields) {
 		if (err) throw err;
