@@ -9,15 +9,16 @@ export class LoginPage extends React.Component{
     state={
         username:"",
         password:"",
-        loginSuccessful:false
+        loginSuccessful:false,
+        accountType:""
     }
 
     attemptLogin(){
         this.api.attemptLogin(this.state.username,this.state.password)
             .then(bool=>{
                     if(bool.userID!==undefined){
-                        this.setState({loginSuccessful:true})
-                        this.props.success();
+                        this.api.getSessionUserType()
+                            .then(x=>this.setState({loginSuccessful:true,accountType:x.data[0].name}));
                     }
                 }
             )
@@ -26,7 +27,8 @@ export class LoginPage extends React.Component{
 
     render(){
         return <>
-            {this.state.loginSuccessful && <Redirect to='/dashboard'/>}s
+            {this.state.loginSuccessful && this.state.accountType==="Captain" && <Redirect to='/dashboard/captain/route'/>}
+            {this.state.loginSuccessful && this.state.accountType==="Freight Manager" && <Redirect to='/dashboard/freightmanager/trackingpage'/>}
             <div className="container form-group pt-5">
                 <label className='form-group'
                         htmlFor='username'>Username</label>

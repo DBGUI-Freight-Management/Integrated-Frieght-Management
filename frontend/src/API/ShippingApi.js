@@ -145,4 +145,53 @@ export class ShippingApi{
                 .then(x=>resolve(x))
                 .catch(x=>alert(x)))
     }
+
+    getSessionUserType(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/session/userType`)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x));
+        })
+    }
+
+    addCompany(company){
+        return new Promise((resolve, reject)=>{
+            axios.post(`${this.url}/companies/post?name=${company.name}&freightManagerID=${1}`, company, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getShips(){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/ships/get`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    //tenative -> needs Steve actual add ship endpoint
+    addShip(ship){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${this.url}/ship/post?ship=${ship}`, ship, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    deleteShip(ship){
+        return new Promise((resolve,reject)=>{
+            axios.delete(`${this.url}/ship/${ship.id}/delete`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getShipsByCompany(id){
+        return new Promise((resolve, reject)=>{
+            axios.get(`${this.url}/ship/get?companyID=${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
 }

@@ -39,9 +39,9 @@ export class ShippingManager{
     }
 
 
-    addCompany(company){
-        this.companies.push(company);
-    }
+    // addCompany(company){
+    //     this.companies.push(company);
+    // }
 
     addShip(ship){
         this.ships.push(ship);

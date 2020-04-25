@@ -29,7 +29,7 @@ con.query(`SELECT 'something sweet';`,function(err,rows,fields) {
 		logger.error("Cannot connect to DB!");
 	}
 	else {
-		console.log(process);
+		
 		logger.info("Connected to the DB!");
 	}
   });
@@ -85,7 +85,7 @@ router.get('/login/:user/:pass',function(req,res){
 	
 	con.query(`SELECT userID,firstName,lastName,accountType from users WHERE username='${req.params.user}' AND password='${req.params.pass}';`,function(err,rows,fields){
 		if(!err){
-			if(rows.size!=0){
+			if(rows.length!==0){
 				console.log(rows);
 				req.session.userID=rows[0].userID;
 				req.session.firstName=rows[0].firstName;
@@ -144,16 +144,16 @@ router.get('/ships/get', function (req, res) {
 	});
 });
 
-//Get ships based on what company the user works for (.../ships/get?companyID=SOME_ID)
+//Get ships based on what company the user works for
 router.get('/ships/get', function (req, res) {
-	con.query(`SELECT * FROM ships WHERE companyID ='${req.query.companyID}';`, function (err, result, fields) {
+	con.query("SELECT * FROM ships WHERE companyID = ${req.query.companyID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
 
-//Get ships with destinations (.../ships/getWithDestinations?companyID=SOME_ID)
-router.get('/ships/getWithDestinations', function (req, res) {
+//Get active ships ("on route") for user's company
+router.get('/ships/getActiveShips', function (req, res) {
 	//statusLog = 'active'
 	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " + req.query.companyID + ";", function (err, result, fields) {
 		if (err) throw err;
@@ -161,17 +161,17 @@ router.get('/ships/getWithDestinations', function (req, res) {
 	});
 });
 
-//Get all ship logs for a particular ship (.../ships/getLogs?shipID=SOME_ID)
-router.get('/ships/getLogs', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + ";", function (err, result, fields) {
+//Get current location of a ship
+router.get('/ships/getLocation', function (req, res) {
+	con.query("SELECT currentLoc FROM ships WHERE shipID = ${req.query.shipID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
 
-//Get the log for a certain ship at a given location (.../ships/getLog?shipID=SOME_ID&location=SOME_LOCATION)
-router.get('/ships/getLog', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = '" +req.query.shipID + "' AND l.location = " + req.query.location + ";", function (err, result, fields) {
+//Get current status of a ship
+router.get('/ships/getStatus', function (req, res) {
+	con.query("SELECT statusLog FROM ships WHERE shipID = ${req.query.shipID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -197,6 +197,24 @@ router.delete('/ships/:id/delete', async (req, res) => {
 			return console.error(error.message);
 		res.end(JSON.stringify(result));
 	  });
+});
+
+//logs
+
+//Get all ship logs for a particular ship
+router.get('/ships/getLogs', function (req, res) {
+	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + ";", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
+//Get the log for a certain ship at a given location
+router.get('/ships/getLog', function (req, res) {
+	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + " AND l.location = " + req.query.location + ";", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
 });
 
 //accountTypes
@@ -365,6 +383,12 @@ router.get('/session/statuses', function(req,res){
 		if(!err){
 			res.send(rows);
 		}
+	})
+})
+
+router.get('/session/userType',function(req,res){
+	con.query(`SELECT accountTypes.name FROM accountTypes JOIN users ON accountTypes.typeID = users.accountType WHERE users.userID='${req.session.userID}'`,function(err,rows,fields){
+		res.send(rows);
 	})
 })
 

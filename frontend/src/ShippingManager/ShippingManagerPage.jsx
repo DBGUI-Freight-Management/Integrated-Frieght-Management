@@ -8,6 +8,7 @@ import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
 import { NavButton } from "../Captain/NavButton"
+import { ShipDeletionForm } from "./ShipDeletionForm"
 
 export class ShippingManagerPage extends React.Component{
     state={
@@ -16,11 +17,11 @@ export class ShippingManagerPage extends React.Component{
         selectedMessage: undefined
     }
 
-    addCompany(company){
-        let mgr = this.state.manager;
-        mgr.addCompany(company);
-        this.setState(({manager:mgr}));
-    }
+    // addCompany(company){
+    //     let mgr = this.state.manager;
+    //     mgr.addCompany(company);
+    //     this.setState(({manager:mgr}));
+    // }
 
     addShip(ship){
         let mgr = this.state.manager;
@@ -92,20 +93,19 @@ export class ShippingManagerPage extends React.Component{
                 <div className="container">
                     <h2>Freight Manager View</h2>
                     <ul className="list-group list-group-horizontal border-bottom mb-2">
-                        <NavButton mode={this.props.mode} link="Shipping Company Creation"/>
-                        <NavButton mode={this.props.mode} link="Tracking Page"/>
-                        <NavButton mode={this.props.mode} link="Ship List"/>
-                        <NavButton mode={this.props.mode} link="Change Captain"/>
-                        <NavButton mode={this.props.mode} link="Active Ships"/>
-                        <NavButton mode={this.props.mode} link="Update Ship Status"/>
+                        <NavButton mode={this.props.mode} link="companycreation" text="Shipping Company Creation"/>
+                        <NavButton mode={this.props.mode} link="trackingpage" text="Tracking Page"/>
+                        <NavButton mode={this.props.mode} link="shiplist" text="Ship List"/>
+                        <NavButton mode={this.props.mode} link="changecaptain" text="Change Captain"/>
+                        <NavButton mode={this.props.mode} link="activeships" text="Active Ships"/>
+                        <NavButton mode={this.props.mode} link="updateshipstatus" text="Update Ship Status"/>
                     </ul>
-                {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm addCompany={company => this.addCompany(company)} />)}
+                {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm />)}
                 {this.props.mode==="Tracking Page" && (<TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships} />) }
                 {this.props.mode==="Ship List" && (<>
-                    <ShipList ships={this.state.manager.ships} />
-                    <ShipCreationForm companyList={this.state.manager.companies} addship={ship => this.addShip(ship)} />
+                    <ShipList />
                     </>)}
-                {this.props.mode==="Change Selected Captain" && ( <>
+                {this.props.mode==="Change Captain" && ( <>
                     <div className="container">
                     <div className="form-group">
                         <label htmlFor="selectCaptain">

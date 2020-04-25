@@ -1,18 +1,22 @@
 import React from "react"
+import { ShippingApi } from "../API";
 
 export class TrackingPage extends React.Component{
 
-    getCompanyShips(){
-        this.companyShips = [];
-        for(var i = 0; i < this.props.ships.length; i++){
-            if(this.props.captain.company === this.props.ships[i].owningCompany){
-                this.companyShips.push(this.props.ships[i]);
-            }
-        }
-        return this.companyShips;
+    api = new ShippingApi();
+    state={
+        ships:[]
     }
     
     render(){
+        if(!this.state.ships){
+            return <div>Loading...</div>;
+        }
+        if(!this.state.ships.length){
+            return <div className="alert alert-info">
+                No ships found for this company.
+            </div>
+        }
         return(
             <>
             <form className="container">
@@ -25,7 +29,7 @@ export class TrackingPage extends React.Component{
                         id="companyShipList"
                         name="companyShipList">
                         <option></option>
-                        {this.getCompanyShips().map(ship=>(<option>{ship.name}</option>))}
+                        {this.state.ships.map(ship=>(<option>{ship.name}</option>))}
                     </select>
                     <button type="button" className="btn btn-primary mb-2">View Ship Reports</button>
                     {/*this button will show past status reports when those are eventually a thing*/}
@@ -53,5 +57,11 @@ export class TrackingPage extends React.Component{
                 </div>
             </>
         )
+    }
+
+    componentDidMount(){
+        this.api.getCompanyShips(this.props.company.id)
+            .then(ships=>this.setState({ships})
+            );
     }
 };
