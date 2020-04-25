@@ -41,6 +41,14 @@ Example: http://localhost:8080/api/companies/17/delete
 ### Ships
 #### Get all ships
 Format: http://localhost:8080/api/ships/get
+#### Get ships for user's company
+Format: http://localhost:8080/api/ships/get?companyID=SOME_COMPANY_ID
+
+Example: http://localhost:8080/api/ships/get?companyID=24893
+#### Get ships with destinations
+Format: http://localhost:8080/api/ships/getWithDestinations?companyID=SOME_COMPANY_ID
+
+Example: http://localhost:8080/api/ships/getWithDestinations?companyID=871652
 #### Add a ship
 Format: http://localhost:8080/api/ship/post?name=SOME_NAME&companyid=SOME_COMPANY_ID
 
@@ -49,6 +57,17 @@ Example: http://localhost:8080/api/shipCompanies/post?name=Titanic II&companyid=
 Format: http://localhost:8080/api/ship/SOME_ID/delete
 
 Example: http://localhost:8080/api/shipCompanies/5/delete
+
+
+### Logs
+#### Get all logs for a given ship
+Format: http://localhost:8080/api/ships/getLogs?shipID=SOME_ID
+
+Example: http://localhost:8080/api/ships/getLogs?shipID=285
+#### Get the log for a certain ship at a given location
+Format: http://localhost:8080/api/ships/getLog?shipID=SOME_ID&location=SOME_LOCATION
+
+Example (Not tested): http://localhost:8080/api/ships/getLog?shipID=285&location={234,567}
 
 
 ### Account Types
@@ -100,4 +119,4 @@ Example: http://localhost:8000/api/crew/post?name=John Bakersfield&shipID=1&posi
 #### Delete a crew member
 Format: http://localhost:8080/api/crew/SOME_ID/delete
 
-Example: hhtp://localhost:8000/api/crew/2/delete
+Example: http://localhost:8000/api/crew/2/delete
