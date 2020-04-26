@@ -348,7 +348,7 @@ router.delete('/crew/:id/delete', async (req, res) => {
 //   let sql = `UPDATE products SET quantityInStock = ${req.params.quantity}
 //              WHERE productCode = '${req.params.code}'`;
 //   console.log(sql);
-// 	con.query(sql, function (err, result, fields) {
+// 	 con.query(sql, function (err, result, fields) {
 // 		if (err) throw err;
 // 		//console.log(result);
 // 		res.end(JSON.stringify(result)); 
