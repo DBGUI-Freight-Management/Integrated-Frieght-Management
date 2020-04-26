@@ -202,4 +202,12 @@ export class ShippingApi{
                 .catch(x=>reject(x));
         })
     }
+
+    createAccount(account){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${this.url}/users/post`,account,this.config)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x));
+        })
+    }
 }

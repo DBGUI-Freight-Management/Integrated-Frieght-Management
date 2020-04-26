@@ -238,6 +238,12 @@ router.post('/accountTypes/post', async (req, res) => {
 	});
 });
 
+router.get('/ships/:id', async(req,res)=>{
+	con.query(`SELECT * FROM ship JOIN users on ship.captain = users.userID WHERE ship.id = '${req.params.id}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 //Delete an account type (You probably shouldn't do this)
 router.delete('/accountTypes/:id/delete', async (req, res) => {
   let sql = `DELETE FROM accountTypes WHERE typeID  = ${req.params.id}`;
@@ -269,11 +275,13 @@ router.get('/users/getCaptains', function (req, res) {
 
 //Post a user
 router.post('/users/post', async (req, res) => {
-  let sql = `INSERT INTO users(password, username, email, firstName, lastName phone, accountType) VALUES (\'${req.query.password}\', \'${req.query.username}\', \'${req.query.email}\', \'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.phone}, ${req.query.type})`;
-  res.send(req.params);
-  console.log(sql);
+	console.log(req.body);
+	let sql = `INSERT INTO users(password, username, email, firstName, lastName, phone, accountType) VALUES (\'${req.body.password}\', \'${req.body.userName}\', \'${req.body.email}\', \'${req.body.fname}\', \'${req.body.lname}\', '${req.body.phone}', '${req.body.userTypeId}')`;
+
+  	console.log(sql);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
+		
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
@@ -490,6 +498,7 @@ router.post('/session/currentRoute/deboard',function(req,res){
 		res.send(200);
 	})
 })
+
 
 router.delete('/session/cargo')
 //Code after endpoints
