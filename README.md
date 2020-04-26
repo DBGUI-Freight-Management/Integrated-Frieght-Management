@@ -31,7 +31,7 @@ Format: http://localhost:8080/api/companies/get
 #### Add a company
 Format: http://localhost:8080/api/companies/post?name=SOME_NAME&freightManagerID=SOME_FREIGHT_MANAGER
 
-Example: http://localhost:8080/api/companies/post?name=Viento Shipping&freightManagerID=1
+Example: http://localhost:8080/api/companies/post?name=Viento_Shipping&freightManagerID=1
 #### Delete a company
 Format: http://localhost:8080/api/companies/SOME_ID/delete
 
@@ -56,9 +56,9 @@ Format: http://localhost:8080/api/ships/getStatus?shipID=SOME_SHIP_ID
 
 Example: http://localhost:8080/api/ships/getStatus?shipID=24893
 #### Add a ship
-Format: http://localhost:8080/api/ship/post?name=SOME_NAME&companyid=SOME_COMPANY_ID
+Format: http://localhost:8080/api/ship/post?name=SOME_NAME&companyID=SOME_COMPANY_ID
 
-Example: http://localhost:8080/api/shipCompanies/post?name=Titanic II&companyid=2
+Example: http://localhost:8080/api/shipCompanies/post?name=Titanic_II&companyID=2
 #### Delete a ship
 Format: http://localhost:8080/api/ship/SOME_ID/delete
 
@@ -85,7 +85,7 @@ Format: http://localhost:8080/api/accountTypes/get
 #### Add an account type
 Format: http://localhost:8080/api/ships/post/?type=SOME_ACCOUNT_TYPE&description=SOME_DESC
 
-Example: http://localhost:8080/api/ships/post/?type=Captain&description=Users who are captains of ships
+Example: http://localhost:8080/api/ships/post/?type=Captain&description=Users_who_are_captains_of_ships
 #### Delete an account type
 Format: http://localhost:8080/api/accountType/SOME_ID/delete
 

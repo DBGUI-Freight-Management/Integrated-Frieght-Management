@@ -181,7 +181,7 @@ router.get('/ships/getStatus', function (req, res) {
 
 //Post a new ship
 router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ships(shipName, companyID) VALUES (\'${req.query.name}\', ${req.query.companyid});`;
+  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.query.name}\', ${req.query.companyID});`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -205,7 +205,7 @@ router.delete('/ships/:id/delete', async (req, res) => {
 
 //Get all ship logs for a particular ship
 router.get('/ships/getLogs', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + ";", function (err, result, fields) {
+	con.query("SELECT l.* FROM route r INNER JOIN log l WHERE r.shipID = " + req.query.shipID + ";", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -213,7 +213,7 @@ router.get('/ships/getLogs', function (req, res) {
 
 //Get the log for a certain ship at a given location
 router.get('/ships/getLog', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + " AND l.location = " + req.query.location + ";", function (err, result, fields) {
+	con.query("SELECT l.* FROM route r INNER JOIN log l WHERE r.shipID = " + req.query.shipID + " AND l.location = \'" + req.query.location + "\';", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -303,7 +303,7 @@ router.get('/crew/get', function (req, res) {
 
 //Get crew for a specific ship by ID
 router.delete('/crew/get/:id', async (req, res) => {
-  let sql = `SELECT * FROM crew WHERE shipID = ${req.params.id}`;
+  let sql = `SELECT * FROM crew WHERE ship = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -314,7 +314,7 @@ router.delete('/crew/get/:id', async (req, res) => {
 
 //Get crew for a specific ship by ship name
 router.delete('/crew/get/:name', async (req, res) => {
-  let sql = `SELECT c.id, c.firstName, c.lastName, c.position, c.dateBoarded FROM crew c INNER JOIN ships s ON s.shipID = c.shipID WHERE s.shipName = \'${req.params.name}\'`;
+  let sql = `SELECT c.id, c.firstName, c.lastName, c.position, c.dateBoarded FROM crew c INNER JOIN ship s ON s.id = c.ship WHERE s.name = \'${req.params.name}\'`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -325,7 +325,7 @@ router.delete('/crew/get/:name', async (req, res) => {
 
 //Post a crew member
 router.post('/crew/post', async (req, res) => {
-  let sql = `INSERT INTO crew(firstName, lastName, shipID, position, dateBoarded) VALUES (\'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.shipID}, \'${req.query.position}\', \'${req.query.dateBoarded}\')`;
+  let sql = `INSERT INTO crew(firstName, lastName, ship, position, dateBoarded) VALUES (\'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.shipID}, \'${req.query.position}\', \'${req.query.dateBoarded}\')`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
