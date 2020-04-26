@@ -1,11 +1,14 @@
 import React from "react"
 import { ShippingApi } from "../API";
+import { Link } from "react-router-dom"
 
 export class TrackingPage extends React.Component{
 
     api = new ShippingApi();
     state={
-        ships:[]
+        ships:[],
+        companies:[],
+        captains:[]
     }
     
     render(){
@@ -14,43 +17,26 @@ export class TrackingPage extends React.Component{
         }
         if(!this.state.ships.length){
             return <div className="alert alert-info">
-                No ships found for this company.
+                No ships found.
             </div>
         }
         return(
             <>
-            <form className="container">
-                    <h1>Tracking Page</h1>
-                <div className="form-group">
-                    <label htmlFor="companyShipList">
-                        Company Ship List
-                    </label>
-                    <select className="form-control"
-                        id="companyShipList"
-                        name="companyShipList">
-                        <option></option>
-                        {this.state.ships.map(ship=>(<option>{ship.name}</option>))}
-                    </select>
-                    <button type="button" className="btn btn-primary mb-2">View Ship Reports</button>
-                    {/*this button will show past status reports when those are eventually a thing*/}
-                </div>
-            </form>
             <div className="container">
+                <h1>Tracking Page</h1>
                     <div className="row rowHead">
                         <div className="col-4">Ship Name</div>
-                        <div className="col-4">Ship Location</div>
-                        <div className="col-4">Past Locations</div>
+                        <div className="col-4">Location</div>
+                        <div className="col-4">Status</div>
                     </div>
-                    {this.props.ships.map(ship => (
+                    {this.state.ships.map(ship => (
                             <div className="row">
-                                <div className="col-4">{ ship.name }</div>
+                                <Link className="col-4" to="/">{ ship.name }</Link>
                                 <div className="col-4">
-                                    <p>{ ship.location }</p>
+                                    <p>{ ship.locLog }</p>
                                 </div>
                                 <div className="col-4">
-                                    {ship.pastLocations.map(location =>(
-                                        <p>{location}</p>
-                                    ))}
+                                    <p>{ ship.statusLog }</p>
                                 </div>
                             </div>
                         ))}
@@ -60,7 +46,7 @@ export class TrackingPage extends React.Component{
     }
 
     componentDidMount(){
-        this.api.getCompanyShips(this.props.company.id)
+        this.api.getShips()
             .then(ships=>this.setState({ships})
             );
     }
