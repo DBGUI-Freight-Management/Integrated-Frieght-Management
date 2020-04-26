@@ -45,7 +45,7 @@ Format: http://localhost:8080/api/ships/get
 Format: http://localhost:8080/api/ships/get?companyID=SOME_COMPANY_ID
 
 Example: http://localhost:8080/api/ships/get?companyID=24893
-#### Get active ships ("on route")
+#### Get active ships
 Format: http://localhost:8080/api/ships/getActiveShips
 #### Get current location of a ship
 Format: http://localhost:8080/api/ships/getLocation?shipID=SOME_SHIP_ID

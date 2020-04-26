@@ -136,9 +136,11 @@ router.delete('/companies/:id/delete', async (req, res) => {
 
 //ships
 
+//
+
 //Get ALL ships in the database
 router.get('/ships/get', function (req, res) {
-	con.query("SELECT * FROM ships", function (err, result, fields) {
+	con.query("SELECT * FROM ship", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -146,7 +148,7 @@ router.get('/ships/get', function (req, res) {
 
 //Get ships based on what company the user works for
 router.get('/ships/get', function (req, res) {
-	con.query("SELECT * FROM ships WHERE companyID = ${req.query.companyID};", function (err, result, fields) {
+	con.query("SELECT * FROM ship WHERE company = ${req.query.company};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -155,7 +157,7 @@ router.get('/ships/get', function (req, res) {
 //Get active ships ("on route")
 router.get('/ships/getActiveShips', function (req, res) {
 	//statusLog = 'active'
-	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\';", function (err, result, fields) {
+	con.query("SELECT * FROM route JOIN users ON route.captain = users.userID JOIN ship ON ship.id = route.ship WHERE route.actualEndDate IS NULL;", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -163,7 +165,7 @@ router.get('/ships/getActiveShips', function (req, res) {
 
 //Get current location of a ship
 router.get('/ships/getLocation', function (req, res) {
-	con.query("SELECT currentLoc FROM ships WHERE shipID = ${req.query.shipID};", function (err, result, fields) {
+	con.query("SELECT currentLoc FROM ship WHERE id = ${req.query.shipID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -171,7 +173,7 @@ router.get('/ships/getLocation', function (req, res) {
 
 //Get current status of a ship
 router.get('/ships/getStatus', function (req, res) {
-	con.query("SELECT statusLog FROM ships WHERE shipID = ${req.query.shipID};", function (err, result, fields) {
+	con.query("SELECT statusLog FROM ship WHERE id = ${req.query.shipID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -179,7 +181,7 @@ router.get('/ships/getStatus', function (req, res) {
 
 //Post a new ship
 router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ships(shipName, companyID) VALUES (\'${req.query.name}\', ${req.query.companyid})`;
+  let sql = `INSERT INTO ships(shipName, companyID) VALUES (\'${req.query.name}\', ${req.query.companyid});`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -190,7 +192,7 @@ router.post('/ships/post', async (req, res) => {
 
 //Delete a ship
 router.delete('/ships/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM ships WHERE shipID = ${req.params.id}`;
+  let sql = `DELETE FROM ship WHERE id = ${req.params.id};`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -269,7 +271,7 @@ router.get('/users/getCaptains', function (req, res) {
 
 //Post a user
 router.post('/users/post', async (req, res) => {
-  let sql = `INSERT INTO users(password, username, email, firstName, lastName phone, accountType) VALUES (\'${req.query.password}\', \'${req.query.username}\', \'${req.query.email}\', \'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.phone}, ${req.query.type})`;
+  let sql = `INSERT INTO users(password, username, email, firstName, lastName, phone, accountType) VALUES (\'${req.query.password}\', \'${req.query.username}\', \'${req.query.email}\', \'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.phone}, ${req.query.type})`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
