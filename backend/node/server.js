@@ -259,6 +259,14 @@ router.get('/users/get', function (req, res) {
 	});
 });
 
+//Get all captains
+router.get('/users/getCaptains', function (req, res) {
+	con.query("SELECT * FROM users WHERE accountType = 1", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 //Post a user
 router.post('/users/post', async (req, res) => {
   let sql = `INSERT INTO users(password, username, email, firstName, lastName phone, accountType) VALUES (\'${req.query.password}\', \'${req.query.username}\', \'${req.query.email}\', \'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.phone}, ${req.query.type})`;

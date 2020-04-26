@@ -60,6 +60,7 @@ DROP TABLE IF EXISTS `captain`;
 CREATE TABLE `captain` (
   `captainID` int NOT NULL,
   `companyID` int NOT NULL,
+  `captainName` varchar[80] NOT NULL,
   KEY `captainCompany_idx` (`companyID`),
   KEY `captainUser_idx` (`captainID`),
   CONSTRAINT `captainCompany` FOREIGN KEY (`companyID`) REFERENCES `companies` (`companyID`),
@@ -73,7 +74,9 @@ CREATE TABLE `captain` (
 
 LOCK TABLES `captain` WRITE;
 /*!40000 ALTER TABLE `captain` DISABLE KEYS */;
-INSERT INTO `captain` VALUES (1,1);
+INSERT INTO `captain` VALUES (1,10,'Johnny Depp');
+INSERT INTO `captain` VALUES (1,20,'Adam Smith');
+INSERT INTO `captain` VALUES (1,30,'George Washington');
 /*!40000 ALTER TABLE `captain` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,7 +267,7 @@ CREATE TABLE `route` (
 
 LOCK TABLES `route` WRITE;
 /*!40000 ALTER TABLE `route` DISABLE KEYS */;
-INSERT INTO `route` VALUES (1,1,'Los Angeles','Miami','2020-04-01','2020-04-20',NULL,'Panama',1);
+INSERT INTO `route` VALUES (1,1,'Los Angeles','Miami','2020-04-01','2020-04-20',NULL,'Panama',10);
 /*!40000 ALTER TABLE `route` ENABLE KEYS */;
 UNLOCK TABLES;
 
