@@ -502,8 +502,12 @@ router.post('/session/currentRoute/deboard',function(req,res){
 	})
 })
 
+router.get('/cargo/:ship',function(req,res){
+	con.query(`SELECT cargo.name, companies.companyName, cargo.quantity FROM cargo JOIN route ON cargo.route = route.id JOIN companies ON cargo.owner = companies.companyID WHERE route.ship = '${rer.params.ship}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
 
-router.delete('/session/cargo')
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
 app.use('/api', router);
