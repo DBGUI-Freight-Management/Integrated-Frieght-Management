@@ -152,10 +152,10 @@ router.get('/ships/get', function (req, res) {
 	});
 });
 
-//Get active ships ("on route") for user's company
+//Get active ships ("on route")
 router.get('/ships/getActiveShips', function (req, res) {
 	//statusLog = 'active'
-	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " + req.query.companyID + ";", function (err, result, fields) {
+	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\';", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
