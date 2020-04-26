@@ -101,7 +101,7 @@ export class ShippingManagerPage extends React.Component{
                         <NavButton mode={this.props.mode} link="updateshipstatus" text="Update Ship Status"/>
                     </ul>
                 {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm />)}
-                {this.props.mode==="Tracking Page" && (<TrackingPage captain={this.state.manager.captains[this.state.selectedCaptain]} ships={this.state.manager.ships} />) }
+                {this.props.mode==="Tracking Page" && (<TrackingPage />)}
                 {this.props.mode==="Ship List" && (<>
                     <ShipList />
                     </>)}

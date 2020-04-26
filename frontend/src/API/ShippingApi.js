@@ -181,7 +181,7 @@ export class ShippingApi{
 
     deleteShip(ship){
         return new Promise((resolve,reject)=>{
-            axios.delete(`${this.url}/ship/${ship.id}/delete`, this.config)
+            axios.delete(`${this.url}/ship/${ship.shipID}/delete`, this.config)
                 .then(x=>resolve(x))
                 .catch(x=>reject(x));
         })
@@ -190,6 +190,14 @@ export class ShippingApi{
     getShipsByCompany(id){
         return new Promise((resolve, reject)=>{
             axios.get(`${this.url}/ship/get?companyID=${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getActiveShipsByCompany(company){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/ships/getActiveShips?companyID=${company.companyID}`, this.config)
                 .then(x=>resolve(x))
                 .catch(x=>reject(x));
         })
