@@ -1,6 +1,11 @@
 import React from "react"
+import { ShippingApi } from "../API"
 
 export class ActiveShipsView extends React.Component{
+    api = new ShippingApi();
+    state={
+        activeships:[]
+    }
     render(){
         return(
             <>
@@ -11,20 +16,23 @@ export class ActiveShipsView extends React.Component{
                         <div className="col-4">Captain</div>
                         <div className="col-4">Destination</div>
                     </div>
-                    {this.props.activeships.map(ship => (
+                    {this.state.activeships.map(ship => (
                         <div className="row">
                         <div className="col-4">{ ship.name }</div>
                         <div className="col-4">
-                            <p>Ship Captain</p>
+                            <p>{ship.captainName}</p>
                         </div>
                         <div className="col-4">
-                            <p>Ship Destination</p>
+                            <p>{ship.destination}</p>
                         </div>
                         </div>
                     ))}
                 </form>
             </>
-        )
-            
+        )    
+    }
+    componentDidMount(){
+        this.api.getActiveShips()
+            .then(activeships=>this.setState({activeships}))
     }
 }
