@@ -156,7 +156,7 @@ export class ShippingApi{
 
     addCompany(name, userID){
         return new Promise((resolve, reject)=>{
-            axios.post(`${this.url}/companies/post?name=${name}&freightManagerID=${userID}`, {name, userID}, this.config)
+            axios.post(`${this.url}/companies`, {name, userID}, this.config)
                 .then(x=>resolve(x))
                 .catch(x=>reject(x));
         })
@@ -281,7 +281,11 @@ export class ShippingApi{
     }
 
     getUserID(){
-        
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/session/userID`)
+                .then(x=>resolve(x.data))
+                .catch(x=>alert(x));
+        });
     }
 
     getRecentStatuses(ship){

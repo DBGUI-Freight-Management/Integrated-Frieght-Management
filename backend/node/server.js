@@ -114,8 +114,10 @@ router.get('/isLoggedIn',function(req,res){
 })
 
 //Post a new company
-router.post('/companies/post', async (req, res) => {
-  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.query.name}\', ${req.query.freightManagerID})`;
+router.post('/companies', async (req, res) => {
+  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.body.name}\', ${req.body.userID})`;
+	console.log(sql);
+	console.log(req.body);
   res.send(req.params);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
@@ -407,7 +409,10 @@ router.get('/session/logs', function(req,res){
 	})
 })
 
-
+router.get('/session/userID',function(req,res){
+	res.send({userID:req.session.userID});
+	}
+)
 
 
 
@@ -459,7 +464,7 @@ router.post('/session/statuses/create',function(req,res){
 
 
 router.get('/session/getUserInfo',function(req,res){
-	con.query(`SELECT firstName, lastName FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
+	con.query(`SELECT firstName, lastName, FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
 		res.send(rows);
 	})
 })

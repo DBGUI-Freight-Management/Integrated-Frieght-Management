@@ -43,7 +43,7 @@ export class ShippingCompanyCreationForm extends React.Component{
 
     componentDidMount(){
         this.api.getUserID()
-            .then(ID => this.setState({userID:ID})
+            .then(ID => this.setState({userID:ID.userID})
             );
     }
 }
