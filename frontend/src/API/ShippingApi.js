@@ -110,7 +110,7 @@ export class ShippingApi{
     addSessionCargo(cargo){
         return new Promise((resolve,reject)=>{
             axios.post(`${this.url}/session/cargo`,cargo,this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
     }
@@ -134,7 +134,7 @@ export class ShippingApi{
     completeSessionRoute(){
         return new Promise((resolve,reject)=>{
             axios.put(`${this.url}/session/currentRoute/complete`,this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
     }
@@ -142,14 +142,14 @@ export class ShippingApi{
     deboardCrewMember(crewMember){
         return new Promise((resolve,reject)=>
             axios.post(`${this.url}/session/currentRoute/deboard`,{crewMember},this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x)))
     }
 
     getSessionUserType(){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/session/userType`)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
     }
@@ -157,7 +157,7 @@ export class ShippingApi{
     addCompany(name, userID){
         return new Promise((resolve, reject)=>{
             axios.post(`${this.url}/companies`, {name, userID}, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -165,7 +165,7 @@ export class ShippingApi{
     getShips(){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/ships`)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -174,7 +174,7 @@ export class ShippingApi{
     addShip(shipName, companyID){
         return new Promise((resolve,reject)=>{
             axios.post(`${this.url}/ship`, {name:shipName,companyID}, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -182,7 +182,7 @@ export class ShippingApi{
     deleteShip(ship){
         return new Promise((resolve,reject)=>{
             axios.delete(`${this.url}/ship/${ship.shipID}/delete`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -190,7 +190,7 @@ export class ShippingApi{
     getShipsByCompany(id){
         return new Promise((resolve, reject)=>{
             axios.get(`${this.url}/ship/get?companyID=${id}`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -198,7 +198,7 @@ export class ShippingApi{
     getActiveShips(){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/ships/getActiveShips`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -207,7 +207,7 @@ export class ShippingApi{
     getShipByID(id){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/ships/${id}`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -215,7 +215,7 @@ export class ShippingApi{
     getCrewByShipID(id){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/crew/get/${id}`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -223,7 +223,7 @@ export class ShippingApi{
     getCargoByID(id){
         return new Promise((resolve, reject)=>{
             axios.get(`${this.url}/cargo/${id}`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -231,7 +231,7 @@ export class ShippingApi{
     getCaptains(){
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/users/getCaptains`, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
@@ -239,19 +239,23 @@ export class ShippingApi{
     updateShipStatus(status,routeID,location){
         return new Promise((resolve, reject)=>{
             axios.post(`${this.url}/post/status`, {routeID, status, location}, this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
     }
 
     getRouteByShipID(id){
-
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/route/${id}`)
+                .then(x=>resolve(x.data))
+                .catcH(x=>alert(x))
+        })
     }
 
     createAccount(account){
         return new Promise((resolve,reject)=>{
             axios.post(`${this.url}/users/post`,account,this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
     }
@@ -259,7 +263,7 @@ export class ShippingApi{
     updateSessionPassword(password){
         return new Promise((resolve,reject)=>{
             axios.put(`${this.url}/session/updatePassword`,{password},this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x))
         })
     }
@@ -267,7 +271,7 @@ export class ShippingApi{
     updateSessionCompany(id){
         return new Promise((resolve,reject)=>{
             axios.put(`${this.url}/session/updateCaptainCompany`,{id},this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x));
         })
     }
@@ -275,7 +279,7 @@ export class ShippingApi{
     updateSessionEmail(email){
         return new Promise((resolve,reject)=>
             axios.put(`${this.url}/session/updateEmail`,{email},this.config)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x))
         )
     }
@@ -291,7 +295,7 @@ export class ShippingApi{
     getRecentStatuses(ship){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/ships/recentStatus/${ship}`)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x))
         })
     }
@@ -299,7 +303,7 @@ export class ShippingApi{
     getRecentLogs(ship){
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/ships/recentLog/${ship}`)
-                .then(x=>resolve(x))
+                .then(x=>resolve(x.data))
                 .catch(x=>alert(x))
         })
     }

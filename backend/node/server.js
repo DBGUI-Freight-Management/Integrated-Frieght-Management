@@ -566,6 +566,13 @@ router.put('/session/updateEmail',function(req,res){
 	})
 })
 
+router.get('/route/:shipID',function(req,res){
+	con.query(`SELECT * from route WHERE ship ='${req.params.shipID}' AND actualEndDate is null`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
 app.use('/api', router);

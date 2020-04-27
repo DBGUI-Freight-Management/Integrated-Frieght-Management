@@ -18,7 +18,7 @@ export class LoginPage extends React.Component{
             .then(bool=>{
                     if(bool.userID!==undefined){
                         this.api.getSessionUserType()
-                            .then(x=>this.setState({loginSuccessful:true,accountType:x.data[0].name}));
+                            .then(x=>this.setState({loginSuccessful:true,accountType:x[0].name}));
                     }
                 }
             )

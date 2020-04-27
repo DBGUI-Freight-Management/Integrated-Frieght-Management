@@ -48,17 +48,17 @@ export class TrackingPage extends React.Component{
     componentDidMount(){
         this.api.getShips()
             .then(ships=>{
-                this.setState({ships:ships.data});
+                this.setState({ships:ships});
                 console.log(this.state);
-                ships.data.forEach((ship,index)=>{
+                ships.forEach((ship,index)=>{
                     this.api.getRecentLogs(ship.id).then(y=>{
                             let shipArray = this.state.ships;
-                            shipArray[index].logs = y.data;
+                            shipArray[index].logs = y;
                             this.setState({ships:shipArray})
                     })
                     this.api.getRecentStatuses(ship.id).then(y=>{
                         let shipArray = this.state.ships;
-                        shipArray[index].statuses = y.data;
+                        shipArray[index].statuses = y;
                         this.setState({ships:shipArray})
                     })
                 })})
