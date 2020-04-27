@@ -6,6 +6,7 @@ import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
 import { NavButton } from "../Captain/NavButton"
+import {Link} from 'react-router-dom'
 
 export class ShippingManagerPage extends React.Component{
     state={
@@ -46,6 +47,7 @@ export class ShippingManagerPage extends React.Component{
             <>
                 <div className="container">
                     <h2>Freight Manager View</h2>
+                    <Link className="btn btn-secondary float-right" to='/login'> Logout</Link>
                     <ul className="list-group list-group-horizontal border-bottom mb-2">
                         <NavButton mode={this.props.mode} link="companycreation" text="Shipping Company Creation"/>
                         <NavButton mode={this.props.mode} link="trackingpage" text="Tracking Page"/>
