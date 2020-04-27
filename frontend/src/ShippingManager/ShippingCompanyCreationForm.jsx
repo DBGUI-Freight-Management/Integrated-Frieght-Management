@@ -6,22 +6,25 @@ export class ShippingCompanyCreationForm extends React.Component{
     api = new ShippingApi();
     state= {
         name:"",
-        userID:""
+        userID:"",
+        companyAdded:false
     }
 
     submitCompany(){
         this.api.addCompany(this.state.name, this.state.userID)
-            .then(()=>alert("Company added!"));
+            .then(()=>this.setState({companyAdded:true}));
         this.setState({name:""}); 
     }
 
     render() {
         return (
             <>
+                
                 <form className="container">
                     <h1>
                         Create a Shipping Company
                     </h1>
+                    {this.state.companyAdded && <h3>Company Added Successfuly</h3>}
                     <div className="form-group">
                         <label htmlFor="name">
                             Name
@@ -43,7 +46,7 @@ export class ShippingCompanyCreationForm extends React.Component{
 
     componentDidMount(){
         this.api.getUserID()
-            .then(ID => this.setState({userID:ID})
+            .then(ID => this.setState({userID:ID.userID})
             );
     }
 }

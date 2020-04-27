@@ -32,9 +32,7 @@ export class ShipList extends React.Component{
     }
 
     render(){
-        if(!this.state.ships.length){
-            return <div>Loading...</div>;
-        }
+        
         return(
             <>
                 <div className="container">
@@ -64,7 +62,13 @@ export class ShipList extends React.Component{
     }
     componentDidMount(){
         this.api.getShips()
-            .then(ships => this.setState({ships}));
+            .then(ships => {
+                console.log(ships);
+                ships.forEach(ship=>{
+
+                })
+            }
+            );
     }
 };
 

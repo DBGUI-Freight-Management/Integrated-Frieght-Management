@@ -18,15 +18,17 @@ export class ShipCreationForm extends React.Component{
     }
 
     submit(){
-            let newShip = new Ship(this.state.name,this.state.owningCompany,this.state.shipStatus, this.state.location);
-            this.setState({name:"", owningCompany:"", shipStatus:"", location:""});
-            this.props.onSubmit(newShip);
+           this.state.companies.forEach(company=>{
+               if(company.companyName === this.state.owningCompany){
+                 this.shippingApi.addShip(this.state.name,company.companyID).then(
+                     x=>console.log(x)
+                 )
+                }
+            })
     }
 
     render(){
-        if(!this.state.companies.length){
-            return <div>Loading...</div>;
-        }
+        
         return (
             <>
                 <form className="container">

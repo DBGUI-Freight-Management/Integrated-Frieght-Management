@@ -114,8 +114,10 @@ router.get('/isLoggedIn',function(req,res){
 })
 
 //Post a new company
-router.post('/companies/post', async (req, res) => {
-  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.query.name}\', ${req.query.freightManagerID})`;
+router.post('/companies', async (req, res) => {
+  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.body.name}\', ${req.body.userID})`;
+	console.log(sql);
+	console.log(req.body);
   res.send(req.params);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
@@ -212,8 +214,8 @@ router.get('/ships/getStatus', function (req, res) {
 
 //Post a new ship
 router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.query.name}\', ${req.query.companyID});`;
-  res.send(req.params);
+  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.body.name}\', ${req.body.companyID});`;
+  
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
@@ -407,7 +409,10 @@ router.get('/session/logs', function(req,res){
 	})
 })
 
-
+router.get('/session/userID',function(req,res){
+	res.send({userID:req.session.userID});
+	}
+)
 
 
 
@@ -459,7 +464,7 @@ router.post('/session/statuses/create',function(req,res){
 
 
 router.get('/session/getUserInfo',function(req,res){
-	con.query(`SELECT firstName, lastName FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
+	con.query(`SELECT firstName, lastName, FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
@@ -560,6 +565,13 @@ router.put('/session/updateEmail',function(req,res){
 		res.send(rows);
 	})
 })
+
+router.get('/route/:shipID',function(req,res){
+	con.query(`SELECT * from route WHERE ship ='${req.params.shipID}' AND actualEndDate is null`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
