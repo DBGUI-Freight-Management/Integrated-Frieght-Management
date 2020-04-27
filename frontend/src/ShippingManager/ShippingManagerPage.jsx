@@ -1,14 +1,11 @@
 import React from "react"
 import { ShippingCompanyCreationForm } from "./ShippingCompanyCreationForm"
-
 import { ShipList } from "./ShipList"
-import { ShippingManager, Ship} from "./models"
-
+import { ShippingManager } from "./models"
 import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
 import { NavButton } from "../Captain/NavButton"
-
 
 export class ShippingManagerPage extends React.Component{
     state={

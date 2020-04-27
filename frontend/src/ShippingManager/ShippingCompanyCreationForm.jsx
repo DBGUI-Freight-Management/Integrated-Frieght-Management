@@ -1,5 +1,4 @@
 import React from 'react';
-import {Company} from "./models"
 import {ShippingApi} from "../API"
 
 
@@ -7,15 +6,13 @@ export class ShippingCompanyCreationForm extends React.Component{
     api = new ShippingApi();
     state= {
         name:"",
-        address:"",
-        email:"",
-        description:"",
+        userID:""
     }
 
     submitCompany(){
-        this.api.addCompany(new Company(this.state.name,this.state.address,this.state.email,this.state.description))
+        this.api.addCompany(this.state.name, this.state.userID)
             .then(()=>alert("Company added!"));
-        this.setState({name:"", address:"", email:"", description:""}); 
+        this.setState({name:""}); 
     }
 
     render() {
@@ -37,44 +34,16 @@ export class ShippingCompanyCreationForm extends React.Component{
                                 onChange={e=>this.setState({name:e.target.value})} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="address">
-                            Address
-                        </label>
-                        <input type="text"
-                                id="address"
-                                name="address"
-                                className="form-control"
-                                value={this.state.address}
-                                onChange={e=>this.setState({address:e.target.value})}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">
-                            Email
-                        </label>
-                            <input type="text"
-                                    id="email"
-                                    name="email"
-                                    className="form-control"
-                                    value={this.state.email}
-                                    onChange={e=>this.setState({email:e.target.value})}/>
-                        
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="description">
-                            Description
-                        </label>
-                        <textarea className="form-control"
-                                rows="4"
-                                id="description"
-                                name="description"
-                                value={this.state.description}
-                                onChange={e=>this.setState({description:e.target.value})}/>
-                    </div>
-                    <div className="form-group">
                         <button type="button" className="btn btn-primary mb-2" onClick={e=>this.submitCompany()}>Create</button>
                     </div>
                 </form>
             </>
         );
+    }
+
+    componentDidMount(){
+        this.api.getUserID()
+            .then(ID => this.setState({userID:ID})
+            );
     }
 }
