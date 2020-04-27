@@ -280,4 +280,20 @@ export class ShippingApi{
         )
 
     }
+
+    getRecentStatuses(ship){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/ships/recentStatus/${ship}`)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x))
+        })
+    }
+
+    getRecentLogs(ship){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/ships/recentLog/${ship}`)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x))
+        })
+    }
 }

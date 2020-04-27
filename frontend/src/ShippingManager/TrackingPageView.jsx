@@ -30,13 +30,13 @@ export class TrackingPage extends React.Component{
                         <div className="col-4">Status</div>
                     </div>
                     {this.state.ships.map(ship => (
-                            <div className="row">
-                                <Link className="col-4" to="/freightmanager/shippage">{ ship.shipName }</Link>
+                            <div key={ship.id} className="row">
+                                <Link className="col-4" to={`/freightmanager/shippage/${ship.id}`}>{ ship.name }</Link>
                                 <div className="col-4">
-                                    <p>{ ship.locLog }</p>
+                                    <p>{ ship.logs && ship.logs[0].location}</p>
                                 </div>
                                 <div className="col-4">
-                                    <p>{ ship.statusLog }</p>
+                                    <p>{ship.statuses&& ship.statuses[0].status}</p>
                                 </div>
                             </div>
                         ))}
@@ -47,7 +47,19 @@ export class TrackingPage extends React.Component{
 
     componentDidMount(){
         this.api.getShips()
-            .then(ships=>this.setState({ships:ships.data})
-            );
-    }
-};
+            .then(ships=>{
+                this.setState({ships:ships.data});
+                console.log(this.state);
+                ships.data.forEach((ship,index)=>{
+                    this.api.getRecentLogs(ship.id).then(y=>{
+                            let shipArray = this.state.ships;
+                            shipArray[index].logs = y.data;
+                            this.setState({ships:shipArray})
+                    })
+                    this.api.getRecentStatuses(ship.id).then(y=>{
+                        let shipArray = this.state.ships;
+                        shipArray[index].statuses = y.data;
+                        this.setState({ships:shipArray})
+                    })
+                })})
+}}
