@@ -13,7 +13,7 @@ export class UpdateShipStatus extends React.Component {
     }
 
     submit() {
-        this.api.updateShipStatus(this.state.newStatus, this.state.route.tripID, this.state.newLoc);
+        this.api.updateShipStatus(this.state.newStatus, this.state.route.id, this.state.newLoc);
         this.setState({ selectedShip: "", newStatus: "", newLoc: ""});
     }
 

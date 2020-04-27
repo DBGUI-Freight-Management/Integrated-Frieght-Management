@@ -245,7 +245,11 @@ export class ShippingApi{
     }
 
     getRouteByShipID(id){
-
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/route/${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
     }
 
     createAccount(account){
