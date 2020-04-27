@@ -31,7 +31,7 @@ export class TrackingPage extends React.Component{
                     </div>
                     {this.state.ships.map(ship => (
                             <div className="row">
-                                <Link className="col-4" to="/">{ ship.name }</Link>
+                                <Link className="col-4" to="/freightmanager/shippage">{ ship.shipName }</Link>
                                 <div className="col-4">
                                     <p>{ ship.locLog }</p>
                                 </div>

@@ -195,11 +195,55 @@ export class ShippingApi{
         })
     }
 
-    getActiveShipsByCompany(company){
+    getActiveShips(){
         return new Promise((resolve,reject)=>{
-            axios.get(`${this.url}/ships/getActiveShips?companyID=${company.companyID}`, this.config)
+            axios.get(`${this.url}/ships/getActiveShips`, this.config)
                 .then(x=>resolve(x))
                 .catch(x=>reject(x));
         })
+    }
+
+    getShipByID(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/ships/${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getCrewByShipID(id){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/crew/get/${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getCargoByID(id){
+        return new Promise((resolve, reject)=>{
+            axios.get(`${this.url}/cargo/${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getCaptains(){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/users/getCaptains`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    updateShipStatus(status,routeID,location){
+        return new Promise((resolve, reject)=>{
+            axios.post(`${this.url}/post/status`, {routeID, status, location}, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
+        })
+    }
+
+    getRouteByShipID(id){
+
     }
 }

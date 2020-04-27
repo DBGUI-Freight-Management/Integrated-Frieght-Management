@@ -1,64 +1,82 @@
 import React from 'react';
+import { ShippingApi } from '../API';
 
 export class UpdateShipStatus extends React.Component {
+
+    api = new ShippingApi();
     state = {
-        name: "",
-        owningCompany: "",
-        status: "",
+        ships: [],
+        selectedShip: "",
+        newStatus: "",
+        newLoc: "",
+        route: []
     }
 
     submit() {
-        this.props.updateShipStatus({ name: this.state.name, company: this.state.owningCompany, state: this.state.status });
-        this.setState({name:"",owningCompany:"",status:""});
+        this.api.updateShipStatus(this.state.newStatus, this.state.route.tripID, this.state.newLoc);
+        this.setState({ selectedShip: "", newStatus: "", newLoc: ""});
     }
 
     render() {
         return (
-            <>
-                <form className="container">
-                    <h1>
-                        Update a Ship's status
+            <form className="container">
+                <h1>
+                    Update a Ship's Status
                     </h1>
-                    <div className="form-group">
-                        <label htmlFor="shipName">
-                            Ship Name:
+                <div className="form-group">
+                    <label htmlFor="shipName">
+                        Select Ship:
                         </label>
-                        <input type="text"
-                                id="shipName"
-                                name="shipName"
-                                className="form-control"
-                                value={this.state.name}
-                                onChange={e => this.setState({ name: e.target.value })} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="shippingCompany">
-                            Shipping Company:
-                            </label>
-                        <select className="form-control"
-                            id="shippingCompany"
-                            name="shippingCompany"
-                            value={this.state.owningCompany}
-                            onChange={e => this.setState({ owningCompany: e.target.value })}>
-                            <option></option>
-                            {this.props.companyList.map(company => (<option>{company.name}</option>))}
-                        </select>
-                    </div>
-                    <div className="form-group">
+                    <select className="form-control"
+                        id="shipName"
+                        name="shipName"
+                        value={this.state.selectedShip}
+                        onChange={e => this.setState({ selectedShip: e.target.value })}>
+                        <option></option>
+                        {this.state.ships.map(ship => (<option>{ship.shipName}</option>))}
+                    </select>
+                </div>
+                {this.state.selectedShip && ( <>
+                    <div className = "form-group" >
                         <label htmlFor="shipStatus">
-                            Ship Status:
+                            New Ship Status:
                         </label>
                         <input type="text"
                             id="shipStatus"
                             name="shipStatus"
                             className="form-control"
-                            value={this.state.status}
-                            onChange={e => this.setState({ status: e.target.value })} />
+                            value={this.state.newStatus}
+                            onChange={e => this.setState({ newStatus: e.target.value })} />
+                    </div>
+                    <div className = "form-group" >
+                        <label htmlFor="shipLoc">
+                            New Ship Location:
+                        </label>
+                        <input type="text"
+                            id="shipLoc"
+                            name="shipLoc"
+                            className="form-control"
+                            value={this.state.newLoc}
+                            onChange={e => this.setState({ newLoc: e.target.value })} />
                     </div>
                     <div className="form-group">
-                        <button type="button" className="btn btn-primary mb-2" onClick={e => this.submit()}>Update Status</button>
+                        <button type="button" className="btn btn-primary mb-2" onClick={() => this.submit()}>Update Status</button>
                     </div>
-                </form>
-            </>
+                    </>
+                )}
+            </form>
         )
+    }
+
+    componentDidMount() {
+        this.api.getShips()
+            .then(ships => this.setState({ ships })
+            );
+    }
+
+    componentDidUpdate(){
+        this.api.getRouteByShipID(this.state.selectedShip.shipID)
+            .then(route => this.setState({route})
+            );
     }
 }
