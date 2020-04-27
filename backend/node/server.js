@@ -139,12 +139,39 @@ router.delete('/companies/:id/delete', async (req, res) => {
 //
 
 //Get ALL ships in the database
-router.get('/ships/get', function (req, res) {
-	con.query("SELECT * FROM ship", function (err, result, fields) {
+router.get('/ships', function (req, res) {
+	con.query("SELECT * FROM ship;", function (err, result, fields) {
 		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
+		console.log(result);
+		res.send(result);
 	});
 });
+
+
+router.get('/ships/recentLogs',function(req,res){
+	con.query(`SELECT * FROM log JOIN route ON log.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null ORDER BY log.date;`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/ships/recentLog/:ship',function(req,res){
+	con.query(`SELECT * FROM log JOIN route ON log.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null AND ship.id='${req.params.ship}' ORDER BY log.date;`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/ships/recentStatuses',function(req,res){
+	con.query(`SELECT * FROM status JOIN route ON status.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null ORDER BY status.date;`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/ships/recentStatus/:ship',function(req,res){
+	con.query(`SELECT * FROM status JOIN route ON status.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null AND ship.id='${req.params.ship}' ORDER BY status.date;`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 
 //Get ships based on what company the user works for
 router.get('/ships/get', function (req, res) {

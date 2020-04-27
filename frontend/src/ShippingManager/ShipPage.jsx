@@ -21,22 +21,22 @@ export class ShipPage extends React.Component {
                 <h5>Destination: {this.state.ship.destination}</h5>
                 <h5>Crew: </h5>
                 <ul className="list-group">
-                    {this.state.crew.map((crew, index) => {
+                    {this.state.crew.map((crew, index) => 
                         <li className="list-group-item" key={index}>
                             <p>Name: {crew.firstName} {crew.lastName}</p>
                             <p>Date Boarded: {crew.dateBoarded}</p>
                             <p>Position: {crew.position}</p>
                         </li>
-                    })}
+                    )}
                 </ul>
                 <h5>Cargo: </h5>
                 <ul className="list-group">
-                    {this.state.cargo.map((item, index)=>{
+                    {this.state.cargo.map((item, index)=>
                         <li className="list-group-item" key={index}>
                             <p>Name: {item.name}</p>
                             <p>Quantity: {item.quantity}</p>
                         </li>
-                    })}
+                    )}
                 </ul>
             </div>
         )
