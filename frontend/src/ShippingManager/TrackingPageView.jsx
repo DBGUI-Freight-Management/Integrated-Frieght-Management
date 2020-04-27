@@ -47,7 +47,7 @@ export class TrackingPage extends React.Component{
 
     componentDidMount(){
         this.api.getShips()
-            .then(ships=>this.setState({ships})
+            .then(ships=>this.setState({ships:ships.data})
             );
     }
 };

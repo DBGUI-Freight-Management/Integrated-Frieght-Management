@@ -164,7 +164,7 @@ export class ShippingApi{
 
     getShips(){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/ships/get`, this.config)
+            axios.get(`${this.url}/ships`)
                 .then(x=>resolve(x))
                 .catch(x=>reject(x));
         })

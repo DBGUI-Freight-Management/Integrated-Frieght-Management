@@ -1,14 +1,14 @@
 import React from "react"
 import { ShippingCompanyCreationForm } from "./ShippingCompanyCreationForm"
-import { ShipCreationForm } from "./ShipCreationForm"
+
 import { ShipList } from "./ShipList"
 import { ShippingManager, Ship} from "./models"
-import { CaptainCompanySelection } from "./CaptainCompanySelection"
+
 import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
 import { NavButton } from "../Captain/NavButton"
-import { ChangeCaptain } from "./ChangeCaptain"
+
 
 export class ShippingManagerPage extends React.Component{
     state={
@@ -56,11 +56,11 @@ export class ShippingManagerPage extends React.Component{
                         <NavButton mode={this.props.mode} link="activeships" text="Active Ships"/>
                         <NavButton mode={this.props.mode} link="updateshipstatus" text="Update Ship Status"/>
                     </ul>
-                {this.props.mode==="Shipping Company Creation" && (<ShippingCompanyCreationForm />)}
-                {this.props.mode==="Tracking Page" && (<TrackingPage />)}
-                {this.props.mode==="Ship List" && (<ShipList />)}
-                {this.props.mode==="Active Ships" && (<ActiveShipsView />)}
-                {this.props.mode==="Update Ship Status" && (<UpdateShipStatus />)}
+                {this.props.mode==="companycreation" && (<ShippingCompanyCreationForm />)}
+                {this.props.mode==="trackingpage" && (<TrackingPage />)}
+                {this.props.mode==="shiplist" && (<ShipList />)}
+                {this.props.mode==="activeships" && (<ActiveShipsView />)}
+                {this.props.mode==="updateshipstatus" && (<UpdateShipStatus />)}
                 </div> 
             </>
         )
