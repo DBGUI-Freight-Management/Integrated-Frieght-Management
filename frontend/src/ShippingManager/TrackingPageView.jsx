@@ -1,6 +1,7 @@
 import React from "react"
 import { ShippingApi } from "../API";
 import { Link } from "react-router-dom"
+import { Ship } from "./models";
 
 export class TrackingPage extends React.Component{
 
@@ -33,10 +34,12 @@ export class TrackingPage extends React.Component{
                             <div key={ship.id} className="row">
                                 <Link className="col-4" to={`/freightmanager/shippage/${ship.id}`}>{ ship.name }</Link>
                                 <div className="col-4">
-                                    <p>{ ship.logs && ship.logs[0].location}</p>
+                                    <p>{ ship.logs && ship.logs[0] && ship.logs[0].location}
+                                        {(!ship.logs || !ship.logs[0]) && "No Current Location"}</p>
                                 </div>
                                 <div className="col-4">
-                                    <p>{ship.statuses&& ship.statuses[0].status}</p>
+                                    <p>{ship.statuses&& ship.statuses[0] && ship.statuses[0].status}
+                                        {(!ship.logs || !ship.logs[0]) && "No Current Status"}</p>
                                 </div>
                             </div>
                         ))}
@@ -48,17 +51,17 @@ export class TrackingPage extends React.Component{
     componentDidMount(){
         this.api.getShips()
             .then(ships=>{
-                this.setState({ships:ships.data});
+                this.setState({ships:ships});
                 console.log(this.state);
-                ships.data.forEach((ship,index)=>{
+                ships.forEach((ship,index)=>{
                     this.api.getRecentLogs(ship.id).then(y=>{
                             let shipArray = this.state.ships;
-                            shipArray[index].logs = y.data;
+                            shipArray[index].logs = y;
                             this.setState({ships:shipArray})
                     })
                     this.api.getRecentStatuses(ship.id).then(y=>{
                         let shipArray = this.state.ships;
-                        shipArray[index].statuses = y.data;
+                        shipArray[index].statuses = y;
                         this.setState({ships:shipArray})
                     })
                 })})

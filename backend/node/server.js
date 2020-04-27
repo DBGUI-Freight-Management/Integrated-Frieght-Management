@@ -114,8 +114,10 @@ router.get('/isLoggedIn',function(req,res){
 })
 
 //Post a new company
-router.post('/companies/post', async (req, res) => {
-  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.query.name}\', ${req.query.freightManagerID})`;
+router.post('/companies', async (req, res) => {
+  let sql = `INSERT INTO companies(companyName, freightManagerID) VALUES (\'${req.body.name}\', ${req.body.userID})`;
+	console.log(sql);
+	console.log(req.body);
   res.send(req.params);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
@@ -140,7 +142,7 @@ router.delete('/companies/:id/delete', async (req, res) => {
 
 //Get ALL ships in the database
 router.get('/ships', function (req, res) {
-	con.query("SELECT * FROM ship;", function (err, result, fields) {
+	con.query("SELECT * FROM ship JOIN companies ON companies.companyID = ship.company;", function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
 		res.send(result);
@@ -211,9 +213,9 @@ router.get('/ships/getStatus', function (req, res) {
 });
 
 //Post a new ship
-router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.query.name}\', ${req.query.companyID});`;
-  res.send(req.params);
+router.post('/ship', async (req, res) => {
+  let sql = `INSERT INTO ship(name, company) VALUES (\'${req.body.name}\', '${req.body.companyID}');`;
+  
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
@@ -407,7 +409,10 @@ router.get('/session/logs', function(req,res){
 	})
 })
 
-
+router.get('/session/userID',function(req,res){
+	res.send({userID:req.session.userID});
+	}
+)
 
 
 
@@ -459,7 +464,7 @@ router.post('/session/statuses/create',function(req,res){
 
 
 router.get('/session/getUserInfo',function(req,res){
-	con.query(`SELECT firstName, lastName FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
+	con.query(`SELECT firstName, lastName, FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
@@ -557,6 +562,41 @@ router.put('/session/updateEmail',function(req,res){
 	console.log(req.body);
 	console.log(`UPDATE users SET email = '${req.body.email}' WHERE userID = '${req.session.userID}';`);
 	con.query(`UPDATE users SET email = '${req.body.email}' WHERE userID = '${req.session.userID}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/route/:shipID',function(req,res){
+	con.query(`SELECT * from route WHERE ship ='${req.params.shipID}' AND actualEndDate is null`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+
+router.post(`/post/status`,function(req,res){
+	console.log(req.body);
+	console.log(`INSERT INTO status(status,date,route,location) VALUES('${req.body.status}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.route}','${req.body.location}');`);
+	con.query(`INSERT INTO status(status,date,route,location) VALUES('${req.body.status}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.route}','${req.body.location}');`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.post('/route',function(req,res){
+	console.log(req.body);
+	console.log(`INSERT INTO route(ship,destination,start,startDate,endDate,currentLocation,captain) VALUES('${req.body.ship}','${req.body.destination}','${req.body.start}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.endDate.toISOString().slice(0, 10).replace('T', ' ')}','${req.body.location},'${req.body.captain}');`)
+	con.query(`INSERT INTO route(ship,destination,start,startDate,endDate,currentLocation,captain) VALUES('${req.body.ship}','${req.body.destination}','${req.body.start}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.endDate.toISOString().slice(0, 10).replace('T', ' ')}','${req.body.location},'${req.body.captain}');`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/getCaptainsRoutes',function(req,res){
+	con.query(`SELECT * FROm captain LEFT JOIN route on captain.captainID = route.captain`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/getShipRoutes',function(req,res){
+	con.query(`SELECT * FROM ship LEFT JOIN route ON ship.id = route.ship`,function(err,rows,fields){
 		res.send(rows);
 	})
 })

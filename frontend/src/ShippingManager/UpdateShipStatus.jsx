@@ -13,7 +13,8 @@ export class UpdateShipStatus extends React.Component {
     }
 
     submit() {
-        this.api.updateShipStatus(this.state.newStatus, this.state.route.id, this.state.newLoc);
+
+        this.api.updateShipStatus(this.state.newStatus, this.state.ships.find(ship=>ship.name===this.state.selectedShip).id, this.state.newLoc);
         this.setState({ selectedShip: "", newStatus: "", newLoc: ""});
     }
 
@@ -33,7 +34,7 @@ export class UpdateShipStatus extends React.Component {
                         value={this.state.selectedShip}
                         onChange={e => this.setState({ selectedShip: e.target.value })}>
                         <option></option>
-                        {this.state.ships.map(ship => (<option>{ship.shipName}</option>))}
+                        {this.state.ships.map(ship => (<option>{ship.name}</option>))}
                     </select>
                 </div>
                 {this.state.selectedShip && ( <>
@@ -69,14 +70,8 @@ export class UpdateShipStatus extends React.Component {
     }
 
     componentDidMount() {
-        this.api.getShips()
+        this.api.getActiveShips()
             .then(ships => this.setState({ ships })
-            );
-    }
-
-    componentDidUpdate(){
-        this.api.getRouteByShipID(this.state.selectedShip.shipID)
-            .then(route => this.setState({route})
             );
     }
 }

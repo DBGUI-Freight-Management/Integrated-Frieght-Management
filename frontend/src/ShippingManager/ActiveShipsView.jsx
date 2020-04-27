@@ -20,7 +20,7 @@ export class ActiveShipsView extends React.Component{
                         <div className="row">
                         <div className="col-4">{ ship.name }</div>
                         <div className="col-4">
-                            <p>{ship.captainName}</p>
+                            <p>{ship.firstName + " " + ship.lastName}</p>
                         </div>
                         <div className="col-4">
                             <p>{ship.destination}</p>
