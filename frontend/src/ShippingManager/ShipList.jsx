@@ -3,9 +3,6 @@ import {ShippingApi} from "../API"
 import {ShipCreationForm} from "./ShipCreationForm"
 
 export class ShipList extends React.Component{
-
-    //TODO:
-    //change from model attributes to api attributes for ship
     
     api = new ShippingApi();
     state={
