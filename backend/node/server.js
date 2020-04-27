@@ -147,8 +147,21 @@ router.get('/ships', function (req, res) {
 	});
 });
 
+
+router.get('/ships/recentLogs',function(req,res){
+	con.query(`SELECT * FROM log JOIN route ON log.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null ORDER BY log.date;`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 router.get('/ships/recentLog/:ship',function(req,res){
 	con.query(`SELECT * FROM log JOIN route ON log.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null AND ship.id='${req.params.ship}' ORDER BY log.date;`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.get('/ships/recentStatuses',function(req,res){
+	con.query(`SELECT * FROM status JOIN route ON status.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null ORDER BY status.date;`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
