@@ -210,4 +210,30 @@ export class ShippingApi{
                 .catch(x=>alert(x));
         })
     }
+
+    updateSessionPassword(password){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${this.url}/session/updatePassword`,{password},this.config)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x))
+        })
+    }
+
+    updateSessionCompany(id){
+        return new Promise((resolve,reject)=>{
+            axios.put(`${this.url}/session/updateCaptainCompany`,{id},this.config)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x));
+        })
+    }
+
+    updateSessionEmail(email){
+        return new Promise((resolve,reject)=>
+            axios.put(`${this.url}/session/updateEmail`,{email},this.config)
+                .then(x=>resolve(x))
+                .catch(x=>alert(x))
+        )
+
+    }
+
 }

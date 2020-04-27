@@ -6,30 +6,34 @@ import { CrewList, CaptainCompanySelection } from "../ShippingManager";
 import { CargoList } from "../ShippingManager/CargoList";
 import { StatusPage } from "./StatusPage";
 import { CaptainRouteInfo } from "./CaptainRouteInfo";
+import { ShippingApi } from "../API";
+import { UpdateCaptainInfo } from "./UpdateCaptainInfo";
+
+const api = new ShippingApi();
 
 export class CaptainDash extends React.Component{
-    addCrewMember(member){
-        let crew = this.state.crew;
-        crew.push(member);
-        this.setState({crew})
-    }
 
-    addCargo(cargo){
-        let cargoList = this.state.cargo;
-        cargoList.push(cargo);
-        this.setState({cargo:cargoList});
+    state={
+        route:undefined
     }
-
-    addStatus(status){
-        let statusList=this.state.status;
-        statusList.push(status);
-        this.setState({status:statusList});
+    
+    componentDidMount(){
+        
+        api.getSessionRoute().then(x=>{
+            if(x.length===0){
+                this.setState({route:undefined})
+            }  else {
+                this.setState({route:x[0]});
+            }
+        });
     }
 
     render(){
-        return (
+        
+
+            return (
             <>
-                <div className="container">
+                {this.state.route !== undefined && <div className="container">
                     <h2>Captain View</h2>
                     <ul className="list-group list-group-horizontal border-bottom mb-2">
                         <NavButton mode={this.props.mode} link="route" text="Current Route"/>
@@ -37,14 +41,27 @@ export class CaptainDash extends React.Component{
                         <NavButton mode={this.props.mode} link="status" text="Status"/>
                         <NavButton mode={this.props.mode} link="crew" text="Crew"/> 
                         <NavButton mode={this.props.mode} link="cargo" text="Cargo"/>
+                        <NavButton mode={this.props.mode} link ="updateInfo" text="UpdateInfo"/>
                     </ul>
                     {this.props.mode === 'logs' && <CaptainLogView/> }
                     {this.props.mode ==='status' && <StatusPage/>}
                     {this.props.mode === 'crew' && <CrewList/>}
                     {this.props.mode === 'cargo' && <CargoList/>}
                     {this.props.mode === 'route' && <CaptainRouteInfo/>}
-                </div>  
-            </> 
-        )
-    }
+                    {this.props.mode === 'updateInfo' && <UpdateCaptainInfo/>}
+                </div>}
+                {this.state.onRoute === undefined && <div className="container">
+                        <h2>Captain View</h2>
+                        
+                        <ul className="list-group list-group-horizontal border-bottom mb-2">
+                            <NavButton mode={this.props.mode} link="route" text="Current Route"/>
+                            <NavButton mode={this.props.mode} link ="updateInfo" text="UpdateInfo"/>
+                        </ul>
+                        {this.props.mode === 'route' && <CaptainRouteInfo/>}
+                        {this.props.mode === 'updateInfo' && <UpdateCaptainInfo/>}
+                    </div>
+                }
+            </>)
+        }
+    
 }

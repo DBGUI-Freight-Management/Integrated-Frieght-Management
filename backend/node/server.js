@@ -508,6 +508,28 @@ router.get('/cargo/:ship',function(req,res){
 	})
 })
 
+router.put('/session/updatePassword',function(req,res){
+	console.log(req.body);
+	con.query(`UPDATE users SET password = '${req.body.password}' WHERE (userID = '${req.session.userID}');`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.put('/session/updateCaptainCompany',function(req,res){
+	
+	con.query(`UPDATE captain SET companyID = ${req.body.id} WHERE captainID='${req.session.userID}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.put('/session/updateEmail',function(req,res){
+	console.log(req.body);
+	console.log(`UPDATE users SET email = '${req.body.email}' WHERE userID = '${req.session.userID}';`);
+	con.query(`UPDATE users SET email = '${req.body.email}' WHERE userID = '${req.session.userID}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
 app.use('/api', router);
@@ -515,3 +537,4 @@ app.use('/api', router);
 //PORT ENVIRONMENT VARIABLE
 const port = config.port;
 app.listen(port, () => console.log(`Listening on port ${port}..`));
+
