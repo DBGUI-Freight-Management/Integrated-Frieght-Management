@@ -214,8 +214,8 @@ router.get('/ships/getStatus', function (req, res) {
 
 //Post a new ship
 router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.query.name}\', ${req.query.companyID});`;
-  res.send(req.params);
+  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.body.name}\', ${req.body.companyID});`;
+  
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
