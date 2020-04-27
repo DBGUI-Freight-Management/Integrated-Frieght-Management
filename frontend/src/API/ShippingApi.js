@@ -237,7 +237,7 @@ export class ShippingApi{
 
     updateShipStatus(status,routeID,location){
         return new Promise((resolve, reject)=>{
-            axios.post(`${this.url}/post/status`, {routeID, status, location}, this.config)
+            axios.post(`${this.url}/post/status`, {route:routeID, status, location}, this.config)
                 .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })
@@ -295,7 +295,7 @@ export class ShippingApi{
         return new Promise((resolve,reject)=>{
             axios.get(`${this.url}/ships/recentStatus/${ship}`)
                 .then(x=>resolve(x.data))
-                .catch(x=>alert(x))
+                .catch(x=>reject(x))
         })
     }
 

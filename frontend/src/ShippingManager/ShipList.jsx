@@ -44,14 +44,14 @@ export class ShipList extends React.Component{
                         <div className="col-8">Ship Status</div>
                     </div>
                     {this.state.ships.map(ship => (
-                            <div className="row">
+                            <div key={ship.id} className="row">
                                 <div className="col-4">{ ship.name }</div>
                                 <div className="col-8">
-                                    <p>{ ship.owningCompany }</p>
-                                    <p>{ ship.status} </p>
-                                    <button type="button" className="btn btn-danger" onClick={()=>this.deleteShip(ship)}>
+                                    <button type="button" className="btn btn-danger float-right mt-1" onClick={()=>this.deleteShip(ship)}>
                                         Delete Ship
                                     </button>
+                                    <p>{ ship.companyName }</p>
+                                    <p>{ ship.status && ship.status.status && ship.status.status} </p>
                                 </div>
                             </div>
                         ))}
@@ -63,9 +63,16 @@ export class ShipList extends React.Component{
     componentDidMount(){
         this.api.getShips()
             .then(ships => {
-                console.log(ships);
+                this.setState({ships})
                 ships.forEach(ship=>{
-
+                    let shipArray = this.state.ships;
+                    this.api.getRecentStatuses(ship.id).then(x=>{
+                        if(shipArray){
+                            shipArray.find(x=>ship.id === x.id).status=x[0];
+                            this.setState({ships:shipArray})
+                            }
+                        })
+                    
                 })
             }
             );

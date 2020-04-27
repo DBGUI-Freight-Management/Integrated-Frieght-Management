@@ -142,7 +142,7 @@ router.delete('/companies/:id/delete', async (req, res) => {
 
 //Get ALL ships in the database
 router.get('/ships', function (req, res) {
-	con.query("SELECT * FROM ship;", function (err, result, fields) {
+	con.query("SELECT * FROM ship JOIN companies ON companies.companyID = ship.company;", function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
 		res.send(result);
@@ -213,8 +213,8 @@ router.get('/ships/getStatus', function (req, res) {
 });
 
 //Post a new ship
-router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.body.name}\', ${req.body.companyID});`;
+router.post('/ship', async (req, res) => {
+  let sql = `INSERT INTO ship(name, company) VALUES (\'${req.body.name}\', '${req.body.companyID}');`;
   
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -572,6 +572,14 @@ router.get('/route/:shipID',function(req,res){
 	})
 })
 
+
+router.post(`/post/status`,function(req,res){
+	console.log(req.body);
+	console.log(`INSERT INTO status(status,date,route,location) VALUES('${req.body.status}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.route}','${req.body.location}');`);
+	con.query(`INSERT INTO status(status,date,route,location) VALUES('${req.body.status}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.route}','${req.body.location}');`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
 
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
