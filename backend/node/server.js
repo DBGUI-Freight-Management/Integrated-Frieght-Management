@@ -136,9 +136,11 @@ router.delete('/companies/:id/delete', async (req, res) => {
 
 //ships
 
+//
+
 //Get ALL ships in the database
 router.get('/ships/get', function (req, res) {
-	con.query("SELECT * FROM ships", function (err, result, fields) {
+	con.query("SELECT * FROM ship", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -146,16 +148,16 @@ router.get('/ships/get', function (req, res) {
 
 //Get ships based on what company the user works for
 router.get('/ships/get', function (req, res) {
-	con.query("SELECT * FROM ships WHERE companyID = ${req.query.companyID};", function (err, result, fields) {
+	con.query("SELECT * FROM ship WHERE company = ${req.query.company};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
 
-//Get active ships ("on route") for user's company
+//Get active ships ("on route")
 router.get('/ships/getActiveShips', function (req, res) {
 	//statusLog = 'active'
-	con.query("SELECT * FROM ships s INNER JOIN trips t " + "ON s.tripID = t.tripID WHERE s.statusLog = \'on route\' AND companyID = " + req.query.companyID + ";", function (err, result, fields) {
+	con.query("SELECT * FROM route JOIN users ON route.captain = users.userID JOIN ship ON ship.id = route.ship WHERE route.actualEndDate IS NULL;", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -163,7 +165,7 @@ router.get('/ships/getActiveShips', function (req, res) {
 
 //Get current location of a ship
 router.get('/ships/getLocation', function (req, res) {
-	con.query("SELECT currentLoc FROM ships WHERE shipID = ${req.query.shipID};", function (err, result, fields) {
+	con.query("SELECT currentLoc FROM ship WHERE id = ${req.query.shipID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -171,7 +173,7 @@ router.get('/ships/getLocation', function (req, res) {
 
 //Get current status of a ship
 router.get('/ships/getStatus', function (req, res) {
-	con.query("SELECT statusLog FROM ships WHERE shipID = ${req.query.shipID};", function (err, result, fields) {
+	con.query("SELECT statusLog FROM ship WHERE id = ${req.query.shipID};", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -179,7 +181,7 @@ router.get('/ships/getStatus', function (req, res) {
 
 //Post a new ship
 router.post('/ships/post', async (req, res) => {
-  let sql = `INSERT INTO ships(shipName, companyID) VALUES (\'${req.query.name}\', ${req.query.companyid})`;
+  let sql = `INSERT INTO ship(name, companyID) VALUES (\'${req.query.name}\', ${req.query.companyID});`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -190,7 +192,7 @@ router.post('/ships/post', async (req, res) => {
 
 //Delete a ship
 router.delete('/ships/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM ships WHERE shipID = ${req.params.id}`;
+  let sql = `DELETE FROM ship WHERE id = ${req.params.id};`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -203,7 +205,7 @@ router.delete('/ships/:id/delete', async (req, res) => {
 
 //Get all ship logs for a particular ship
 router.get('/ships/getLogs', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + ";", function (err, result, fields) {
+	con.query("SELECT l.* FROM route r INNER JOIN log l WHERE r.shipID = " + req.query.shipID + ";", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -211,7 +213,7 @@ router.get('/ships/getLogs', function (req, res) {
 
 //Get the log for a certain ship at a given location
 router.get('/ships/getLog', function (req, res) {
-	con.query("SELECT l.* FROM trips t INNER JOIN logs l WHERE t.shipID = " + req.query.shipID + " AND l.location = " + req.query.location + ";", function (err, result, fields) {
+	con.query("SELECT l.* FROM route r INNER JOIN log l WHERE r.shipID = " + req.query.shipID + " AND l.location = \'" + req.query.location + "\';", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -238,6 +240,12 @@ router.post('/accountTypes/post', async (req, res) => {
 	});
 });
 
+router.get('/ships/:id', async(req,res)=>{
+	con.query(`SELECT * FROM ship JOIN users on ship.captain = users.userID WHERE ship.id = '${req.params.id}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 //Delete an account type (You probably shouldn't do this)
 router.delete('/accountTypes/:id/delete', async (req, res) => {
   let sql = `DELETE FROM accountTypes WHERE typeID  = ${req.params.id}`;
@@ -259,13 +267,24 @@ router.get('/users/get', function (req, res) {
 	});
 });
 
+//Get all captains
+router.get('/users/getCaptains', function (req, res) {
+	con.query("SELECT * FROM users WHERE accountType = 1", function (err, result, fields) {
+		if (err) throw err;
+		res.end(JSON.stringify(result)); // Result in JSON format
+	});
+});
+
 //Post a user
 router.post('/users/post', async (req, res) => {
-  let sql = `INSERT INTO users(password, username, email, firstName, lastName phone, accountType) VALUES (\'${req.query.password}\', \'${req.query.username}\', \'${req.query.email}\', \'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.phone}, ${req.query.type})`;
-  res.send(req.params);
-  console.log(sql);
+	console.log(req.body);
+	let sql = `INSERT INTO users(password, username, email, firstName, lastName, phone, accountType) VALUES (\'${req.body.password}\', \'${req.body.userName}\', \'${req.body.email}\', \'${req.body.fname}\', \'${req.body.lname}\', '${req.body.phone}', '${req.body.userTypeId}')`;
+
+  	console.log(sql);
+
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
+		
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
@@ -293,7 +312,7 @@ router.get('/crew/get', function (req, res) {
 
 //Get crew for a specific ship by ID
 router.delete('/crew/get/:id', async (req, res) => {
-  let sql = `SELECT * FROM crew WHERE shipID = ${req.params.id}`;
+  let sql = `SELECT * FROM crew WHERE ship = ${req.params.id}`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -304,7 +323,7 @@ router.delete('/crew/get/:id', async (req, res) => {
 
 //Get crew for a specific ship by ship name
 router.delete('/crew/get/:name', async (req, res) => {
-  let sql = `SELECT c.id, c.firstName, c.lastName, c.position, c.dateBoarded FROM crew c INNER JOIN ships s ON s.shipID = c.shipID WHERE s.shipName = \'${req.params.name}\'`;
+  let sql = `SELECT c.id, c.firstName, c.lastName, c.position, c.dateBoarded FROM crew c INNER JOIN ship s ON s.id = c.ship WHERE s.name = \'${req.params.name}\'`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)
@@ -315,7 +334,7 @@ router.delete('/crew/get/:name', async (req, res) => {
 
 //Post a crew member
 router.post('/crew/post', async (req, res) => {
-  let sql = `INSERT INTO crew(firstName, lastName, shipID, position, dateBoarded) VALUES (\'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.shipID}, \'${req.query.position}\', \'${req.query.dateBoarded}\')`;
+  let sql = `INSERT INTO crew(firstName, lastName, ship, position, dateBoarded) VALUES (\'${req.query.firstName}\', \'${req.query.lastName}\', ${req.query.shipID}, \'${req.query.position}\', \'${req.query.dateBoarded}\')`;
   res.send(req.params);
   console.log(sql);
 	con.query(sql, function (err, result, fields) {
@@ -340,7 +359,7 @@ router.delete('/crew/:id/delete', async (req, res) => {
 //   let sql = `UPDATE products SET quantityInStock = ${req.params.quantity}
 //              WHERE productCode = '${req.params.code}'`;
 //   console.log(sql);
-// 	con.query(sql, function (err, result, fields) {
+// 	 con.query(sql, function (err, result, fields) {
 // 		if (err) throw err;
 // 		//console.log(result);
 // 		res.end(JSON.stringify(result)); 
@@ -483,7 +502,34 @@ router.post('/session/currentRoute/deboard',function(req,res){
 	})
 })
 
-router.delete('/session/cargo')
+router.get('/cargo/:ship',function(req,res){
+	con.query(`SELECT cargo.name, companies.companyName, cargo.quantity FROM cargo JOIN route ON cargo.route = route.id JOIN companies ON cargo.owner = companies.companyID WHERE route.ship = '${rer.params.ship}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.put('/session/updatePassword',function(req,res){
+	console.log(req.body);
+	con.query(`UPDATE users SET password = '${req.body.password}' WHERE (userID = '${req.session.userID}');`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.put('/session/updateCaptainCompany',function(req,res){
+	
+	con.query(`UPDATE captain SET companyID = ${req.body.id} WHERE captainID='${req.session.userID}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
+router.put('/session/updateEmail',function(req,res){
+	console.log(req.body);
+	console.log(`UPDATE users SET email = '${req.body.email}' WHERE userID = '${req.session.userID}';`);
+	con.query(`UPDATE users SET email = '${req.body.email}' WHERE userID = '${req.session.userID}';`,function(err,rows,fields){
+		res.send(rows);
+	})
+})
+
 //Code after endpoints
 // REGISTER  ROUTES -------------------------------
 app.use('/api', router);
@@ -491,3 +537,4 @@ app.use('/api', router);
 //PORT ENVIRONMENT VARIABLE
 const port = config.port;
 app.listen(port, () => console.log(`Listening on port ${port}..`));
+

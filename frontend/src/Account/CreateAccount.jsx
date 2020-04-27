@@ -1,6 +1,9 @@
 import React from 'react';
 import { UserType } from './UserType';
-import { Link } from 'react-router-dom'
+import { Link,Redirect } from 'react-router-dom'
+import { ShippingApi } from '../API/ShippingApi';
+
+const api = new ShippingApi();
 
 export class CreateAccount extends React.Component {
     
@@ -10,23 +13,51 @@ export class CreateAccount extends React.Component {
     ];
 
     state = {
+        userName: '',
         fname: '',
         lname: '',
         email: '',
         phone: '',
         userTypeId: 0,
         password: '',
-        confirmPass: ''
+        confirmPass: '',
+        loginSuccessful:false,
+        accountType:''
     };
 
     onSubmit() {
-        this.setState({fname: '', lname: '', email: '', phone: '', userTypeId: 0, password: '', confirmPass: ''})
+        if(this.state.password === this.state.confirmPass) {
+                api.createAccount(this.state).then(x=>{
+                    api.attemptLogin(this.state.userName,this.state.password)
+                        .then(bool=>{
+                            if(bool.userID!==undefined){
+                            api.getSessionUserType()
+                                .then(x=>this.setState({loginSuccessful:true,accountType:x.data[0].name}));
+                    }
+                }
+            )});}
     }
 
     render() {
-        return <>
+
+        
+        return (
+            <>
+            {this.state.loginSuccessful && this.state.accountType==="Captain" && <Redirect to='/dashboard/captain/route'/>}
+            {this.state.loginSuccessful && this.state.accountType==="Freight Manager" && <Redirect to='/dashboard/freightmanager/trackingpage'/>}   
+
             <form className="container">
                     <h1>Create New Account</h1>
+                    <div className="form-group">
+                        <label htmlFor="username">Username</label>
+                        <input type="text"
+                                id="username"
+                                name="username"
+                                className="form-control"
+                                value={this.state.userName}
+                                onChange={ e => this.setState({ userName: e.target.value })}
+                        />
+                    </div>
                     <div className="form-group">
                         <label htmlFor="fname">First Name</label>
                         <input type="text"
@@ -120,6 +151,7 @@ export class CreateAccount extends React.Component {
                     <div className="clearfix"></div>                
                 </form>
         </>
+        )
     }
 
 }
