@@ -306,4 +306,12 @@ export class ShippingApi{
                 .catch(x=>alert(x))
         })
     }
+
+    addRoute(ship,captain,destination, start, endDate){
+        return new Promise((resolve,reject)=>{
+            axios.post(`${this.url}/route`, {ship,captain,destination,start,endDate}, this.config)
+                .then(x=>resolve(x.data))
+                .catch(x=>reject(x));
+        })
+    }
 }
