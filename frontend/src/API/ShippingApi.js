@@ -170,7 +170,6 @@ export class ShippingApi{
         })
     }
 
-    //tenative -> needs Steve actual add ship endpoint
     addShip(shipName, companyID){
         return new Promise((resolve,reject)=>{
             axios.post(`${this.url}/ship`, {name:shipName,companyID}, this.config)
@@ -246,9 +245,9 @@ export class ShippingApi{
 
     getRouteByShipID(id){
         return new Promise((resolve,reject)=>{
-            axios.get(`${this.url}/route/${id}`)
-                .then(x=>resolve(x.data))
-                .catcH(x=>alert(x))
+            axios.get(`${this.url}/route/${id}`, this.config)
+                .then(x=>resolve(x))
+                .catch(x=>reject(x));
         })
     }
 
