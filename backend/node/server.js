@@ -225,7 +225,7 @@ router.post('/ship', async (req, res) => {
 
 //Delete a ship
 router.delete('/ships/:id/delete', async (req, res) => {
-  let sql = `DELETE FROM ship WHERE id = ${req.params.id};`;
+  let sql = `UPDATE ship SET active = '0' WHERE id='${req.params.id}';`;
   console.log(sql);
 	con.query(sql,function (err, result, fields) {
 		if (err)

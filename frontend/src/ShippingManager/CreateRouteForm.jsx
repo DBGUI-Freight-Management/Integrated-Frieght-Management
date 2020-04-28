@@ -38,7 +38,7 @@ export class CreateRouteForm extends React.Component{
                         value={this.state.selectedShip}
                         onChange={e => this.setState({ selectedShip: e.target.value })}>
                         <option></option>
-                        {this.state.ships.map(ship => (<option value={ship.shipid}>{ship.name}</option>))}
+                        {this.state.ships.map(ship => (<>{ship.active===1 &&<option value={ship.shipid}>{ship.name}</option>}</>))}
                     </select>
                 </div>
                 {this.state.selectedShip && ( <>

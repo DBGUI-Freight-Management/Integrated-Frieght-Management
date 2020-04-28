@@ -30,8 +30,10 @@ export class TrackingPage extends React.Component{
                         <div className="col-4">Status</div>
                     </div>
                     {this.state.ships.map(ship => (
+                            <>
+                            {ship.active===1 &&
                             <div key={ship.id} className="row">
-                                <Link className="col-4" to={`/freightmanager/shippage/${ship.id}`}>{ ship.name }</Link>
+                                <Link className="text-info col-4" to={`/freightmanager/shippage/${ship.id}`}>{ ship.name }</Link>
                                 <div className="col-4">
                                     <p>{ ship.logs && ship.logs[0] && ship.logs[0].location}
                                         {(!ship.logs || !ship.logs[0]) && "No Current Location"}</p>
@@ -41,6 +43,8 @@ export class TrackingPage extends React.Component{
                                         {(!ship.logs || !ship.logs[0]) && "No Current Status"}</p>
                                 </div>
                             </div>
+                            }
+                            </>
                         ))}
                 </div>
             </>

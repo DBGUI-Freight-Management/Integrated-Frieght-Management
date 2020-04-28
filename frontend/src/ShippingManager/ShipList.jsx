@@ -47,7 +47,8 @@ export class ShipList extends React.Component{
                         <div className="col-4">Ship Name</div>
                         <div className="col-8">Ship Status</div>
                     </div>
-                    {this.state.ships.map(ship => (
+                    {this.state.ships.map(ship => (<>
+                            {ship.active===1 && 
                             <div key={ship.id} className="row">
                                 <div className="col-4">{ ship.name }</div>
                                 <div className="col-8">
@@ -58,8 +59,8 @@ export class ShipList extends React.Component{
                                     <p>{ (ship.status && ship.status.status) && ship.status.status}
                                     {!ship.status && ("No Current Status")}</p>
                                 </div>
-                            </div>
-                        ))}
+                            </div>}
+                        </>))}
                 </div>
                 <ShipCreationForm shipAdded={()=>this.addShip()}/>
             </>
