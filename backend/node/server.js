@@ -588,6 +588,7 @@ router.post('/route',function(req,res){
 	console.log(req.body);
 	console.log(`INSERT INTO route(ship,destination,start,startDate,endDate,captain) VALUES('${req.body.ship}','${req.body.destination}','${req.body.start}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.endDate.slice(0, 10).replace('T', ' ')}','${req.body.captain}');`)
 	con.query(`INSERT INTO route(ship,destination,start,startDate,endDate,captain) VALUES('${req.body.ship}','${req.body.destination}','${req.body.start}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.endDate.slice(0, 10).replace('T', ' ')}','${req.body.captain}');`,function(err,rows,fields){
+		console.log(rows);
 		res.send(rows);
 	})
 })
