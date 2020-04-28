@@ -12,20 +12,27 @@ export class ShipList extends React.Component{
     deleteShip(id){
         this.api.deleteShip(id)
             .then(()=>{
-                this.setState({
-                    ships: this.state.ships.filter(x => x.id !== id)
-                })
-                alert("Ship Deleted");
+                this.addShip();
             });
     }
 
-    addShip(name, companyID){
-        this.api.addShip(name, companyID)
-            .then(ship=>{
-                this.state.ships.push(ship);
-                alert("Ship Added!");
-                this.setState({ship});
-            });
+    addShip(){
+        console.log("updating");
+        this.api.getShips()
+            .then(ships => {
+                this.setState({ships})
+                ships.forEach(ship=>{
+                    let shipArray = this.state.ships;
+                    this.api.getRecentStatuses(ship.id).then(x=>{
+                        if(shipArray){
+                            shipArray.find(x=>ship.id === x.id).status=x[0];
+                            this.setState({ships:shipArray})
+                            }
+                        })
+                    
+                })
+            }
+            );
     }
 
     render(){
@@ -54,7 +61,7 @@ export class ShipList extends React.Component{
                             </div>
                         ))}
                 </div>
-                <ShipCreationForm onSubmit={(name, companyID)=>this.addShip(name, companyID)}/>
+                <ShipCreationForm shipAdded={()=>this.addShip()}/>
             </>
         )
     }

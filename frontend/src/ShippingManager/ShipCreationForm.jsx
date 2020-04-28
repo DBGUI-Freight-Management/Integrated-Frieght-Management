@@ -14,8 +14,9 @@ export class ShipCreationForm extends React.Component{
     submit(){
            this.state.companies.forEach(company=>{
                if(company.companyName === this.state.owningCompany){
-                 this.props.onSubmit(this.state.name,company.companyID);
-                 this.setState({name:"", owningCompany:""});
+                 this.shippingApi.addShip(this.state.name,company.companyID).then(
+                     x=>this.props.shipAdded()
+                 )
                 }
             });
     }
