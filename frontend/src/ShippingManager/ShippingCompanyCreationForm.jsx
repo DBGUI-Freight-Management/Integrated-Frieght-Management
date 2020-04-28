@@ -12,7 +12,10 @@ export class ShippingCompanyCreationForm extends React.Component{
 
     submitCompany(){
         this.api.addCompany(this.state.name, this.state.userID)
-            .then(()=>this.setState({companyAdded:true}));
+            .then(()=>{
+                this.setState({companyAdded:true});
+                alert("Company Added!");
+            });
         this.setState({name:""}); 
     }
 
