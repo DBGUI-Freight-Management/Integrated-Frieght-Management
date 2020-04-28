@@ -314,4 +314,20 @@ export class ShippingApi{
                 .catch(x=>reject(x));
         })
     }
+
+    getShipRoutes(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/shipRoutes`)
+                .then(x=>resolve(x.data))
+                .catch(x=>reject(x.data))
+        })
+    }
+
+    getCaptainRoutes(){
+        return new Promise((resolve,reject)=>{
+            axios.get(`${this.url}/captainRoutes`)
+                .then(x=>resolve(x.data))
+                .catch(x=>resolve(x.data))
+        })
+    }
 }

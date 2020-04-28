@@ -94,10 +94,10 @@ export class CreateRouteForm extends React.Component{
     }
 
     componentDidMount(){
-        this.api.getShips()
+        this.api.getShipRoutes()
             .then(ships=>this.setState({ships})
             );
-        this.api.getCaptains()
+        this.api.getCaptainRoutes()
             .then(captains=>this.setState({captains})
             );
     }
