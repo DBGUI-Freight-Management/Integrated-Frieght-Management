@@ -9,18 +9,18 @@ export class ShipList extends React.Component{
         ships:[]
     }
 
-    deleteShip(ship){
-        this.api.deleteShip(ship)
+    deleteShip(id){
+        this.api.deleteShip(id)
             .then(()=>{
                 this.setState({
-                    ships: this.state.ships.filter(x => x.id !== ship.id)
+                    ships: this.state.ships.filter(x => x.id !== id)
                 })
                 alert("Ship Deleted");
             });
     }
 
-    addShip(ship){
-        this.api.addShip(ship)
+    addShip(name, companyID){
+        this.api.addShip(name, companyID)
             .then(ship=>{
                 this.state.ships.push(ship);
                 alert("Ship Added!");
@@ -44,16 +44,17 @@ export class ShipList extends React.Component{
                             <div key={ship.id} className="row">
                                 <div className="col-4">{ ship.name }</div>
                                 <div className="col-8">
-                                    <button type="button" className="btn btn-danger float-right mt-1" onClick={()=>this.deleteShip(ship)}>
+                                    <button type="button" className="btn btn-danger float-right mt-1" onClick={()=>this.deleteShip(ship.id)}>
                                         Delete Ship
                                     </button>
                                     <p>{ ship.companyName }</p>
-                                    <p>{ ship.status && ship.status.status && ship.status.status} </p>
+                                    <p>{ (ship.status && ship.status.status) && ship.status.status}
+                                    {!ship.status && ("No Current Status")}</p>
                                 </div>
                             </div>
                         ))}
                 </div>
-                <ShipCreationForm onSubmit={ship=>this.addShip(ship)}/>
+                <ShipCreationForm onSubmit={(name, companyID)=>this.addShip(name, companyID)}/>
             </>
         )
     }

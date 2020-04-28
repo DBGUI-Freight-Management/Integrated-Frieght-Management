@@ -1,5 +1,4 @@
 import React from 'react';
-import { Ship } from './models';
 import { ShippingApi } from '../API';
 
 export class ShipCreationForm extends React.Component{
@@ -15,11 +14,10 @@ export class ShipCreationForm extends React.Component{
     submit(){
            this.state.companies.forEach(company=>{
                if(company.companyName === this.state.owningCompany){
-                 this.shippingApi.addShip(this.state.name,company.companyID).then(
-                     x=>console.log(x)
-                 )
+                 this.props.onSubmit(this.state.name,company.companyID);
+                 this.setState({name:"", owningCompany:""});
                 }
-            })
+            });
     }
 
     render(){
@@ -51,7 +49,7 @@ export class ShipCreationForm extends React.Component{
                                 value={this.state.owningCompany}
                                 onChange={e=>this.setState({owningCompany:e.target.value})}>
                                     <option></option>
-                                {this.state.companies.map(company=>(<option>{company.companyName}</option>))}
+                                {this.state.companies.map(company=>(<option key={company.companyID}>{company.companyName}</option>))}
                         </select>
                     </div>
                     <div className="form-group">

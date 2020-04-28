@@ -178,9 +178,9 @@ export class ShippingApi{
         })
     }
 
-    deleteShip(ship){
+    deleteShip(id){
         return new Promise((resolve,reject)=>{
-            axios.delete(`${this.url}/ship/${ship.shipID}/delete`, this.config)
+            axios.delete(`${this.url}/ships/${id}/delete`, this.config)
                 .then(x=>resolve(x.data))
                 .catch(x=>reject(x));
         })

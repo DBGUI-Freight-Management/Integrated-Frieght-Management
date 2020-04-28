@@ -1,7 +1,6 @@
 import React from "react"
 import { ShippingApi } from "../API";
 import { Link } from "react-router-dom"
-import { Ship } from "./models";
 
 export class TrackingPage extends React.Component{
 

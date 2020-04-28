@@ -2,7 +2,7 @@ import React from "react"
 import {NavButton} from"./NavButton"
 import { CaptainLogView } from "./CaptainLogView"
 
-import { CrewList, CaptainCompanySelection } from "../ShippingManager";
+import { CrewList } from "../ShippingManager";
 import { CargoList } from "../ShippingManager/CargoList";
 import { StatusPage } from "./StatusPage";
 import { CaptainRouteInfo } from "./CaptainRouteInfo";
