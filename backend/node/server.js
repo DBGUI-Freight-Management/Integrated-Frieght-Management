@@ -465,7 +465,8 @@ router.post('/session/statuses/create',function(req,res){
 
 router.get('/session/getUserInfo',function(req,res){
 	console.log(req.session);
-	con.query(`SELECT firstName, lastName, FROM users WHERE users.userID=${req.session.userID}`,function(err,rows,fields){
+	console.log(`SELECT firstName, lastName FROM users WHERE users.userID='${req.session.userID}';`)
+	con.query(`SELECT firstName, lastName FROM users WHERE users.userID='${req.session.userID}';`,function(err,rows,fields){
 		console.log(rows);
 		res.send(rows);
 	})

@@ -105,7 +105,7 @@ export class CrewList extends React.Component{
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.crew.map(crewMate=>(
+                            {this.state.crew && this.state.crew.map(crewMate=>(
                                 <>
                                     {crewMate.dateDeboarded===null &&
                                     <tr key={crewMate.id}>
