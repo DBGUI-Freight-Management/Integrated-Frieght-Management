@@ -34,7 +34,7 @@ export class CreateRouteForm extends React.Component{
                         value={this.state.selectedShip}
                         onChange={e => this.setState({ selectedShip: e.target.value })}>
                         <option></option>
-                        {this.state.ships.map(ship => (<option>{ship.name}</option>))}
+                        {this.state.ships.map(ship => (<option value={ship.shipid}>{ship.name}</option>))}
                     </select>
                 </div>
                 {this.state.selectedShip && ( <>
@@ -48,7 +48,7 @@ export class CreateRouteForm extends React.Component{
                         value={this.state.selectedCaptain}
                         onChange={e => this.setState({ selectedCaptain: e.target.value })}>
                         <option></option>
-                        {this.state.ships.map(ship => (<option>{ship.name}</option>))}
+                        {this.state.captains.map(captain => (<option value={captain.captainID} >{captain.firstName + " " +captain.lastName}</option>))}
                     </select>
                     </div>
                         <div className = "form-group" >
@@ -95,10 +95,15 @@ export class CreateRouteForm extends React.Component{
 
     componentDidMount(){
         this.api.getShipRoutes()
-            .then(ships=>this.setState({ships})
+            .then(ships=>{
+                let result = ships.filter(ship=>ship.id===null);
+                this.setState({ships:result})
+            }
             );
         this.api.getCaptainRoutes()
-            .then(captains=>this.setState({captains})
+            .then(captains=>{
+                let result = captains.filter(captain=>captain.id===null);
+                this.setState({captains:result})}
             );
     }
 }
