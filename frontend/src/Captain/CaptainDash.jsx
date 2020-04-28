@@ -8,6 +8,7 @@ import { StatusPage } from "./StatusPage";
 import { CaptainRouteInfo } from "./CaptainRouteInfo";
 import { ShippingApi } from "../API";
 import { UpdateCaptainInfo } from "./UpdateCaptainInfo";
+import {Link} from 'react-router-dom';
 
 const api = new ShippingApi();
 
@@ -35,6 +36,7 @@ export class CaptainDash extends React.Component{
             <>
                 {this.state.route !== undefined && <div className="container">
                     <h2>Captain View</h2>
+                    <Link className="btn btn-secondary float-right" to='/login'> Logout</Link>
                     <ul className="list-group list-group-horizontal border-bottom mb-2">
                         <NavButton mode={this.props.mode} link="route" text="Current Route"/>
                         <NavButton mode={this.props.mode} link="logs" text="Ship Logs"/>
@@ -52,7 +54,7 @@ export class CaptainDash extends React.Component{
                 </div>}
                 {this.state.onRoute === undefined && <div className="container">
                         <h2>Captain View</h2>
-                        
+                        <Link className="btn btn-secondary float-right" to='/login'> Logout</Link>
                         <ul className="list-group list-group-horizontal border-bottom mb-2">
                             <NavButton mode={this.props.mode} link="route" text="Current Route"/>
                             <NavButton mode={this.props.mode} link ="updateInfo" text="UpdateInfo"/>
