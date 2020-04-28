@@ -6,12 +6,13 @@ export class StatusPage extends React.Component{
     api = new ShippingApi();
     state={
         status:"",
+        location:"",
         addingStatus:false,
         statuses:[]
     }
 
     addStatus(){
-        this.api.createStatus(this.state.status).then(x=>
+        this.api.createStatus(this.state,this.state.location).then(x=>
             this.api.getSessionStatus().then(x=>this.setState({statuses:x})));
         this.setState({status:"",addingStatus:false});
     }
@@ -41,6 +42,15 @@ export class StatusPage extends React.Component{
                                     className="form-control mb-2"
                                     value={this.state.status}
                                     onChange={e=>this.setState({status:e.target.value})}/>
+                            <label htmlFor="location">
+                                Location
+                            </label>
+                            <input type="text"
+                                    name="location"
+                                    id="location"
+                                    className="form-control mb-2"
+                                    value={this.state.location}
+                                    onChange={e=>this.setState({location:e.target.value})}/>
                             
                             <div className="form-group">
                                 <button className="btn btn-success mb-3" type="btn" onClick={e=>this.addStatus()} >
@@ -58,6 +68,7 @@ export class StatusPage extends React.Component{
                     <thead>
                         <tr>
                             <th>Status</th>
+                            <th>Location</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -65,6 +76,7 @@ export class StatusPage extends React.Component{
                         {this.state.statuses.map((status,index)=>(
                             <tr key={index}>
                                 <td>{status.status}</td>
+                                <td>{status.location}</td>
                                 <td>{this.parseDate(status.date).getMonth()+"/" + this.parseDate(status.date).getDay()+"/"+ this.parseDate(status.date).getFullYear()}</td>
                             </tr>
                         ))}

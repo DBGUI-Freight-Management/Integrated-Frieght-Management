@@ -100,14 +100,14 @@ export class CreateRouteForm extends React.Component{
     componentDidMount(){
         this.api.getShipRoutes()
             .then(ships=>{
-                let result = ships.filter(ship=>ship.id===null);
-                this.setState({ships:result})
+                
+                this.setState({ships})
             }
             );
         this.api.getCaptainRoutes()
             .then(captains=>{
-                let result = captains.filter(captain=>captain.id===null);
-                this.setState({captains:result})}
+                
+                this.setState({captains})}
             );
     }
 }

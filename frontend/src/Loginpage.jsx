@@ -30,6 +30,7 @@ export class LoginPage extends React.Component{
             {this.state.loginSuccessful && this.state.accountType==="Captain" && <Redirect to='/dashboard/captain/route'/>}
             {this.state.loginSuccessful && this.state.accountType==="Freight Manager" && <Redirect to='/dashboard/freightmanager/trackingpage'/>}
             <div className="container form-group pt-5">
+                <h1>Freighter Gonna Freight</h1>
                 <label className='form-group'
                         htmlFor='username'>Username</label>
                 <input type="text"

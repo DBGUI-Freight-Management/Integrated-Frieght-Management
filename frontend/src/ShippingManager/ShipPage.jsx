@@ -16,12 +16,13 @@ export class ShipPage extends React.Component {
         }
         return (
             <div className="container">
-                <h1 className="mt-2">{this.state.ship.name} Info</h1>
-                <h5>Captain: {this.state.ship.captain}</h5>
-                <h5>Company: {this.state.ship.companyName}</h5>
-                <h5>Destination: {this.state.ship.destination}</h5>
-                <h5>Crew: </h5>
+                <h1 className="mt-2">{this.state.ship[0] && this.state.ship[0].name} Info</h1>
+                <h5>Captain: {this.state.ship[0] && this.state.ship[0].firstName + " " + this.state.ship[0].lastName}</h5>
+                
+                <h5>Destination: {this.state.ship[0] && this.state.ship[0].destination}</h5>
+                <h5>Crew:  {this.state.crew && this.state.crew.length === 0 && "No current Crew"}</h5>
                 <ul className="list-group">
+                   
                     {this.state.crew.map((crew, index) => 
                         <li className="list-group-item" key={index}>
                             <p>Name: {crew.firstName} {crew.lastName}</p>
@@ -46,6 +47,7 @@ export class ShipPage extends React.Component {
 
     componentDidMount() {
         let shipID = +this.props.match.params.shipID;
+        debugger;
         if (shipID) {
             this.api.getShipByID(shipID)
                 .then(ship => this.setState({ ship })
