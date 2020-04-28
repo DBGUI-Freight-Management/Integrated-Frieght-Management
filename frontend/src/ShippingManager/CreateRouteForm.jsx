@@ -1,6 +1,10 @@
 import React from 'react'
 import { ShippingApi } from '../API'
 
+import DatePicker from "react-datepicker";
+ 
+import "react-datepicker/dist/react-datepicker.css";
+
 export class CreateRouteForm extends React.Component{
     api = new ShippingApi();
     state={
@@ -10,17 +14,17 @@ export class CreateRouteForm extends React.Component{
         selectedCaptain: "",
         startLoc: "",
         endLoc: "",
-        endDate: ""
+        endDate: new Date()
     }
 
     sumbit(){
-        this.api.addRoute(this.state.selectedShip.id, this.state.selectedCaptain.captainID, this.state.endLoc, this.state.startLoc, this.state.endDate)
+        this.api.addRoute(this.state.selectedShip, this.state.selectedCaptain, this.state.endLoc, this.state.startLoc, this.state.endDate)
             .then(()=>this.setState({selectedShip: "", selectedCaptain: "", startLoc: "", endLoc: "", endDate: ""}));
     }
 
     render(){
         return(
-            <form className="container">
+            <div className="container">
                 <h1>
                     Create Route
                 </h1>
@@ -77,19 +81,19 @@ export class CreateRouteForm extends React.Component{
                             <label htmlFor="endDate">
                                 Expected End Date:
                             </label>
-                            <input type="text"
-                                id="endDate"
-                                name="endDate"
-                                className="form-control"
-                                value={this.state.endDate}
-                                onChange={e => this.setState({ endDate: e.target.value })} />
+                            <br/>
+                            <DatePicker className="form-control"
+                                        id="endDate"
+                                        name="endDate"
+                                        selected={this.state.endDate}
+                                        onChange={date=>this.setState({endDate:date})}
+                            />
                         </div>
-                        <div className="form-group">
-                            <button type="button" className="btn btn-primary mb-2" onClick={() => this.submit()}>Create Route</button>
-                        </div>
+                        <button type="btn" className="btn btn-primary" onClick={e=>this.sumbit()}>Create Route</button>
+                        
                     </>
                 )}
-            </form>
+            </div>
         )
     }
 

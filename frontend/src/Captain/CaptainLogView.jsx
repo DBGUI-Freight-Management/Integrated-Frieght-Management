@@ -44,6 +44,6 @@ export class CaptainLogView extends React.Component{
 
     componentDidMount(){
         this.state.ShippingApi.getLogs().then(x=>this.setState({logs:x}));
-        this.state.ShippingApi.getUserInfo().then(x=>this.setState({captainFName:x[0].firstName, captainLName:x[0].lastName}));
+        this.state.ShippingApi.getUserInfo().then(x=>{console.log(x);this.setState({captainFName:x[0].firstName, captainLName:x[0].lastName})});
     }
 }

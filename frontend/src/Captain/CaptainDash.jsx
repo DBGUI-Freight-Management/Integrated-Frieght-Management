@@ -52,7 +52,7 @@ export class CaptainDash extends React.Component{
                     {this.props.mode === 'route' && <CaptainRouteInfo/>}
                     {this.props.mode === 'updateInfo' && <UpdateCaptainInfo/>}
                 </div>}
-                {this.state.onRoute === undefined && <div className="container">
+                {this.state.route === undefined && <div className="container">
                         <h2>Captain View</h2>
                         <Link className="btn btn-secondary float-right" to='/login'> Logout</Link>
                         <ul className="list-group list-group-horizontal border-bottom mb-2">
