@@ -6,6 +6,7 @@ import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
 import { NavButton } from "../Captain/NavButton"
+import {CreateRouteForm} from "./CreateRouteForm"
 import {Link} from 'react-router-dom'
 
 export class ShippingManagerPage extends React.Component{
