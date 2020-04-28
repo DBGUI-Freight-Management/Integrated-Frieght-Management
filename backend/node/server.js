@@ -590,14 +590,14 @@ router.post('/route',function(req,res){
 })
 
 router.get('/captainRoutes',function(req,res){
-	con.query(`SELECT * FROm captain LEFT JOIN route on captain.captainID = route.captain`,function(err,rows,fields){
+	con.query(`SELECT * FROm captain LEFT JOIN route on captain.captainID = route.captain WHERE route.actualEndDate is null`,function(err,rows,fields){
 		
 		res.send(rows);
 	})
 })
 
 router.get('/shipRoutes',function(req,res){
-	con.query(`SELECT * FROM ship LEFT JOIN route ON ship.id = route.ship`,function(err,rows,fields){
+	con.query(`SELECT * FROM ship LEFT JOIN route ON ship.id = route.ship WHERE route.actualEndDate is null`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
