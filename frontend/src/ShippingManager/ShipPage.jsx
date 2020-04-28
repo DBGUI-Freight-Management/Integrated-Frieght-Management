@@ -1,5 +1,6 @@
 import React from 'react'
 import { ShippingApi } from '../API'
+import { Link } from "react-router-dom"
 
 export class ShipPage extends React.Component {
     api = new ShippingApi();
@@ -15,8 +16,8 @@ export class ShipPage extends React.Component {
         }
         return (
             <div className="container">
-                <h1>{this.state.ship.shipName} Info</h1>
-                <h5>Captain: {this.state.ship.captainName}</h5>
+                <h1 className="mt-2">{this.state.ship.name} Info</h1>
+                <h5>Captain: {this.state.ship.captain}</h5>
                 <h5>Company: {this.state.ship.companyName}</h5>
                 <h5>Destination: {this.state.ship.destination}</h5>
                 <h5>Crew: </h5>
@@ -38,6 +39,7 @@ export class ShipPage extends React.Component {
                         </li>
                     )}
                 </ul>
+                <Link className="btn btn-primary mb-2 float-right" to="/dashboard/freightmanager/trackingpage">Back to Tracking Page</Link>
             </div>
         )
     }
