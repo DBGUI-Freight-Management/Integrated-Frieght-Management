@@ -17,7 +17,7 @@ export class ActiveShipsView extends React.Component{
                         <div className="col-4">Destination</div>
                     </div>
                     {this.state.activeships.map(ship => (
-                        <div className="row">
+                        <div className="row" key={ship.id}>
                         <div className="col-4">{ ship.name }</div>
                         <div className="col-4">
                             <p>{ship.firstName + " " + ship.lastName}</p>

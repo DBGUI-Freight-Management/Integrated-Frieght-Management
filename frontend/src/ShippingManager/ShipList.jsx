@@ -9,8 +9,8 @@ export class ShipList extends React.Component{
         ships:[]
     }
 
-    deleteShip(ship){
-        this.api.deleteShip(ship)
+    deleteShip(id){
+        this.api.deleteShip(id)
             .then(()=>{
                 this.addShip();
             });
@@ -55,7 +55,8 @@ export class ShipList extends React.Component{
                                         Delete Ship
                                     </button>
                                     <p>{ ship.companyName }</p>
-                                    <p>{ ship.status && ship.status.status && ship.status.status} </p>
+                                    <p>{ (ship.status && ship.status.status) && ship.status.status}
+                                    {!ship.status && ("No Current Status")}</p>
                                 </div>
                             </div>
                         ))}

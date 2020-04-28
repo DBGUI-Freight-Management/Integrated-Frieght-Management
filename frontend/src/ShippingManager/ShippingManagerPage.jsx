@@ -1,7 +1,6 @@
 import React from "react"
 import { ShippingCompanyCreationForm } from "./ShippingCompanyCreationForm"
 import { ShipList } from "./ShipList"
-import { ShippingManager } from "./models"
 import { ActiveShipsView } from "./ActiveShipsView"
 import { TrackingPage } from "./TrackingPageView"
 import { UpdateShipStatus } from "./UpdateShipStatus"
@@ -10,38 +9,6 @@ import {CreateRouteForm} from "./CreateRouteForm"
 import {Link} from 'react-router-dom'
 
 export class ShippingManagerPage extends React.Component{
-    state={
-        manager: new ShippingManager(),
-        selectedCaptain: 0,
-        selectedMessage: undefined
-    }
-
-    updateShipStatus(name, company, status) {
-        let mgr = this.state.manager;
-        mgr.updateShipStatus(name, company, status);
-        this.setState(({ manager: mgr }));
-    }
-
-    changeCaptainCompany(company){
-        let mgr=this.state.manager;
-        mgr.changeCaptainCompany(mgr.captains[this.state.selectedCaptain],company);
-        this.setState({manager:mgr});
-        console.log(this.state);
-    }
-    addLogMessage(input){
-        let mgr=this.state.manager;
-        console.log(input);
-        let message={captain:mgr.captains[this.state.selectedCaptain],
-                    date:input.date,
-                    header:input.logHeader,
-                    message:input.logMessage}
-        mgr.addLogMessage(message);
-        this.setState({manager:mgr});
-    }
-
-    selectMessage(message){
-        this.setState({selectedMessage:this.state.manager.messages.findIndex(m=> m=== message)});
-    }
 
     render() {
         return (

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Ship } from './models';
 import { ShippingApi } from '../API';
 
 export class ShipCreationForm extends React.Component{
@@ -19,7 +18,7 @@ export class ShipCreationForm extends React.Component{
                      x=>this.props.shipAdded()
                  )
                 }
-            })
+            });
     }
 
     render(){
@@ -51,7 +50,7 @@ export class ShipCreationForm extends React.Component{
                                 value={this.state.owningCompany}
                                 onChange={e=>this.setState({owningCompany:e.target.value})}>
                                     <option></option>
-                                {this.state.companies.map(company=>(<option>{company.companyName}</option>))}
+                                {this.state.companies.map(company=>(<option key={company.companyID}>{company.companyName}</option>))}
                         </select>
                     </div>
                     <div className="form-group">

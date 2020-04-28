@@ -27,7 +27,6 @@ export class ShippingCompanyCreationForm extends React.Component{
                     <h1>
                         Create a Shipping Company
                     </h1>
-                    {this.state.companyAdded && <h3>Company Added Successfuly</h3>}
                     <div className="form-group">
                         <label htmlFor="name">
                             Name
