@@ -14,7 +14,7 @@ export class UpdateShipStatus extends React.Component {
 
     submit() {
 
-        this.api.updateShipStatus(this.state.newStatus, this.state.ships.find(ship=>ship.name===this.state.selectedShip).id, this.state.newLoc);
+        this.api.updateShipStatus(this.state.newStatus, this.state.ships.find(ship=>ship.name===this.state.selectedShip).route, this.state.newLoc);
         this.setState({ selectedShip: "", newStatus: "", newLoc: ""});
     }
 

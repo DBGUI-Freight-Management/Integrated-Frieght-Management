@@ -22,15 +22,14 @@ export class StatusPage extends React.Component{
     }
 
     parseDate(mysqlDate){
-        var dateParts = mysqlDate.split("-");
-        return new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+       
+        return new Date(Date.parse(mysqlDate.replace(/[-]/g,'/')))
     }
 
     render(){
         return(
             <>
                 <div className ="container">
-                    <h3>{"Ship"}</h3>
                     {this.state.addingStatus && (     
                         <>                  
                             <label htmlFor="status">
@@ -77,7 +76,7 @@ export class StatusPage extends React.Component{
                             <tr key={index}>
                                 <td>{status.status}</td>
                                 <td>{status.location}</td>
-                                <td>{this.parseDate(status.date).getMonth()+"/" + this.parseDate(status.date).getDay()+"/"+ this.parseDate(status.date).getFullYear()}</td>
+                                <td>{status.date.substring(5,7)+"/" + status.date.substring(8,10)+"/"+status.date.substring(0,4)}</td>
                             </tr>
                         ))}
                     </tbody>

@@ -12,7 +12,7 @@ export class LogMessage extends React.Component{
             <>
                 <div className="container">
                     <h3>Captain {this.props.captain}'s log</h3>
-                    <h4>{this.parseDate(this.props.log.date).getMonth()+"/"  + this.parseDate(this.props.log.date).getDay()+"/"+ this.parseDate(this.props.log.date).getFullYear()}</h4>
+                    <h4>{this.props.log.date.substring(5,7)+"/" + this.props.log.date.substring(8,10)+"/"+this.props.log.date.substring(0,4)}</h4>
                     <h4>{this.props.log.header}</h4>
                     <h4>{this.props.log.location}</h4>
                     <p>{this.props.log.message}</p>

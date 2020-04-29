@@ -191,7 +191,7 @@ router.get('/ships/get', function (req, res) {
 //Get active ships ("on route")
 router.get('/ships/getActiveShips', function (req, res) {
 	//statusLog = 'active'
-	con.query("SELECT * FROM route JOIN users ON route.captain = users.userID JOIN ship ON ship.id = route.ship WHERE route.actualEndDate IS NULL;", function (err, result, fields) {
+	con.query("SELECT *, route.id as route FROM route JOIN users ON route.captain = users.userID JOIN ship ON ship.id = route.ship WHERE route.actualEndDate IS NULL;", function (err, result, fields) {
 		if (err) throw err;
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
@@ -401,7 +401,7 @@ router.delete('/crew/:id/delete', async (req, res) => {
 // });
 
 router.get('/session/logs', function(req,res){
-	let sql=`SELECT header, message, route, writer, date, location FROM log JOIN route ON log.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.session.userID}';`;
+	let sql=`SELECT header, message, route, writer, date, location FROM log JOIN route ON log.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.session.userID}' AND route.actualEndDate is null;`;
 	console.log(sql);
 	con.query(sql,function(err,rows,fields){
 		if(!err){
@@ -420,23 +420,18 @@ router.get('/session/userID',function(req,res){
 router.post('/session/logs/create',function(req,res){
 	let user = req.session.userID;
 	console.log(req.body);
-	con.query(`SELECT captainID FROM users JOIN captain ON userID = captainID WHERE userID='${user}';`,function(err,rows,fields){
-		console.log(`SELECT captainID FROM users JOIN captain ON userID = captainID WHERE userID='${user}'`);
-		if(rows.length!==0){
-			con.query(`SELECT id FROM route JOIN captain ON route.captain = captain.captainID WHERE route.captain='${user}' AND route.actualEndDate is null;`,function(err2,row2,fields2){
-				console.log(`SELECT id FROM route JOIN captain ON route.captain = captain.captainID WHERE route.captain='${user}' AND route.actualEndDate is null;`);
+			con.query(`SELECT id FROM route JOIN users ON route.captain = users.userID WHERE route.captain='${user}' AND route.actualEndDate is null;`,function(err2,row2,fields2){
+				console.log(`SELECT id FROM route JOIN captain ON route.captain = users.userID WHERE route.captain='${user}' AND route.actualEndDate is null;`);
 				con.query(`INSERT INTO log (header, message, route, writer, date, location) VALUES ('${req.body.header}', '${req.body.message}', '${row2[0].id}', '${user}', '${new Date().toISOString().slice(0, 19).replace('T', ' ')}','${req.body.location}');`,function(err3,row3,fields3){
 					console.log(`INSERT INTO log (header, message, route, writer, date, location) VALUES ('${req.body.header}', '${req.body.message}', '${row2[0].id}', '${user}', '${new Date().toISOString().slice(0, 19).replace('T', ' ')}','${req.body.location}');`);
 					res.send();
 				})
 			})
-		}
-	})
-})
+		})
 
 
 router.get('/session/statuses', function(req,res){
-	let sql=`SELECT status, date, location FROM status JOIN route ON status.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.session.userID}';`;
+	let sql=`SELECT status, date, location FROM status JOIN route ON status.route = route.id JOIN captain ON captain.captainID = route.captain WHERE captain.captainID = '${req.session.userID}' and route.actualEndDate is null;`;
 	console.log(sql);
 	con.query(sql,function(err,rows,fields){
 		if(!err){
@@ -547,7 +542,7 @@ router.post('/session/currentRoute/deboard',function(req,res){
 })
 
 router.get('/cargo/:ship',function(req,res){
-	con.query(`SELECT cargo.name, companies.companyName, cargo.quantity FROM cargo JOIN route ON cargo.route = route.id JOIN companies ON cargo.owner = companies.companyID WHERE route.ship = '${req.params.ship}';`,function(err,rows,fields){
+	con.query(`SELECT cargo.name, companies.companyName, cargo.quantity FROM cargo JOIN route ON cargo.route = route.id JOIN companies ON cargo.owner = companies.companyID WHERE route.ship = '${req.params.ship}' AND route.actualEndDate is null;`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
@@ -594,8 +589,12 @@ router.post('/route',function(req,res){
 	console.log(`INSERT INTO route(ship,destination,start,startDate,endDate,captain) VALUES('${req.body.ship}','${req.body.destination}','${req.body.start}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.endDate.slice(0, 10).replace('T', ' ')}','${req.body.captain}');`)
 	con.query(`INSERT INTO route(ship,destination,start,startDate,endDate,captain) VALUES('${req.body.ship}','${req.body.destination}','${req.body.start}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${req.body.endDate.slice(0, 10).replace('T', ' ')}','${req.body.captain}');`,function(err,rows,fields){
 		console.log(rows);
-		res.send(rows);
-	})
+		console.log(`INSERT INTO status(status,date,route,location) VALUES('Just Began Route', '${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${rows.insertId}','${req.body.start}');`);
+		con.query(`INSERT INTO status(status,date,route,location) VALUES('Just Began Route', '${new Date().toISOString().slice(0, 10).replace('T', ' ')}','${rows.insertId}','${req.body.start}');`, function(err2,row2,fields){
+			res.send(rows);
+		})
+		})
+		
 })
 
 router.get('/captainRoutes',function(req,res){

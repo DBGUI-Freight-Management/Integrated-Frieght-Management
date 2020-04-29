@@ -57,7 +57,7 @@ export class TrackingPage extends React.Component{
                 this.state.ships.forEach(ship=>{
                     this.api.getRecentStatuses(ship.id).then(y=>{
                         let shipArray = this.state.ships;
-                        shipArray.find(x=>x.id===ship.id).statuses = y;
+                        shipArray.find(x=>x.id===ship.id).statuses = y.reverse();
                         this.setState({ships:shipArray})
                     })
                 })})

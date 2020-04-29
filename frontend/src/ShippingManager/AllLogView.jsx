@@ -28,7 +28,7 @@ export class AllLogView extends React.Component{
                                                         {message.location!=="" && message.location!==null && (<p>{message.location}</p>)}
                                                 </td>    
                                                 <td>
-                                                        {this.parseDate(message.date).getMonth() + "/" + this.parseDate(message.date).getDay() + "/" + this.parseDate(message.date).getFullYear()}
+                                                        {message.date.substring(5,7)+"/" + message.date.substring(8,10)+"/"+message.date.substring(0,4)}
                                                 </td>
                                             </tr>
                                     )

@@ -100,14 +100,36 @@ export class CreateRouteForm extends React.Component{
     componentDidMount(){
         this.api.getShipRoutes()
             .then(ships=>{
-                
-                this.setState({ships})
+                let shipArray = [];
+                ships.forEach(ship1=>{
+                    let inList=false;
+                    shipArray.forEach(ship2=>{
+                        if(ship1.name===ship2.name){
+                            inList=true;
+                        }
+                    })
+                    if(!inList){shipArray.push(ship1);}
+                }
+
+                )
+                this.setState({ships:shipArray})
             }
             );
         this.api.getCaptainRoutes()
             .then(captains=>{
-                
-                this.setState({captains})}
+                let captainArray = [];
+                captains.forEach(captain1=>{
+                    let inList=false;
+                    captainArray.forEach(captain2=>{
+                        if(captain1.captain ===captain2.captain){
+                            inList=true;
+                        }
+                    })
+                    if(!inList){
+                        captainArray.push(captain1);
+                    }
+                })
+                this.setState({captains:captainArray})}
             );
     }
 }

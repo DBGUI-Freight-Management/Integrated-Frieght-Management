@@ -35,10 +35,10 @@ export class CaptainRouteInfo extends React.Component{
                 {this.state.route && (
                     <>
                         <h2>Destination: {this.state.route.destination}</h2>
-                        <h3>Estimated Arrival: {this.parseDate(this.state.route.endDate).getMonth()}/{this.parseDate(this.state.route.endDate).getDay()}/{this.parseDate(this.state.route.endDate).getFullYear()}</h3>
+                        <h3>Estimated Arrival: {this.state.route.endDate.substring(5,7)+"/" + this.state.route.endDate.substring(8,10)+"/"+this.state.route.endDate.substring(0,4)}</h3>
                         <h2>Current Location: {this.state.route.currentLocation}</h2>
                         <h2>Start Location: {this.state.route.start}</h2>
-                        <h3>Start Date : {this.parseDate(this.state.route.startDate).getMonth()}/{this.parseDate(this.state.route.startDate).getDay()}/{this.parseDate(this.state.route.startDate).getFullYear()}</h3>
+                        <h3>Start Date : {this.state.route.startDate.substring(5,7)+"/" + this.state.route.startDate.substring(8,10)+"/"+this.state.route.startDate.substring(0,4)}</h3>
                         <button type="btn" className="btn btn-primary" onClick={e=>this.completeRoute()}>Submit Route</button>
                     </>
                 )}

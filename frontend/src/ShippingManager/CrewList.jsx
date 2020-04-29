@@ -111,7 +111,7 @@ export class CrewList extends React.Component{
                                     <tr key={crewMate.id}>
                                         <td>{crewMate.fname + " " + crewMate.lname}</td>
                                         <td>{crewMate.role}</td>
-                                        <td>{crewMate.date && this.parseDate(crewMate.date).getMonth()+"/" +this.parseDate(crewMate.date).getDay()+"/"+ this.parseDate(crewMate.date).getFullYear()}</td>
+                                        <td>{crewMate.date && crewMate.date.substring(5,7)+"/" + crewMate.date.substring(8,10)+"/"+crewMate.date.substring(0,4)}</td>
                                         <td><button type="button" className="close" aria-label="Close" onClick={e=>this.deboard(crewMate.id)}><span aria-hidden="true">&times;</span></button></td>
                                     </tr>}
                                 </>
