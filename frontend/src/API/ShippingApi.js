@@ -83,6 +83,7 @@ export class ShippingApi{
     }
 
     addSessionCrew(crew){
+        console.log(crew);
         return new Promise((resolve,reject)=>{
             axios.post(`${this.url}/session/crew`,crew,this.config)
                 .then(x=>resolve(x.data))

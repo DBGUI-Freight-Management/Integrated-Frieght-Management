@@ -10,6 +10,11 @@ export class ShipPage extends React.Component {
         cargo: []
     }
 
+    parseDate(mysqlDate){
+        var dateParts = mysqlDate.split("-");
+        return new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+    }
+
     render() {
         if (!this.state.ship) {
             return <div>Loading...</div>;
@@ -25,9 +30,9 @@ export class ShipPage extends React.Component {
                    
                     {this.state.crew.map((crew, index) => 
                         <li className="list-group-item" key={index}>
-                            <p>Name: {crew.firstName} {crew.lastName}</p>
-                            <p>Date Boarded: {crew.dateBoarded}</p>
-                            <p>Position: {crew.position}</p>
+                            <p>Name: {crew.fname + " " + crew.lname}</p>
+                            <p>Date Boarded: {crew.dateBoarded && `${this.parseDate(crew.dateBoarded).getMonth()+"/"+this.parseDate(crew.dateBoarded).getDay() + "/" + this.parseDate(crew.dateBoarded).getFullYear()}`} {!crew.dateBoarded && "Not Listed"}</p>
+                            <p>Position: {crew.role}</p>
                         </li>
                     )}
                 </ul>

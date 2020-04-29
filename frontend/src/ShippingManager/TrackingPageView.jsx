@@ -35,12 +35,10 @@ export class TrackingPage extends React.Component{
                             <div key={ship.id} className="row">
                                 <Link className="text-info col-4" to={`/freightmanager/shippage/${ship.id}`}>{ ship.name }</Link>
                                 <div className="col-4">
-                                    <p>{ ship.logs && ship.logs[0] && ship.logs[0].location}
-                                        {(!ship.logs || !ship.logs[0]) && "No Current Location"}</p>
+                            <p>{ ship.statuses && ship.statuses[0] && ship.statuses[0].location}{(ship.statuses===undefined || ship.statuses.length===0) && "No Current Status"}</p>
                                 </div>
                                 <div className="col-4">
-                                    <p>{ship.statuses&& ship.statuses[0] && ship.statuses[0].status}
-                                        {(!ship.logs || !ship.logs[0]) && "No Current Status"}</p>
+                            <p>{ship.statuses&& ship.statuses[0] && ship.statuses[0].status} {(ship.statuses===undefined || ship.statuses.length===0) && "No Current Location"}</p>
                                 </div>
                             </div>
                             }
@@ -55,16 +53,11 @@ export class TrackingPage extends React.Component{
         this.api.getShips()
             .then(ships=>{
                 this.setState({ships:ships});
-                console.log(this.state);
-                ships.forEach((ship,index)=>{
-                    this.api.getRecentLogs(ship.id).then(y=>{
-                            let shipArray = this.state.ships;
-                            shipArray[index].logs = y;
-                            this.setState({ships:shipArray})
-                    })
+                
+                this.state.ships.forEach(ship=>{
                     this.api.getRecentStatuses(ship.id).then(y=>{
                         let shipArray = this.state.ships;
-                        shipArray[index].statuses = y;
+                        shipArray.find(x=>x.id===ship.id).statuses = y;
                         this.setState({ships:shipArray})
                     })
                 })})

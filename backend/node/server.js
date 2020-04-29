@@ -171,8 +171,9 @@ router.get('/ships/recentStatuses',function(req,res){
 })
 
 router.get('/ships/recentStatus/:ship',function(req,res){
-	console.log(req.params)
-	con.query(`SELECT * FROM status JOIN route ON status.route = route.id JOIN ship ON ship.id = route.id WHERE route.actualEndDate is null AND ship.id='${req.params.ship}' ORDER BY status.date;`,function(err,rows,fields){
+	console.log(req.params);
+	console.log(`SELECT * FROM status JOIN route ON status.route = route.id WHERE route.actualEndDate is null AND route.ship='${req.params.ship}' ORDER BY status.date;`);
+	con.query(`SELECT * FROM status JOIN route ON status.route = route.id WHERE route.actualEndDate is null AND route.ship='${req.params.ship}' ORDER BY status.date;`,function(err,rows,fields){
 		console.log(rows);
 		res.send(rows);
 	})
@@ -274,8 +275,8 @@ router.post('/accountTypes/post', async (req, res) => {
 });
 
 router.get('/ships/:id', async(req,res)=>{
-	console.log(`SELECT * FROM ship JOIN route on ship.id = route.ship JOIN users on route.captain = users.userID WHERE ship.id = '${req.params.id}';`);
-	con.query(`SELECT * FROM ship JOIN route on ship.id = route.ship JOIN users on route.captain = users.userID WHERE ship.id = '${req.params.id}';`,function(err,rows,fields){
+	console.log(`SELECT * FROM ship JOIN route on ship.id = route.ship JOIN users on route.captain = users.userID WHERE ship.id = '${req.params.id}' AND route.actualEndDate is null;`);
+	con.query(`SELECT * FROM ship JOIN route on ship.id = route.ship JOIN users on route.captain = users.userID WHERE ship.id = '${req.params.id}' AND route.actualEndDate is null;`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
@@ -318,7 +319,7 @@ router.post('/users/post', async (req, res) => {
 
 	con.query(sql, function (err, result, fields) {
 		if (err) throw err;
-		if(req.body.userTypeId==='1')(`INSERT INTO captain(captainID) values('${result.insertId}')`,function(err2,rows2,fields2){});
+		if(req.body.userTypeId==='1')con.query(`INSERT INTO captain(captainID) values('${result.insertId}')`,function(err2,rows2,fields2){});
 		res.end(JSON.stringify(result)); // Result in JSON format
 	});
 });
@@ -345,14 +346,13 @@ router.get('/crew/get', function (req, res) {
 });
 
 //Get crew for a specific ship by ID
-router.delete('/crew/get/:id', async (req, res) => {
-  let sql = `SELECT * FROM crew WHERE ship = '${req.params.id}';`;
-  console.log(sql);
+router.get('/crew/get/:id', async (req, res) => {
+ 	let sql = `SELECT * FROM crew WHERE ship = '${req.params.id}' AND dateDeboarded is null;`;
+  	console.log(sql);
 	con.query(sql,function (err, result, fields) {
-		if (err)
-			return console.error(error.message);
+		console.log(result)
 		res.end(JSON.stringify(result));
-	  });
+	});
 });
 
 //Get crew for a specific ship by ship name
@@ -478,13 +478,14 @@ router.get('/session/getUserInfo',function(req,res){
 
 
 router.get('/session/crew',function(req,res){
+	console.log(`SELECT crew.id,fname,lname,role, dateBoarded as date, dateDeboarded FROM db.crew JOIN db.route ON crew.ship=route.ship JOIN captain ON captain.captainID = route.captain WHERE route.actualEndDate is null AND captain.captainID='${req.session.userID}';`);
 	con.query(`SELECT crew.id,fname,lname,role, dateBoarded as date, dateDeboarded FROM db.crew JOIN db.route ON crew.ship=route.ship JOIN captain ON captain.captainID = route.captain WHERE route.actualEndDate is null AND captain.captainID='${req.session.userID}';`,function(err,rows,fields){
 		res.send(rows);
 	})
 })
 
 router.post('/session/crew',function(req,res){
-
+	console.log(req.session);
 	req.session.userID && con.query(`SELECT ship FROM route WHERE route.captain='${req.session.userID}' AND route.actualEndDate is null;`,function(err,row,fields){
 		console.log(`INSERT INTO db.crew(fname,lname,role,ship,dateBoarded) VALUES('${req.body.newFName}','${req.body.newLName}', '${req.body.newRole}', '${row[0].ship}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}');`);
 		con.query(`INSERT INTO db.crew(fname,lname,role,ship,dateBoarded) VALUES('${req.body.newFName}','${req.body.newLName}', '${req.body.newRole}', '${row[0].ship}','${new Date().toISOString().slice(0, 10).replace('T', ' ')}');`,function(err2,row2,fields2){

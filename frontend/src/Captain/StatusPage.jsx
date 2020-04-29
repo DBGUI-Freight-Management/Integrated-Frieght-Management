@@ -12,7 +12,7 @@ export class StatusPage extends React.Component{
     }
 
     addStatus(){
-        this.api.createStatus(this.state,this.state.location).then(x=>
+        this.api.createStatus(this.state.status,this.state.location).then(x=>
             this.api.getSessionStatus().then(x=>this.setState({statuses:x})));
         this.setState({status:"",addingStatus:false});
     }
